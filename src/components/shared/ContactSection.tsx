@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 export default function ContactSection() {
   return (
-    <section className="bg-[#FFFAF3] pt-24 pb-0 overflow-hidden">
+    <section className="bg-[#FFFAF3] pb-0 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 relative">
         <div className="flex flex-col lg:flex-row items-center lg:items-end gap-0">
           
