@@ -1,3 +1,5 @@
+'use client';
+
 import { MapPin, Bed, Bath, Car, Maximize, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 

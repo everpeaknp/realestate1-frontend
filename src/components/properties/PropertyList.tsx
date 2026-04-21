@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { MapPin, Bed, Bath, Car, Maximize, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -238,10 +239,10 @@ export default function PropertyList() {
                 {/* Footer */}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
                   <span className="text-lg font-bold text-[#c1a478]">{property.price}</span>
-                  <a href="#" className="flex items-center gap-1 text-[13px] font-bold text-[#34465d] hover:text-[#c1a478] transition-colors">
+                  <Link href={`/properties/${property.id}`} className="flex items-center gap-1 text-[13px] font-bold text-[#34465d] hover:text-[#c1a478] transition-colors">
                     View Details
                     <ChevronRight size={14} className="mt-0.5" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </motion.div>
