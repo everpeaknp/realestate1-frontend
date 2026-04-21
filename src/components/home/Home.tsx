@@ -11,6 +11,7 @@ import HowItWorks from './HowItWorks';
 
 import Testimonials from './Testimonials';
 import ContactSection from '../shared/ContactSection';
+import BenefitsSection from '../shared/BenefitsSection';
 import Newsletter from '../shared/newsletter';
 import StatsSection from '../shared/StatsSection';
 import InstagramGallery from '../shared/instagram';
@@ -27,7 +28,7 @@ export default function Home() {
       <FeaturedProperties />
       <PopularNeighborhoods />
       <HowItWorks />
-   
+   <BenefitsSection/>
       <Testimonials />
       <ContactSection />
       <Newsletter />
