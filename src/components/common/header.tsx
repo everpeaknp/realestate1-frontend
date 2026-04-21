@@ -2,23 +2,24 @@
 
 import { motion } from 'framer-motion';
 import { ChevronDown, Phone } from 'lucide-react';
+import Link from 'next/link';
 
 
 export default function Header() {
   const navLinks = [
-    { name: 'HOME', hasDropdown: true },
-    { name: 'PROPERTIES', hasDropdown: true },
-    { name: 'SINGLE PROPERTY', hasDropdown: false },
-    { name: 'SERVICES', hasDropdown: false },
-    { name: 'ABOUT ME', hasDropdown: false },
-    { name: 'PAGES', hasDropdown: true },
+    { name: 'HOME', href: '/', hasDropdown: false },
+    { name: 'PROPERTIES', href: '/properties', hasDropdown: false },
+    { name: 'SERVICES', href: '/services', hasDropdown: false },
+    { name: 'ABOUT ME', href: '/about', hasDropdown: false },
+    { name: 'BLOG', href: '/blog', hasDropdown: false },
+    { name: 'CONTACT', href: '/contact', hasDropdown: false },
   ];
 
   return (
     <header className="w-full border-b border-gray-100 bg-white shadow-sm">
       <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6">
         {/* Logo Section */}
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="relative h-10 w-12 flex items-center justify-center">
             {/* Logo Shape */}
             <div className="absolute inset-0 flex">
@@ -43,20 +44,20 @@ export default function Header() {
           <span className="text-2xl font-bold tracking-tight text-[#1a1a1a]">
             Realtor Pal
           </span>
-        </div>
+        </Link>
 
         {/* Navigation Section */}
         <nav className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
-            <motion.a
-              key={link.name}
-              href="#"
-              className="flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] text-[#1a1a1a] hover:text-[#c1a478] transition-colors"
-              whileHover={{ scale: 1.02 }}
-            >
-              {link.name}
-              {link.hasDropdown && <ChevronDown size={12} className="mt-0.5 opacity-40" />}
-            </motion.a>
+            <motion.div key={link.name} whileHover={{ scale: 1.02 }}>
+              <Link
+                href={link.href}
+                className="flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] text-[#1a1a1a] hover:text-[#c1a478] transition-colors"
+              >
+                {link.name}
+                {link.hasDropdown && <ChevronDown size={12} className="mt-0.5 opacity-40" />}
+              </Link>
+            </motion.div>
           ))}
         </nav>
 

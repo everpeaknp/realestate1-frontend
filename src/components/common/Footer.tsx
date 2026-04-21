@@ -1,3 +1,5 @@
+'use client';
+
 import { Phone, Mail, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
