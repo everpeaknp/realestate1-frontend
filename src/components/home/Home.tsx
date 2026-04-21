@@ -2,13 +2,13 @@
 
 import Header from '@/components/common/header';
 import Hero from './hero';
-import HeroCards from './HeroCards';
-import PersonSection from './PersonSection';
+import HeroCards from '../shared/HeroCards';
+import PersonSection from '../shared/PersonSection';
 
 import FeaturedProperties from './FeaturedProperties';
 import PopularNeighborhoods from './PopularNeighborhoods';
 import HowItWorks from './HowItWorks';
-import BenefitsSection from './BenefitsSection';
+
 import Testimonials from './Testimonials';
 import ContactSection from '../shared/ContactSection';
 import Newsletter from '../shared/newsletter';
@@ -27,7 +27,7 @@ export default function Home() {
       <FeaturedProperties />
       <PopularNeighborhoods />
       <HowItWorks />
-      <BenefitsSection />
+   
       <Testimonials />
       <ContactSection />
       <Newsletter />

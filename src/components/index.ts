@@ -7,5 +7,5 @@ export { default as Projects } from './projects';
 
 export { default as Blog, SinglePost } from './blog';
 
-export { default as Contact } from './contact';
+
 export { default as NotFoundPage } from './404';
