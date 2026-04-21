@@ -13,11 +13,11 @@ export default function PropertySidebar() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
       >
-        <div className="w-24 h-24 overflow-hidden rounded-sm bg-transparent">
+        <div className="w-24 h-24 overflow-hidden rounded-sm bg-gray-200">
           <img 
             src="https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png" 
             alt="Justin Nelson" 
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
         </div>

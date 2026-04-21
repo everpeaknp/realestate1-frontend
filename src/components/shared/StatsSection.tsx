@@ -1,3 +1,5 @@
+'use client';
+
 import { Crown, Users, MapPinned, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 
