@@ -21,10 +21,10 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="bg-[#FFFAF3] py-24 pb-32 overflow-hidden">
+    <section className="bg-[#FFFAF3] py-16 pb-20 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 text-center">
         {/* Section Header */}
-        <div className="mb-20">
+        <div className="mb-12">
           <motion.h2 
             className="text-4xl font-bold text-[#1a1a1a] mb-6"
             initial={{ opacity: 0, y: -20 }}
@@ -52,7 +52,7 @@ export default function HowItWorks() {
             <div key={step.number} className="flex-1 w-full flex items-center relative gap-8 lg:gap-0">
               {/* Card */}
               <motion.div
-                className="w-full bg-[#5d6d87] p-12 py-16 flex flex-col items-center justify-center gap-6 relative overflow-hidden group shadow-xl"
+                className="w-full bg-[#5d6d87] p-8 py-12 flex flex-col items-center justify-center gap-6 relative overflow-hidden group shadow-xl"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}

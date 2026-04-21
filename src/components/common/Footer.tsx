@@ -1,4 +1,4 @@
-import { Phone, Mailbox, ChevronRight } from 'lucide-react';
+import { Phone, Mail, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // Custom Social Media Icons as SVG components
@@ -73,7 +73,7 @@ export default function Footer() {
               <span className="text-lg font-bold text-[#5d6d87]">+1 (321) 456 7890</span>
             </div>
             <div className="flex items-center gap-3 text-[#c1a478]">
-              <Mailbox size={18} />
+              <Mail size={18} />
               <span className="text-lg font-bold text-[#5d6d87]">hello@example.com</span>
             </div>
           </div>

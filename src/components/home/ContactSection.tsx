@@ -31,39 +31,41 @@ export default function ContactSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="bg-white p-12 lg:p-16 shadow-2xl rounded-sm relative lg:-ml-32 lg:mb-0 z-10 w-full max-w-lg min-h-[500px] flex flex-col justify-center">
-              <div className="text-[32px] lg:text-[40px] leading-[1.3] font-bold text-[#1a1a1a] mb-8">
-                <div className="block mb-1">I will help you</div>
-                <div className="block text-center mb-1">find the property</div>
-                <div className="block">of your dreams.</div>
-              </div>
-              
-              <p className="text-[#5d6d87] text-[14px] font-medium mb-10 max-w-[280px]">
-                The only name you need to know for real estate answers:
-              </p>
-
-              <div className="mb-8">
-                <p className="text-[17px] font-bold text-[#1a1a1a]">
-                  Justin Nelson <span className="text-[#c1a478] mx-2">|</span> Boston Realtor
+            <div className="bg-white p-8 shadow-2xl rounded-sm relative lg:-ml-32 lg:mb-0 z-10 w-[396px] h-[430px] flex flex-col justify-between">
+              <div>
+                <h2 className="text-[28px] leading-[1.2] font-bold text-[#1a1a1a] mb-6">
+                  I will help you<br />
+                  find the property<br />
+                  of your dreams.
+                </h2>
+                
+                <p className="text-[#5d6d87] text-[13px] font-medium mb-6">
+                  The only name you need to know for real estate answers:
                 </p>
+
+                <div className="mb-6">
+                  <p className="text-[15px] font-bold text-[#1a1a1a]">
+                    Justin Nelson <span className="text-[#c1a478] mx-2">|</span> Boston Realtor
+                  </p>
+                </div>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-3 group cursor-pointer">
+                    <Phone size={16} className="text-[#c1a478]" fill="currentColor" stroke="none" />
+                    <span className="text-[14px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
+                      +1 (321) 456 7890
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 group cursor-pointer">
+                    <Mail size={16} className="text-[#c1a478]" />
+                    <span className="text-[14px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
+                      hello@example.com
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4 mb-10">
-                <div className="flex items-center gap-3 group cursor-pointer">
-                  <Phone size={16} className="text-[#c1a478]" fill="currentColor" stroke="none" />
-                  <span className="text-[16px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
-                    +1 (321) 456 7890
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 group cursor-pointer">
-                  <Mail size={16} className="text-[#c1a478]" />
-                  <span className="text-[16px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
-                    hello@example.com
-                  </span>
-                </div>
-              </div>
-
-              <button className="bg-[#c1a478] hover:bg-[#b09367] text-white px-10 py-4 font-bold text-xs tracking-widest transition-all rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full">
+              <button className="bg-[#c1a478] hover:bg-[#64748b] text-white px-10 py-3 font-bold text-xs tracking-widest transition-all rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full">
                 Contact Me
               </button>
             </div>

@@ -34,7 +34,7 @@ function StarRating() {
   return (
     <div className="flex items-center justify-center gap-1 mb-2">
       {[...Array(5)].map((_, i) => (
-        <Star key={i} size={14} className="text-[#c1a478]" fill="currentColor" stroke="none" />
+        <Star key={i} size={18} className="text-[#F0AD4E]" fill="#F0AD4E" stroke="none" />
       ))}
     </div>
   );
@@ -42,7 +42,7 @@ function StarRating() {
 
 export default function Testimonials() {
   return (
-    <section className="bg-[#ece6d9] py-24 pb-32 overflow-hidden">
+    <section className="bg-[#EADEC9] py-24 pb-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 text-center">
         {/* Section Header */}
         <div className="mb-20">
@@ -72,7 +72,7 @@ export default function Testimonials() {
           
           {/* Video Testimonial Column (5/12) */}
           <motion.div 
-            className="lg:col-span-5 relative group cursor-pointer overflow-hidden rounded-sm h-[600px] shadow-lg"
+            className="lg:col-span-5 relative group cursor-pointer overflow-hidden rounded-sm h-[578px] shadow-lg"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -84,18 +84,20 @@ export default function Testimonials() {
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-12">
-              <h3 className="text-2xl font-bold mb-8 max-w-xs leading-tight">
-                {testimonials[0].title}
-              </h3>
-              
-              <div className="mb-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
-                <Play size={24} className="text-[#34465d] ml-1" fill="currentColor" />
-              </div>
+              <div className="text-center">
+                <h3 className="text-2xl font-bold mb-8 max-w-xs leading-tight mx-auto">
+                  {testimonials[0].title}
+                </h3>
+                
+                <div className="mb-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto">
+                  <Play size={24} className="text-[#34465d] ml-1" fill="currentColor" />
+                </div>
 
-              <div className="mt-auto">
-                <StarRating />
-                <p className="font-bold text-lg">{testimonials[0].name}</p>
-                <p className="text-sm opacity-80">{testimonials[0].role}</p>
+                <div>
+                  <StarRating />
+                  <p className="font-bold text-lg">{testimonials[0].name}</p>
+                  <p className="text-sm opacity-80">{testimonials[0].role}</p>
+                </div>
               </div>
             </div>
           </motion.div>
@@ -104,13 +106,13 @@ export default function Testimonials() {
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Standard Testimonial Column 1 */}
             <motion.div 
-              className="bg-white p-8 pt-0 flex flex-col shadow-lg rounded-sm h-full"
+              className="bg-white p-8 flex flex-col shadow-lg rounded-sm h-full"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="h-56 -mx-8 overflow-hidden mb-8">
+              <div className="h-[201px] overflow-hidden mb-8">
                 <img 
                   src={testimonials[1].image} 
                   alt="Property"
@@ -133,13 +135,13 @@ export default function Testimonials() {
 
             {/* Standard Testimonial Column 2 */}
             <motion.div 
-              className="bg-white p-8 pt-0 flex flex-col shadow-lg rounded-sm h-full"
+              className="bg-white p-8 flex flex-col shadow-lg rounded-sm h-full"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div className="h-56 -mx-8 overflow-hidden mb-8">
+              <div className="h-[201px] overflow-hidden mb-8">
                 <img 
                   src={testimonials[2].image} 
                   alt="Luxury Home"

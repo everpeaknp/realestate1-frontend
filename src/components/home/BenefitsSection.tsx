@@ -28,9 +28,11 @@ export default function BenefitsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-[40px] leading-tight font-bold text-[#1a1a1a] mb-8">
-              Benefits of working with me
-            </h2>
+            <div className="inline-block">
+              <h2 className="text-[40px] leading-tight font-bold text-[#1a1a1a] mb-8">
+                Benefits of working with me
+              </h2>
+            </div>
             
             <p className="text-[#7C7A70] text-[17px] leading-relaxed mb-10 max-w-xl">
               My objective is to not only have a good impact on ourselves and our families 
@@ -57,13 +59,12 @@ export default function BenefitsSection() {
               ))}
             </ul>
 
-            <div className="mb-10">
-              <button className="bg-[#c1a478] hover:bg-[#b09367] text-white px-14 py-4 font-bold text-sm tracking-widest transition-all rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full sm:w-auto">
+            <div className="inline-flex flex-col gap-10" style={{ width: '560px' }}>
+              <button className="bg-[#c1a478] hover:bg-[#64748b] text-white px-14 py-4 font-bold text-sm tracking-widest transition-all rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full">
                 Contact Me
               </button>
-            </div>
 
-            <div className="flex flex-wrap items-center gap-8">
+              <div className="flex flex-wrap items-center gap-8">
               <div className="flex items-center gap-2 group cursor-pointer">
                 <Phone size={18} className="text-[#c1a478]" fill="currentColor" stroke="none" />
                 <span className="text-lg font-bold text-[#34465d] group-hover:text-[#c1a478] transition-colors">
@@ -76,6 +77,7 @@ export default function BenefitsSection() {
                   hello@example.com
                 </span>
               </div>
+            </div>
             </div>
           </motion.div>
 
@@ -96,7 +98,7 @@ export default function BenefitsSection() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
               </motion.div>
             ))}
           </div>

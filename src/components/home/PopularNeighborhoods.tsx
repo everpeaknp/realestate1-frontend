@@ -13,31 +13,31 @@ const neighborhoods: Neighborhood[] = [
     id: '1',
     name: 'Westwood',
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-1 lg:row-start-1',
+    gridClass: 'lg:col-start-1 lg:row-start-1 lg:w-[384px] lg:h-[242px]',
   },
   {
     id: '2',
     name: 'Hyde Park',
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-1 lg:row-start-2',
+    gridClass: 'lg:col-start-1 lg:row-start-2 lg:w-[384px] lg:h-[242px]',
   },
   {
     id: '3',
     name: 'Sunset Square',
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-2 lg:row-span-2 lg:h-full',
+    gridClass: 'lg:col-start-2 lg:row-span-2 lg:w-[384px] lg:h-[492px]',
   },
   {
     id: '4',
     name: 'East Village',
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-3 lg:row-start-1',
+    gridClass: 'lg:col-start-3 lg:row-start-1 lg:w-[384px] lg:h-[242px]',
   },
   {
     id: '5',
     name: 'Las Colinas',
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-3 lg:row-start-2',
+    gridClass: 'lg:col-start-3 lg:row-start-2 lg:w-[384px] lg:h-[242px]',
   },
 ];
 
@@ -69,7 +69,7 @@ export default function PopularNeighborhoods() {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-0.5 gap-y-2">
           {neighborhoods.map((item, index) => (
             <motion.div
               key={item.id}
@@ -88,7 +88,7 @@ export default function PopularNeighborhoods() {
               />
               
               {/* Overlay Overlay */}
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-black/30 group-hover:bg-[#c1a478]/40 transition-colors duration-300" />
               
               {/* Label */}
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">

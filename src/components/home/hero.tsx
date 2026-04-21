@@ -17,7 +17,7 @@ export default function Hero() {
       <div className="relative z-10 w-full max-w-4xl px-6 text-center text-white">
         {/* Title */}
         <motion.h1 
-          className="text-4xl md:text-[64px] font-bold tracking-tight mb-8 leading-tight"
+          className="text-3xl md:text-[48px] font-bold tracking-tight mb-8 leading-tight whitespace-nowrap"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -27,23 +27,26 @@ export default function Hero() {
 
         {/* Subtitle with Swoop */}
         <motion.div 
-          className="relative inline-block mb-16"
+          className="mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <p className="text-xl md:text-[28px] font-bold max-w-3xl mx-auto leading-snug px-4 text-[#7C7A70]">
-            I deliver the very best in all facets of <span className="text-white">real estate</span>. 
+          <p className="text-xl md:text-[28px] font-bold max-w-3xl mx-auto leading-snug px-4 text-[#EADEC9]">
+            I deliver the very best in all facets of{' '}
+            <span className="relative inline-block text-white">
+              real estate
+              {/* Stylized Swoop Underline - positioned below "real estate" */}
+              <span className="absolute -bottom-4 left-0 w-full h-6 pointer-events-none opacity-90">
+                <svg viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-[#c1a478]">
+                  <path d="M5 15C60 2 140 2 195 15" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                </svg>
+              </span>
+            </span>
+            .{' '}
             <br />
             Because you deserve no less.
           </p>
-          
-          {/* Stylized Swoop Underline - positioned specifically like the screenshot */}
-          <div className="absolute -bottom-8 right-0 w-48 md:w-80 h-6 pointer-events-none opacity-90">
-            <svg viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-[#c1a478]">
-              <path d="M5 5C60 18 140 18 195 5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-          </div>
         </motion.div>
 
         {/* Buttons */}
@@ -53,11 +56,11 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <button className="bg-[#c1a478] hover:bg-[#b09367] text-white px-10 py-4 font-bold text-sm tracking-widest transition-all rounded-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          <button className="bg-[#c1a478] hover:bg-[#64748b] text-white px-10 py-4 font-bold text-sm tracking-widest transition-all rounded-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
             CONTACT ME
           </button>
           
-          <button className="group flex items-center gap-1 text-white font-bold text-sm tracking-widest border-b border-transparent hover:border-white transition-all pb-1">
+          <button className="group flex items-center gap-1 text-white font-bold text-sm tracking-widest border-b-2 border-white hover:border-[#c1a478] transition-all pb-1">
             View Listing
             <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </button>

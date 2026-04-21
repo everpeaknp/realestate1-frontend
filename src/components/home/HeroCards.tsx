@@ -26,7 +26,7 @@ const cards = [
 
 export default function HeroCards() {
   return (
-    <div className="relative z-20 mx-auto max-w-7xl px-6 -mt-32">
+    <div className="relative z-20 mx-auto max-w-7xl px-6 -mt-20">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card, index) => (
           <motion.div

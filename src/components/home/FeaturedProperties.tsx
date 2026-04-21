@@ -30,24 +30,24 @@ const properties: Property[] = [
     sqft: 1440,
   },
   {
-    id: '2',
-    title: 'The Comfort Court',
-    location: 'Panama City, Florida',
-    price: '$76,000',
-    image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800',
-    status: 'FOR RENT',
-    beds: 3,
-    baths: 2,
-    cars: 2,
-    sqft: 1440,
-  },
-  {
     id: '3',
     title: 'United Units',
     location: 'Panama City, Florida',
     price: '$2,54,000',
     image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800',
     status: 'FOR SALE',
+    beds: 3,
+    baths: 2,
+    cars: 2,
+    sqft: 1440,
+  },
+  {
+    id: '2',
+    title: 'The Comfort Court',
+    location: 'Panama City, Florida',
+    price: '$76,000',
+    image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800',
+    status: 'FOR RENT',
     beds: 3,
     baths: 2,
     cars: 2,
@@ -109,7 +109,7 @@ export default function FeaturedProperties() {
           
           {/* Main Large Card */}
           <motion.div 
-            className="lg:col-span-7 bg-[#FFFAF3] shadow-sm flex flex-col overflow-hidden"
+            className="lg:col-span-7 bg-[#FFFAF3] shadow-sm overflow-hidden h-[720px]"
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -143,19 +143,19 @@ export default function FeaturedProperties() {
               </div>
             </div>
             
-            <div className="p-10 flex-1 flex flex-col items-start">
-              <div className="flex items-center gap-2 text-[#c1a478] mb-3">
+            <div className="p-6 pb-0 flex flex-col items-start">
+              <div className="flex items-center gap-2 text-[#c1a478] mb-2">
                 <MapPin size={16} fill="currentColor" fillOpacity={0.2} />
                 <span className="text-[14px] font-medium text-[#7C7A70]">{mainProperty.location}</span>
               </div>
-              <h3 className="text-2xl font-bold text-[#1a1a1a] mb-5">{mainProperty.title}</h3>
-              <p className="text-[#7C7A70] text-sm leading-relaxed mb-8 max-w-lg">
+              <h3 className="text-2xl font-bold text-[#1a1a1a] mb-3">{mainProperty.title}</h3>
+              <p className="text-[#7C7A70] text-sm leading-relaxed mb-4 max-w-lg">
                 {mainProperty.description}
               </p>
               
-              <div className="mt-auto flex items-center justify-between w-full border-t border-gray-200 pt-8">
+              <div className="flex items-center justify-between w-full border-t border-gray-200 pt-4 mt-2">
                 <span className="text-2xl font-bold text-[#c1a478]">{mainProperty.price}</span>
-                <a href="#" className="flex items-center gap-1 text-[12px] font-bold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase">
+                <a href="#" className="flex items-center gap-1 text-[12px] font-semibold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase underline underline-offset-4">
                   View Details <ChevronRight size={14} />
                 </a>
               </div>
@@ -167,13 +167,13 @@ export default function FeaturedProperties() {
             {sideProperties.map((prop, index) => (
               <motion.div 
                 key={prop.id}
-                className="bg-[#FFFAF3] shadow-sm grid grid-cols-1 md:grid-cols-5 overflow-hidden"
+                className="bg-[#FFFAF3] shadow-sm grid grid-cols-1 md:grid-cols-5 overflow-hidden h-[219px]"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
               >
-                <div className="relative md:col-span-2 h-44 md:h-full overflow-hidden group">
+                <div className="relative md:col-span-2 h-[200px] md:h-full overflow-hidden group">
                   <StatusRibbon status={prop.status} />
                   <img 
                     src={prop.image} 
@@ -209,7 +209,7 @@ export default function FeaturedProperties() {
 
                   <div className="flex items-center justify-between w-full mt-auto pt-4 border-t border-gray-100">
                     <span className="font-bold text-[#c1a478]">{prop.price}</span>
-                    <a href="#" className="flex items-center gap-0.5 text-[10px] font-bold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase">
+                    <a href="#" className="flex items-center gap-0.5 text-[10px] font-semibold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase underline underline-offset-4">
                       View Details <ChevronRight size={12} />
                     </a>
                   </div>
