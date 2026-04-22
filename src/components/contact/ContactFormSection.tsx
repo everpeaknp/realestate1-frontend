@@ -13,7 +13,8 @@ export default function ContactFormSection() {
           <div className="w-full lg:w-[40%] bg-[#fdfaf3] p-12 flex flex-col items-center">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-[#1a1a1a] mb-2 px-4 whitespace-nowrap">
-                Justin Nelson <span className="text-[#d4af37] mx-2">|</span> Boston Realtor
+                Bijen khadka<span className="text-[#d4af37] mx-2">|</span> Investment property specialist
+
               </h2>
               
               {/* Social Icons */}
@@ -38,7 +39,7 @@ export default function ContactFormSection() {
             {/* Agent Image */}
             <div className="mt-auto w-full flex justify-center">
               <img 
-                src="https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png" 
+                src="/person.png" 
                 alt="Justin Nelson" 
                 className="w-full max-w-[400px] h-auto object-contain"
                 referrerPolicy="no-referrer"

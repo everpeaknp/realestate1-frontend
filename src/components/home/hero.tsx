@@ -22,7 +22,8 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Justin Nelson <span className="mx-4 text-[#c1a478] font-thin">|</span> Boston Realtor
+          Bijen khadka<span className="mx-4 text-[#c1a478] font-thin">|</span> Investment property specialist
+
         </motion.h1>
 
         {/* Subtitle with Swoop */}

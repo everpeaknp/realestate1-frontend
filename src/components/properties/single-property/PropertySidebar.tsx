@@ -13,17 +13,18 @@ export default function PropertySidebar() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
       >
-        <div className="w-24 h-24 overflow-hidden rounded-sm bg-gray-200">
+        <div className="w-24 h-24 overflow-hidden rounded-sm flex items-center justify-center">
           <img 
-            src="https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png" 
+            src="/person.png" 
             alt="Justin Nelson" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
             referrerPolicy="no-referrer"
           />
         </div>
         <div>
           <h3 className="text-xl font-bold text-[#1a1a1a] font-sans">Justin Nelson</h3>
-          <p className="text-[#5d6d87] text-sm">Boston Realtor</p>
+          <p className="text-[#5d6d87] text-sm">Investment property specialist
+</p>
         </div>
       </motion.div>
 
@@ -88,11 +89,11 @@ export default function PropertySidebar() {
       >
         <div className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors cursor-pointer">
           <Phone size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">+1 (321) 456 7890</span>
+          <span className="font-bold text-[#1a1a1a] tracking-tight">0414701721</span>
         </div>
         <div className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors cursor-pointer">
           <Mail size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">hello@example.com</span>
+          <span className="font-bold text-[#1a1a1a] tracking-tight">Bijen@lilywhiterealestate.com.au</span>
         </div>
       </motion.div>
     </aside>

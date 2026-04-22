@@ -72,11 +72,11 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center gap-8 lg:gap-16">
             <div className="flex items-center gap-3 text-[#c1a478]">
               <Phone size={18} fill="currentColor" stroke="none" className="rotate-3" />
-              <span className="text-lg font-bold text-[#5d6d87]">+1 (321) 456 7890</span>
+              <span className="text-lg font-bold text-[#5d6d87]">0414701721</span>
             </div>
             <div className="flex items-center gap-3 text-[#c1a478]">
               <Mail size={18} />
-              <span className="text-lg font-bold text-[#5d6d87]">hello@example.com</span>
+              <span className="text-lg font-bold text-[#5d6d87]">Bijen@lilywhiterealestate.com.au</span>
             </div>
           </div>
 

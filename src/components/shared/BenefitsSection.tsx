@@ -68,13 +68,13 @@ export default function BenefitsSection() {
               <div className="flex items-center gap-2 group cursor-pointer">
                 <Phone size={18} className="text-[#c1a478]" fill="currentColor" stroke="none" />
                 <span className="text-lg font-bold text-[#34465d] group-hover:text-[#c1a478] transition-colors">
-                  +1 (321) 456 7890
+                  0414701721
                 </span>
               </div>
               <div className="flex items-center gap-2 group cursor-pointer">
                 <Mail size={18} className="text-[#c1a478]" />
                 <span className="text-lg font-bold text-[#34465d] group-hover:text-[#c1a478] transition-colors">
-                  hello@example.com
+                  Bijen@lilywhiterealestate.com.au
                 </span>
               </div>
             </div>

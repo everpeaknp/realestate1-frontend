@@ -18,7 +18,7 @@ export default function ContactSection() {
             transition={{ duration: 0.8 }}
           >
             <img 
-              src="https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png" 
+              src="/person.png" 
               alt="Justin Nelson"
               className="max-h-[700px] w-auto object-contain"
               referrerPolicy="no-referrer"
@@ -47,7 +47,8 @@ export default function ContactSection() {
 
                 <div className="mb-6">
                   <p className="text-[15px] font-bold text-[#1a1a1a]">
-                    Justin Nelson <span className="text-[#c1a478] mx-2">|</span> Boston Realtor
+                    Bijen khadka<span className="text-[#c1a478] mx-2">|</span> Investment property specialist
+
                   </p>
                 </div>
 
@@ -55,13 +56,13 @@ export default function ContactSection() {
                   <div className="flex items-center gap-3 group cursor-pointer">
                     <Phone size={16} className="text-[#c1a478]" fill="currentColor" stroke="none" />
                     <span className="text-[14px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
-                      +1 (321) 456 7890
+                      0414701721
                     </span>
                   </div>
                   <div className="flex items-center gap-3 group cursor-pointer">
                     <Mail size={16} className="text-[#c1a478]" />
                     <span className="text-[14px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
-                      hello@example.com
+                      Bijen@lilywhiterealestate.com.au
                     </span>
                   </div>
                 </div>

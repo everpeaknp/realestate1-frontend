@@ -52,13 +52,13 @@ export default function HomeLoanSection() {
                   <div className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer whitespace-nowrap">
                     <Phone size={18} className="text-[#c1a478]" />
                     <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors tracking-tight">
-                      +1 (321) 456 7890
+                      0414701721
                     </span>
                   </div>
                   <div className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer whitespace-nowrap">
                     <Mail size={18} className="text-[#c1a478]" />
                     <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors tracking-tight">
-                      hello@example.com
+                      Bijen@lilywhiterealestate.com.au
                     </span>
                   </div>
                 </div>
