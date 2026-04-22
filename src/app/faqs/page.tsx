@@ -1,4 +1,3 @@
- 
 import Header from '@/components/common/header';
 import Footer from '@/components/common/Footer';
 import FAQsHero from '@/components/faqs/faqsHero';

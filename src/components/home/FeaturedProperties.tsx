@@ -2,72 +2,25 @@
 
 import { MapPin, Bed, Bath, Car, Maximize, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '@/lib/api';
 
 interface Property {
-  id: string;
+  id: number;
+  slug: string;
   title: string;
   location: string;
   price: string;
-  description?: string;
-  image: string;
-  status: 'FOR SALE' | 'FOR RENT';
+  main_image: string | null;
+  property_type: string;
+  status: string;
   beds: number;
   baths: number;
-  cars: number;
+  garage: number;
   sqft: number;
+  is_featured: boolean;
 }
-
-const properties: Property[] = [
-  {
-    id: '1',
-    title: 'Harmony Place',
-    location: 'Panama City, Florida',
-    price: '$3,86,000',
-    description: 'Integer posuere erat a ante venenatis dapibus posuere velit aliquet dapibus ac facilisis in egestas eget quam.',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000',
-    status: 'FOR SALE',
-    beds: 4,
-    baths: 3,
-    cars: 2,
-    sqft: 1440,
-  },
-  {
-    id: '3',
-    title: 'United Units',
-    location: 'Panama City, Florida',
-    price: '$2,54,000',
-    image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800',
-    status: 'FOR SALE',
-    beds: 3,
-    baths: 2,
-    cars: 2,
-    sqft: 1440,
-  },
-  {
-    id: '2',
-    title: 'The Comfort Court',
-    location: 'Panama City, Florida',
-    price: '$76,000',
-    image: 'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800',
-    status: 'FOR RENT',
-    beds: 3,
-    baths: 2,
-    cars: 2,
-    sqft: 1440,
-  },
-  {
-    id: '4',
-    title: 'Sunset Springs',
-    location: 'Panama City, Florida',
-    price: '$56,000',
-    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800',
-    status: 'FOR RENT',
-    beds: 3,
-    baths: 2,
-    cars: 2,
-    sqft: 1440,
-  },
-];
 
 function StatusRibbon({ status }: { status: string }) {
   return (
@@ -77,7 +30,89 @@ function StatusRibbon({ status }: { status: string }) {
   );
 }
 
+function formatPrice(price: string): string {
+  const numPrice = parseFloat(price);
+  return `$${numPrice.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+}
+
+function getImageUrl(imageUrl: string | null): string {
+  if (!imageUrl) {
+    return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000';
+  }
+  
+  // If it's already a full URL, return it
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  
+  // Otherwise, prepend the API URL
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  return `${API_URL}${imageUrl}`;
+}
+
 export default function FeaturedProperties() {
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchFeaturedProperties() {
+      try {
+        const response = await fetch(API_ENDPOINTS.properties.featured);
+        if (!response.ok) {
+          throw new Error('Failed to fetch featured properties');
+        }
+        const data = await response.json();
+        
+        // Handle both paginated and non-paginated responses
+        if (Array.isArray(data)) {
+          setProperties(data);
+        } else if (data.results && Array.isArray(data.results)) {
+          setProperties(data.results);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (err) {
+        console.error('Error fetching featured properties:', err);
+        setError('Failed to load featured properties');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFeaturedProperties();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center mb-16 px-4">
+            <h2 className="text-4xl font-bold text-[#1a1a1a] mb-6">Featured Properties</h2>
+            <p className="text-[#7C7A70] max-w-3xl mx-auto text-lg leading-relaxed font-medium">
+              Loading featured properties...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error || properties.length === 0) {
+    return (
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center mb-16 px-4">
+            <h2 className="text-4xl font-bold text-[#1a1a1a] mb-6">Featured Properties</h2>
+            <p className="text-[#7C7A70] max-w-3xl mx-auto text-lg leading-relaxed font-medium">
+              {error || 'No featured properties available at the moment.'}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   const mainProperty = properties[0];
   const sideProperties = properties.slice(1);
 
@@ -118,9 +153,9 @@ export default function FeaturedProperties() {
             transition={{ duration: 0.8 }}
           >
             <div className="relative h-[480px] overflow-hidden group">
-              <StatusRibbon status={mainProperty.status} />
+              <StatusRibbon status={mainProperty.property_type.replace('_', ' ')} />
               <img 
-                src={mainProperty.image} 
+                src={getImageUrl(mainProperty.main_image)} 
                 alt={mainProperty.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -136,7 +171,7 @@ export default function FeaturedProperties() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Car size={18} className="opacity-70" />
-                  <span>{mainProperty.cars}</span>
+                  <span>{mainProperty.garage}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Maximize size={18} className="opacity-70" />
@@ -152,14 +187,14 @@ export default function FeaturedProperties() {
               </div>
               <h3 className="text-2xl font-bold text-[#1a1a1a] mb-3">{mainProperty.title}</h3>
               <p className="text-[#7C7A70] text-sm leading-relaxed mb-4 max-w-lg">
-                {mainProperty.description}
+                Discover this beautiful property in a prime location with excellent amenities and modern features.
               </p>
               
               <div className="flex items-center justify-between w-full border-t border-gray-200 pt-4 mt-2">
-                <span className="text-2xl font-bold text-[#c1a478]">{mainProperty.price}</span>
-                <a href="#" className="flex items-center gap-1 text-[12px] font-semibold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase underline underline-offset-4">
+                <span className="text-2xl font-bold text-[#c1a478]">{formatPrice(mainProperty.price)}</span>
+                <Link href={`/properties/${mainProperty.slug}`} className="flex items-center gap-1 text-[12px] font-semibold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase underline underline-offset-4">
                   View Details <ChevronRight size={14} />
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -176,9 +211,9 @@ export default function FeaturedProperties() {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
               >
                 <div className="relative md:col-span-2 h-[200px] md:h-full overflow-hidden group">
-                  <StatusRibbon status={prop.status} />
+                  <StatusRibbon status={prop.property_type.replace('_', ' ')} />
                   <img 
-                    src={prop.image} 
+                    src={getImageUrl(prop.main_image)} 
                     alt={prop.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -201,7 +236,7 @@ export default function FeaturedProperties() {
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Car size={14} className="opacity-60" />
-                      <span>{prop.cars}</span>
+                      <span>{prop.garage}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Maximize size={14} className="opacity-60" />
@@ -210,10 +245,10 @@ export default function FeaturedProperties() {
                   </div>
 
                   <div className="flex items-center justify-between w-full mt-auto pt-4 border-t border-gray-100">
-                    <span className="font-bold text-[#c1a478]">{prop.price}</span>
-                    <a href="#" className="flex items-center gap-0.5 text-[10px] font-semibold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase underline underline-offset-4">
+                    <span className="font-bold text-[#c1a478]">{formatPrice(prop.price)}</span>
+                    <Link href={`/properties/${prop.slug}`} className="flex items-center gap-0.5 text-[10px] font-semibold tracking-widest text-[#1a1a1a] hover:text-[#c1a478] transition-colors uppercase underline underline-offset-4">
                       View Details <ChevronRight size={12} />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </motion.div>

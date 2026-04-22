@@ -1,11 +1,14 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { MapPin, Bed, Bath, Car, Maximize, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { API_ENDPOINTS } from '@/lib/api';
 
 interface Property {
-  id: string;
+  id: number;
+  slug: string;
   title: string;
   location: string;
   price: string;
@@ -13,159 +16,79 @@ interface Property {
   baths: number;
   garage: number;
   sqft: number;
-  image: string;
-  type: 'FOR SALE' | 'FOR RENT';
+  main_image: string | null;
+  property_type: 'FOR_SALE' | 'FOR_RENT';
+  status: string;
+  is_featured: boolean;
 }
 
-const properties: Property[] = [
-  {
-    id: '1',
-    title: 'Merril Willow',
-    location: 'Panama City, Florida',
-    price: '$1,86,000',
-    beds: 3,
-    baths: 2,
-    garage: 2,
-    sqft: 1440,
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-  {
-    id: '2',
-    title: 'Grande Maison',
-    location: 'Panama City, Florida',
-    price: '$46,000',
-    beds: 3,
-    baths: 2,
-    garage: 2,
-    sqft: 1440,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR RENT',
-  },
-  {
-    id: '3',
-    title: 'The Casita',
-    location: 'Panama City, Florida',
-    price: '$2,32,000',
-    beds: 3,
-    baths: 2,
-    garage: 2,
-    sqft: 1440,
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-  {
-    id: '4',
-    title: 'Creekside Villa',
-    location: 'Panama City, Florida',
-    price: '$42,000',
-    beds: 3,
-    baths: 2,
-    garage: 2,
-    sqft: 1440,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR RENT',
-  },
-  // Adding more to fill 12 total (3 rows of 4)
-  {
-    id: '5',
-    title: 'Sunny Apartments',
-    location: 'Miami, Florida',
-    price: '$3,20,000',
-    beds: 2,
-    baths: 2,
-    garage: 1,
-    sqft: 1100,
-    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-  {
-    id: '6',
-    title: 'Palm Heights',
-    location: 'Orlando, Florida',
-    price: '$5,50,000',
-    beds: 4,
-    baths: 3,
-    garage: 3,
-    sqft: 2800,
-    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-  {
-    id: '7',
-    title: 'Ocean Breeze',
-    location: 'Tampa, Florida',
-    price: '$2,90,000',
-    beds: 3,
-    baths: 2,
-    garage: 2,
-    sqft: 1650,
-    image: 'https://images.unsplash.com/photo-1576941089067-2de3c901e126?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-  {
-    id: '8',
-    title: 'Modern Loft',
-    location: 'Austin, Texas',
-    price: '$35,000',
-    beds: 1,
-    baths: 1,
-    garage: 1,
-    sqft: 850,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR RENT',
-  },
-  {
-    id: '9',
-    title: 'Pine Woods',
-    location: 'Seattle, Washington',
-    price: '$4,10,000',
-    beds: 3,
-    baths: 2,
-    garage: 2,
-    sqft: 1900,
-    image: 'https://images.unsplash.com/photo-1549517045-bc93de075e53?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-  {
-    id: '10',
-    title: 'Desert Mirage',
-    location: 'Phoenix, Arizona',
-    price: '$28,000',
-    beds: 2,
-    baths: 1,
-    garage: 1,
-    sqft: 1050,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR RENT',
-  },
-  {
-    id: '11',
-    title: 'Lakeside Manor',
-    location: 'Chicago, Illinois',
-    price: '$6,75,000',
-    beds: 5,
-    baths: 4,
-    garage: 3,
-    sqft: 3500,
-    image: 'https://images.unsplash.com/photo-1500313830540-7b6650a74fd0?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-  {
-    id: '12',
-    title: 'Urban Core',
-    location: 'Denver, Colorado',
-    price: '$4,25,000',
-    beds: 2,
-    baths: 2,
-    garage: 0,
-    sqft: 1200,
-    image: 'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?auto=format&fit=crop&q=80&w=800',
-    type: 'FOR SALE',
-  },
-];
-
 export default function PropertyList() {
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchProperties();
+  }, []);
+
+  const fetchProperties = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(API_ENDPOINTS.properties.list);
+      if (!response.ok) throw new Error('Failed to fetch properties');
+      const data = await response.json();
+      
+      // Handle both paginated and non-paginated responses
+      if (Array.isArray(data)) {
+        setProperties(data);
+      } else if (data.results && Array.isArray(data.results)) {
+        setProperties(data.results);
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load properties');
+      console.error('Error fetching properties:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatPrice = (price: string) => {
+    const num = parseFloat(price);
+    return `$${num.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+  };
+
+  const getPropertyImage = (image: string | null) => {
+    if (image && image.startsWith('http')) return image;
+    if (image) return `${process.env.NEXT_PUBLIC_API_URL}${image}`;
+    return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800';
+  };
+
+  if (loading) {
+    return (
+      <section className="bg-white py-20 px-6">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-gray-100 animate-pulse h-96 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="bg-white py-20 px-6">
+        <div className="mx-auto max-w-7xl text-center">
+          <p className="text-red-600">Error: {error}</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="bg-white py-20 px-6">
       <div className="mx-auto max-w-7xl">
@@ -182,7 +105,7 @@ export default function PropertyList() {
               {/* Image Section */}
               <div className="relative h-60 overflow-hidden">
                 <img
-                  src={property.image}
+                  src={getPropertyImage(property.main_image)}
                   alt={property.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   referrerPolicy="no-referrer"
@@ -190,9 +113,9 @@ export default function PropertyList() {
                 {/* Status Ribbon */}
                 <div className="absolute top-0 left-0 overflow-hidden w-28 h-28 z-10">
                    <div className={`absolute top-4 -left-8 w-36 py-1 text-center text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 ${
-                     property.type === 'FOR SALE' ? 'bg-[#5d6d87]' : 'bg-[#5d6d87]/90'
+                     property.property_type === 'FOR_SALE' ? 'bg-[#5d6d87]' : 'bg-[#5d6d87]/90'
                    }`}>
-                     {property.type}
+                     {property.property_type === 'FOR_SALE' ? 'FOR SALE' : 'FOR RENT'}
                    </div>
                 </div>
               </div>
@@ -238,8 +161,8 @@ export default function PropertyList() {
 
                 {/* Footer */}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-                  <span className="text-lg font-bold text-[#c1a478]">{property.price}</span>
-                  <Link href={`/properties/${property.id}`} className="flex items-center gap-1 text-[13px] font-bold text-[#34465d] hover:text-[#c1a478] transition-colors">
+                  <span className="text-lg font-bold text-[#c1a478]">{formatPrice(property.price)}</span>
+                  <Link href={`/properties/${property.slug}`} className="flex items-center gap-1 text-[13px] font-bold text-[#34465d] hover:text-[#c1a478] transition-colors">
                     View Details
                     <ChevronRight size={14} className="mt-0.5" />
                   </Link>
