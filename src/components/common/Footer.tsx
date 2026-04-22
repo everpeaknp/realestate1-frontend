@@ -72,11 +72,11 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center gap-8 lg:gap-16">
             <div className="flex items-center gap-3 text-[#c1a478]">
               <Phone size={18} fill="currentColor" stroke="none" className="rotate-3" />
-              <span className="text-lg font-bold text-[#5d6d87]">+1 (321) 456 7890</span>
+              <span className="text-lg font-bold text-[#5d6d87]">0414701721</span>
             </div>
             <div className="flex items-center gap-3 text-[#c1a478]">
               <Mail size={18} />
-              <span className="text-lg font-bold text-[#5d6d87]">hello@example.com</span>
+              <span className="text-lg font-bold text-[#5d6d87]">Bijen@lilywhiterealestate.com.au</span>
             </div>
           </div>
 
@@ -98,19 +98,7 @@ export default function Footer() {
 
         {/* Bottom Row: Links and Copyright */}
         <div className="pt-10 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-0">
-          <div className="flex items-center gap-8 flex-wrap justify-center sm:justify-start">
-            <a href="/testimonials" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              Testimonials
-            </a>
-            <a href="/faqs" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              FAQs
-            </a>
-            <a href="/projects" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              Projects
-            </a>
+          <div className="flex items-center gap-8">
             <a href="#" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
               <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
               Terms & Conditions

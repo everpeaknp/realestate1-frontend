@@ -3,14 +3,17 @@
 import { CheckSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-interface PropertyData {
-  amenities_list: string[];
-}
-
-export default function PropertyFeatures({ property }: { property: PropertyData }) {
-  const features = property.amenities_list.length > 0 
-    ? property.amenities_list 
-    : ['No features listed'];
+export default function PropertyFeatures() {
+  const features = [
+    'Swimming Pool',
+    'Window Coverings',
+    'Lawn',
+    'Laundry',
+    'Air Conditioning',
+    'Barbeque',
+    'Outdoor Shower',
+    'Refrigerator',
+  ];
 
   return (
     <div className="bg-white overflow-hidden">

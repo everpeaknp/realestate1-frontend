@@ -1,7 +1,6 @@
 'use client';
-
-import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function AboutHero() {
   return (

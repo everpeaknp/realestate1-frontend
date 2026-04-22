@@ -1,2 +1,2 @@
 export { default } from './Properties';
-export * from './single-property';
+export { default as SingleProperty } from './single-property';

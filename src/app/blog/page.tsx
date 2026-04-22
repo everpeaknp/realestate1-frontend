@@ -3,7 +3,7 @@ import Header from '@/components/common/header';
 import Footer from '@/components/common/Footer';
 import Newsletter from '@/components/shared/newsletter';
 import Instagram from '@/components/shared/instagram';
-import PropertySidebar from '@/components/shared/PropertySidebar';
+import PropertySidebar from '@/components/properties/single-property/PropertySidebar';
 import BlogSection from '@/components/blog/BlogSection';
 
 export default function BlogPage() {

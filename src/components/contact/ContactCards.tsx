@@ -9,19 +9,19 @@ export default function ContactCards() {
   const contacts = [
     {
       title: 'CALL ME',
-      value: '+1 (321) 456 7890',
+      value: '0414701721',
       icon: Phone,
       delay: 0.1
     },
     {
       title: 'OFFICE ADDRESS',
-      value: '324 King Avenue, Boston, USA',
+      value: 'Suite1.07/3 Fordham way, oran park, NSW',
       icon: MapPin,
       delay: 0.2
     },
     {
       title: 'EMAIL ME',
-      value: 'hello@example.com',
+      value: 'Bijen@lilywhiterealestate.com.au',
       icon: Mail,
       delay: 0.3
     }

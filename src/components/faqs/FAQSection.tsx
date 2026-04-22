@@ -1,90 +1,51 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
-interface FAQ {
-  id: number;
-  question: string;
-  answer: string;
-  category: string;
-  order: number;
-}
 
-const FALLBACK_FAQS: FAQ[] = [
+const faqData = [
   {
-    id: 1,
-    question: "How much do I need for a down payment?",
-    answer: "Typically, you'll need 3–20% of the home's purchase price for a down payment. First-time buyers may qualify for programs requiring as little as 3% down.",
-    category: "Buying",
-    order: 1,
+    question: "Donec id elit non mi porta gravida at eget metus.",
+    answer: "Maecenas sed diam eget risus varius blandit sit amet non magna. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
   },
   {
-    id: 2,
-    question: "How long does it take to sell a home?",
-    answer: "The average time to sell a home varies by market conditions, but typically ranges from 30–90 days. Proper pricing and staging can significantly reduce this time.",
-    category: "Selling",
-    order: 2,
+    question: "Cras mattis consectetur purus sit amet fermentum.",
+    answer: "Curabitur blandit tempus porttitor. Vestibulum id ligula porta felis euismod semper. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."
   },
   {
-    id: 3,
-    question: "What is the difference between pre-qualification and pre-approval?",
-    answer: "Pre-qualification is an estimate of what you can afford based on self-reported information. Pre-approval involves a thorough review of your finances and is more reliable.",
-    category: "Financing",
-    order: 3,
+    question: "Aenean eu leo quam ellentesque ornare sem lacinia quam",
+    answer: "Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
   },
   {
-    id: 4,
-    question: "Do I need a real estate agent?",
-    answer: "While not required, a real estate agent provides valuable expertise, market knowledge, negotiation skills, and handles complex paperwork, often at no direct cost to buyers.",
-    category: "General",
-    order: 4,
+    question: "Nulla vitae elit libero, a pharetra augue.",
+    answer: "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus."
   },
   {
-    id: 5,
-    question: "What are closing costs?",
-    answer: "Closing costs are fees associated with finalizing a real estate transaction, typically 2–5% of the purchase price. They include appraisal fees, title insurance, and loan origination fees.",
-    category: "Buying",
-    order: 5,
+    question: "Pellentesque ornare sem lacinia quam venenatis vestibulum.",
+    answer: "Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor."
   },
   {
-    id: 6,
-    question: "Should I get a home inspection?",
-    answer: "Yes! A home inspection is highly recommended to identify potential issues before purchase. It typically costs $300–500 but can save thousands in unexpected repairs.",
-    category: "Buying",
-    order: 6,
-  },
+    question: "Cras mattis consectetur purus sit amet fermentum.",
+    answer: "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam quis risus eget urna mollis ornare vel eu leo."
+  }
 ];
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const [faqs, setFaqs] = useState<FAQ[]>(FALLBACK_FAQS);
-
-  useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-    fetch(`${apiUrl}/api/faqs/`)
-      .then((res) => res.ok ? res.json() : Promise.reject(res.status))
-      .then((data: { results?: FAQ[]; count?: number } | FAQ[]) => {
-        // Handle both paginated and non-paginated responses
-        const list = Array.isArray(data) ? data : (data.results ?? []);
-        if (list.length > 0) setFaqs(list);
-      })
-      .catch(() => {
-        // Keep fallback data on error — no design change
-      });
-  }, []);
 
   return (
     <section className="bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
+          
           {/* FAQ Accordion Side */}
           <div className="space-y-0 border-t border-gray-100">
-            {faqs.map((faq, index) => (
-              <div
-                key={faq.id}
+            {faqData.map((faq, index) => (
+              <div 
+                key={index} 
                 className="border-b border-l border-r border-[#E8E8E8]"
                 style={{ borderTop: index === 0 ? '1px solid #E8E8E8' : 'none' }}
               >
@@ -105,7 +66,7 @@ export default function FAQSection() {
                     <ChevronDown size={24} />
                   </motion.div>
                 </button>
-
+                
                 <AnimatePresence>
                   {openIndex === index && (
                     <motion.div
@@ -126,21 +87,21 @@ export default function FAQSection() {
           </div>
 
           {/* Image Side */}
-          <motion.div
+          <motion.div 
             className="relative h-full min-h-[500px] lg:min-h-[700px] rounded-none overflow-hidden shadow-2xl"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <img
-              src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200"
-              alt="Modern Home Interior/Exterior"
+            <img 
+              src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200" 
+              alt="Modern Home Interior/Exterior" 
               className="absolute inset-0 w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
           </motion.div>
-
+          
         </div>
       </div>
     </section>

@@ -3,45 +3,28 @@
 import { Building2, Bookmark, Maximize, Bed, Bath, Car, Ruler, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-interface PropertyData {
-  description: string;
-  property_type: string;
-  status: string;
-  sqft: number;
-  beds: number;
-  baths: number;
-  garage: number;
-  lot_size: number | null;
-  year_built: number | null;
-}
-
-export default function PropertyDescription({ property }: { property: PropertyData }) {
+export default function PropertyDescription() {
   const details = [
-    { icon: <Maximize size={20} />, value: property.sqft.toLocaleString(), label: 'Property Size' },
-    { icon: <Bed size={20} />, value: property.beds.toString(), label: 'Bedrooms' },
-    { icon: <Bath size={20} />, value: property.baths.toString(), label: 'Bathrooms' },
-    { icon: <Car size={20} />, value: property.garage.toString(), label: 'Garage' },
-    { icon: <Ruler size={20} />, value: property.lot_size ? property.lot_size.toLocaleString() : 'N/A', label: 'Lot Size' },
-    { icon: <Calendar size={20} />, value: property.year_built ? property.year_built.toString() : 'N/A', label: 'Year Built' },
+    { icon: <Maximize size={20} />, value: '2440', label: 'Property Size' },
+    { icon: <Bed size={20} />, value: '4', label: 'Bedrooms' },
+    { icon: <Bath size={20} />, value: '3', label: 'Bathrooms' },
+    { icon: <Car size={20} />, value: '1', label: 'Garage' },
+    { icon: <Ruler size={20} />, value: '180', label: 'Garage Size' },
+    { icon: <Calendar size={20} />, value: '2018', label: 'Year Built' },
   ];
-
-  const getPropertyTypeDisplay = (type: string) => {
-    return type === 'FOR_SALE' ? 'For Sale' : 'For Rent';
-  };
-
-  const getStatusDisplay = (status: string) => {
-    return status.charAt(0) + status.slice(1).toLowerCase();
-  };
 
   return (
     <div className="bg-white">
       {/* Description Heading & Text */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-[#1a1a1a] mb-6 font-sans">Description</h2>
-        <div 
-          className="text-[#7C7A70] text-[15px] leading-[1.8] max-w-5xl font-sans"
-          dangerouslySetInnerHTML={{ __html: property.description }}
-        />
+        <p className="text-[#7C7A70] text-[15px] leading-[1.8] max-w-5xl font-sans">
+          Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac 
+          consectetur ac, vestibulum at eros. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor 
+          auctor. Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. 
+          Nullam quis risus eget urna mollis ornare vel eu leo. Fusce dapibus, tellus ac cursus commodo, tortor 
+          mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+        </p>
       </div>
 
       {/* Property Type & Status Blocks */}
@@ -54,7 +37,7 @@ export default function PropertyDescription({ property }: { property: PropertyDa
             <span className="block text-[11px] font-bold text-[#5d6d87] uppercase tracking-wider mb-1">
               Property Type
             </span>
-            <span className="text-lg font-bold text-[#1a1a1a]">{getPropertyTypeDisplay(property.property_type)}</span>
+            <span className="text-lg font-bold text-[#1a1a1a]">Apartment</span>
           </div>
         </div>
 
@@ -66,7 +49,7 @@ export default function PropertyDescription({ property }: { property: PropertyDa
             <span className="block text-[11px] font-bold text-[#5d6d87] uppercase tracking-wider mb-1">
               Property Status
             </span>
-            <span className="text-lg font-bold text-[#1a1a1a]">{getStatusDisplay(property.status)}</span>
+            <span className="text-lg font-bold text-[#1a1a1a]">For Sale</span>
           </div>
         </div>
       </div>

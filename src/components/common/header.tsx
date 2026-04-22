@@ -65,7 +65,7 @@ export default function Header() {
         <div className="flex items-center gap-2 text-[#c1a478]">
           <Phone size={20} fill="currentColor" stroke="none" className="opacity-80" />
           <span className="text-lg font-bold text-[#34465d] tracking-normal">
-            +1 (321) 456 7890
+            0414701721
           </span>
         </div>
       </div>

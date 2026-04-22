@@ -4,35 +4,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface PropertyData {
-  main_image: string | null;
-  images: Array<{
-    id: number;
-    image: string;
-    caption: string;
-    order: number;
-  }>;
-}
-
-export default function PropertyGallery({ property }: { property: PropertyData }) {
+export default function PropertyGallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
-  const getPropertyImage = (image: string | null) => {
-    if (!image) return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800';
-    if (image.startsWith('http')) return image;
-    return `${process.env.NEXT_PUBLIC_API_URL}${image}`;
-  };
-
-  // Combine main image with gallery images
-  const allImages = [
-    property.main_image,
-    ...property.images.map(img => img.image)
-  ].filter(Boolean);
-
-  // If no images, use placeholder
-  const images = allImages.length > 0 ? allImages : [
+  const images = [
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
+   'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800',
+   'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800',
+   'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800',
     'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&q=80&w=800',
   ];
 
   const handlePrevious = () => {
@@ -64,7 +45,7 @@ export default function PropertyGallery({ property }: { property: PropertyData }
           >
             {/* Image */}
             <img
-              src={getPropertyImage(image)}
+              src={image}
               alt={`Property view ${index + 1}`}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               referrerPolicy="no-referrer"
@@ -124,7 +105,7 @@ export default function PropertyGallery({ property }: { property: PropertyData }
             {/* Image */}
             <motion.img
               key={selectedImage}
-              src={getPropertyImage(images[selectedImage])}
+              src={images[selectedImage]}
               alt={`Property view ${selectedImage + 1}`}
               className="max-w-[90%] max-h-[90%] object-contain"
               initial={{ scale: 0.9, opacity: 0 }}
