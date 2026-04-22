@@ -1,1 +1,2 @@
-export { default } from './SingleProperty';
+export { default } from './SinglePropertyHero';
+
