@@ -30,7 +30,9 @@ export const API_ENDPOINTS = {
   // Leads
   leads: {
     contact: `${API_URL}/api/leads/contact/`,
-    newsletter: `${API_URL}/api/leads/newsletter/`,
+    propertyInquiry: `${API_URL}/api/leads/property-inquiry/`,
+    valuation: `${API_URL}/api/leads/valuation/`,
+    newsletter: `${API_URL}/api/newsletter/`,
   },
   
   // Properties
