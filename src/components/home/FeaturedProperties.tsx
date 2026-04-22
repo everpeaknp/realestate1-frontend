@@ -10,6 +10,7 @@ interface Property {
   id: number;
   slug: string;
   title: string;
+  description: string;
   location: string;
   price: string;
   main_image: string | null;
@@ -187,7 +188,9 @@ export default function FeaturedProperties() {
               </div>
               <h3 className="text-2xl font-bold text-[#1a1a1a] mb-3">{mainProperty.title}</h3>
               <p className="text-[#7C7A70] text-sm leading-relaxed mb-4 max-w-lg">
-                Discover this beautiful property in a prime location with excellent amenities and modern features.
+                {mainProperty.description
+                  ? mainProperty.description.replace(/<[^>]*>/g, '').slice(0, 160) + (mainProperty.description.length > 160 ? '...' : '')
+                  : ''}
               </p>
               
               <div className="flex items-center justify-between w-full border-t border-gray-200 pt-4 mt-2">

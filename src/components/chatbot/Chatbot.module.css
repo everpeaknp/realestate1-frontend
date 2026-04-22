@@ -201,3 +201,20 @@
     opacity: 1;
   }
 }
+.introForm {
+  flex: 1;
+  overflow-y: auto;
+  background: #f9f9f9;
+}
+
+.introForm input {
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.introForm input:focus {
+  border-color: #c1a478 !important;
+  box-shadow: 0 0 0 2px rgba(193, 164, 120, 0.15);
+}
