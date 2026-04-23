@@ -62,6 +62,12 @@ export const API_ENDPOINTS = {
     list: `${API_URL}/api/projects/`,
   },
   
+  // Services
+  services: {
+    list: `${API_URL}/api/services/`,
+    detail: (slug: string) => `${API_URL}/api/services/${slug}/`,
+  },
+  
   // FAQs
   faqs: {
     list: `${API_URL}/api/faqs/`,
