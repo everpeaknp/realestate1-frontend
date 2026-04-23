@@ -62,7 +62,7 @@ export default function ContactSection() {
                   <div className="flex items-center gap-3 group cursor-pointer">
                     <Mail size={16} className="text-[#c1a478]" />
                     <span className="text-[14px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
-                      Bijen@lilywhiterealestate.com.au
+                      bijen@lilywhiterealestate.com.au
                     </span>
                   </div>
                 </div>

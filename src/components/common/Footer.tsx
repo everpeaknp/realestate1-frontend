@@ -64,7 +64,7 @@ export default function Footer() {
               </div>
             </div>
             <span className="text-3xl font-bold tracking-tight text-[#1a1a1a]">
-              Realtor Pal
+              Lily White Realestate
             </span>
           </div>
 
@@ -76,7 +76,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-3 text-[#c1a478]">
               <Mail size={18} />
-              <span className="text-lg font-bold text-[#5d6d87]">Bijen@lilywhiterealestate.com.au</span>
+              <span className="text-lg font-bold text-[#5d6d87]">bijen@lilywhiterealestate.com.au</span>
             </div>
           </div>
 
@@ -110,7 +110,7 @@ export default function Footer() {
           </div>
           
           <div className="text-sm font-medium text-[#5d6d87]">
-            <span className="text-lg mr-1">©</span> 2026 Realtor Pal. All rights reserved.
+            <span className="text-lg mr-1">©</span> 2026 Lily White Realestate. All rights reserved.
           </div>
         </div>
       </div>

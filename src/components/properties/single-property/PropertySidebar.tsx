@@ -93,7 +93,7 @@ export default function PropertySidebar() {
         </div>
         <div className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors cursor-pointer">
           <Mail size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">Bijen@lilywhiterealestate.com.au</span>
+          <span className="font-bold text-[#1a1a1a] tracking-tight">bijen@lilywhiterealestate.com.au</span>
         </div>
       </motion.div>
     </aside>

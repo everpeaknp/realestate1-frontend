@@ -74,7 +74,7 @@ export default function BenefitsSection() {
               <div className="flex items-center gap-2 group cursor-pointer">
                 <Mail size={18} className="text-[#c1a478]" />
                 <span className="text-lg font-bold text-[#34465d] group-hover:text-[#c1a478] transition-colors">
-                  Bijen@lilywhiterealestate.com.au
+                  bijen@lilywhiterealestate.com.au
                 </span>
               </div>
             </div>

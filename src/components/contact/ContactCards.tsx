@@ -21,7 +21,7 @@ export default function ContactCards() {
     },
     {
       title: 'EMAIL ME',
-      value: 'Bijen@lilywhiterealestate.com.au',
+      value: 'bijen@lilywhiterealestate.com.au',
       icon: Mail,
       delay: 0.3
     }

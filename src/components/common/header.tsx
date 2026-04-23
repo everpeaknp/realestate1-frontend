@@ -42,7 +42,7 @@ export default function Header() {
             </div>
           </div>
           <span className="text-2xl font-bold tracking-tight text-[#1a1a1a]">
-            Realtor Pal
+            Lily White Realestate
           </span>
         </Link>
 
