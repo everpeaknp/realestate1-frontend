@@ -74,6 +74,12 @@ export const API_ENDPOINTS = {
     servicesProvide: `${API_URL}/api/about/services-provide/`,
   },
   
+  // Contact
+  contact: {
+    cards: `${API_URL}/api/contact/cards/`,
+    formSettings: `${API_URL}/api/contact/form-settings/`,
+  },
+  
   // FAQs
   faqs: {
     list: `${API_URL}/api/faqs/`,
@@ -138,6 +144,21 @@ export const aboutAPI = {
   
   async getServicesProvide() {
     const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.about.servicesProvide);
+    return response.results;
+  },
+};
+
+/**
+ * Contact API functions
+ */
+export const contactAPI = {
+  async getCards() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.contact.cards);
+    return response.results;
+  },
+  
+  async getFormSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.contact.formSettings);
     return response.results;
   },
 };

@@ -10,7 +10,37 @@ const INQUIRY_MAP: Record<string, string> = {
   'home-loan': 'HOME_LOAN',
 };
 
-export default function ContactFormSection() {
+interface ContactFormSettings {
+  id: number;
+  intro_text: string;
+  agent_name: string;
+  agent_title: string;
+  agent_image: string;
+  facebook_url: string;
+  twitter_url: string;
+  instagram_url: string;
+  linkedin_url: string;
+  is_active: boolean;
+}
+
+interface ContactFormSectionProps {
+  settings?: ContactFormSettings;
+}
+
+export default function ContactFormSection({ 
+  settings = {
+    id: 1,
+    intro_text: '',
+    agent_name: 'Justin Nelson',
+    agent_title: 'Boston Realtor',
+    agent_image: 'https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png',
+    facebook_url: '#',
+    twitter_url: '#',
+    instagram_url: '#',
+    linkedin_url: '#',
+    is_active: true
+  }
+}: ContactFormSectionProps) {
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -68,6 +98,13 @@ export default function ContactFormSection() {
     }
   };
 
+  const socialLinks = [
+    { Icon: FaFacebookF, href: settings.facebook_url },
+    { Icon: FaTwitter, href: settings.twitter_url },
+    { Icon: FaInstagram, href: settings.instagram_url },
+    { Icon: FaLinkedinIn, href: settings.linkedin_url },
+  ];
+
   return (
     <section className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-6">
@@ -77,17 +114,12 @@ export default function ContactFormSection() {
           <div className="w-full lg:w-[40%] bg-[#fdfaf3] p-12 flex flex-col items-center">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-[#1a1a1a] mb-2 px-4 whitespace-nowrap">
-                Justin Nelson <span className="text-[#d4af37] mx-2">|</span> Boston Realtor
+                {settings.agent_name} <span className="text-[#d4af37] mx-2">|</span> {settings.agent_title}
               </h2>
 
               {/* Social Icons */}
               <div className="flex items-center justify-center gap-4 mt-6">
-                {[
-                  { Icon: FaFacebookF, href: '#' },
-                  { Icon: FaTwitter,   href: '#' },
-                  { Icon: FaInstagram, href: '#' },
-                  { Icon: FaLinkedinIn, href: '#' },
-                ].map(({ Icon, href }, idx) => (
+                {socialLinks.map(({ Icon, href }, idx) => (
                   <a
                     key={idx}
                     href={href}
@@ -102,8 +134,8 @@ export default function ContactFormSection() {
             {/* Agent Image */}
             <div className="mt-auto w-full flex justify-center">
               <img
-                src="https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png"
-                alt="Justin Nelson"
+                src={settings.agent_image}
+                alt={settings.agent_name}
                 className="w-full max-w-[400px] h-auto object-contain"
                 referrerPolicy="no-referrer"
               />
