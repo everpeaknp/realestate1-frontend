@@ -1,48 +1,99 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_URL } from '@/lib/api';
 
-const images = [
-  { url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c', title: 'Modern Villa Exterior' },
-  { url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811', title: 'Luxury Pool Area' },
-  { url: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d', title: 'Contemporary Living Room' },
-  { url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136', title: 'Elegant Kitchen' },
-  { url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c', title: 'Minimalist Balcony' },
-  { url: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0', title: 'Skylight Hallway' },
-  { url: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde', title: 'Architecture Detail' },
-  { url: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace', title: 'Cozy Bedroom' },
-  { url: 'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68', title: 'Dining Space' },
-  { url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c', title: 'Outdoor Patio' },
-  { url: 'https://images.unsplash.com/photo-1600585154363-67eb9e2e2099', title: 'Staircase Design' },
-  { url: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab', title: 'Garden Landscape' },
-  { url: 'https://images.unsplash.com/photo-1484154218962-a197022b5858', title: 'Home Office' },
-  { url: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198', title: 'Modern Entrance' },
-  { url: 'https://images.unsplash.com/photo-1615873968403-89e068629265', title: 'Interior Detail' },
-  { url: 'https://images.unsplash.com/photo-1600121848594-d8644e57abab', title: 'Bathroom Luxury' },
-];
+interface ProjectImage {
+  id: number;
+  image: string;
+  title: string;
+  caption: string;
+  order: number;
+}
+
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  images: ProjectImage[];
+  location: string;
+  completion_date: string;
+  category: string;
+  is_featured: boolean;
+  order: number;
+}
 
 export default function ProjectGallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [allImages, setAllImages] = useState<Array<{ url: string; title: string; caption: string; projectTitle: string }>>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/projects/`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('API Response:', data);
+          
+          // Handle paginated response - extract results array
+          const projects: Project[] = data.results || data;
+          
+          // Flatten all images from all projects
+          const images = projects.flatMap(project => 
+            project.images.map(img => ({
+              url: img.image,
+              title: img.title || project.title,
+              caption: img.caption || '',
+              projectTitle: project.title
+            }))
+          );
+          
+          setAllImages(images);
+        }
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const handlePrevious = () => {
     if (selectedImage !== null) {
-      setSelectedImage(selectedImage === 0 ? images.length - 1 : selectedImage - 1);
+      setSelectedImage(selectedImage === 0 ? allImages.length - 1 : selectedImage - 1);
     }
   };
 
   const handleNext = () => {
     if (selectedImage !== null) {
-      setSelectedImage(selectedImage === images.length - 1 ? 0 : selectedImage + 1);
+      setSelectedImage(selectedImage === allImages.length - 1 ? 0 : selectedImage + 1);
     }
   };
+
+  if (loading) {
+    return (
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-gray-500">Loading projects...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (allImages.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-          {images.map((image, index) => (
+          {allImages.map((image, index) => (
             <motion.div
               key={index}
               className="relative group overflow-hidden rounded-sm break-inside-avoid shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
@@ -53,10 +104,9 @@ export default function ProjectGallery() {
               onClick={() => setSelectedImage(index)}
             >
               <img 
-                src={`${image.url}?auto=format&fit=crop&q=80&w=800`} 
+                src={image.url} 
                 alt={image.title}
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
-                referrerPolicy="no-referrer"
               />
               
               {/* Overlay */}
@@ -91,7 +141,7 @@ export default function ProjectGallery() {
 
             {/* Image Counter */}
             <div className="absolute top-4 left-4 text-white text-sm font-medium z-10">
-              {selectedImage + 1} / {images.length}
+              {selectedImage + 1} / {allImages.length}
             </div>
 
             {/* Previous Button */}
@@ -116,19 +166,38 @@ export default function ProjectGallery() {
               <ChevronRight size={48} />
             </button>
 
-            {/* Image */}
-            <motion.img
-              key={selectedImage}
-              src={`${images[selectedImage].url}?auto=format&fit=crop&q=80&w=1920`}
-              alt={images[selectedImage].title}
-              className="max-w-[90%] max-h-[90%] object-contain"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={(e) => e.stopPropagation()}
-              referrerPolicy="no-referrer"
-            />
+            {/* Image Container */}
+            <div className="flex flex-col items-center justify-center max-w-[90%] max-h-[90%]">
+              <motion.img
+                key={selectedImage}
+                src={allImages[selectedImage].url}
+                alt={allImages[selectedImage].title}
+                className="max-w-full max-h-[80vh] object-contain"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+              />
+              
+              {/* Title and Caption below image */}
+              <motion.div
+                className="mt-6 text-center max-w-2xl"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3 className="text-white text-xl font-bold mb-2">
+                  {allImages[selectedImage].title}
+                </h3>
+                {allImages[selectedImage].caption && (
+                  <p className="text-gray-300 text-sm">
+                    {allImages[selectedImage].caption}
+                  </p>
+                )}
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
