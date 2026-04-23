@@ -2,68 +2,18 @@
 
 import { motion } from 'framer-motion';
 
-const gridImages = [
-  "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
-];
+interface BlogPostContentProps {
+  content: string;
+}
 
-export default function BlogPostContent() {
+export default function BlogPostContent({ content }: BlogPostContentProps) {
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Top Text Content */}
-      <div className="text-[17px] leading-[1.8] text-[#5d6d87] mb-12 space-y-8 font-sans">
-        <p>
-          Sed posuere consectetur est at lobortis. Etiam porta sem malesuada magna mollis euismod. 
-          Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. 
-          Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. 
-          Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-        </p>
-        <p>
-          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus, 
-          porta ac consectetur ac, vestibulum at eros. Cum sociis natoque penatibus et magnis 
-          dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula 
-          ut id elit. Nullam quis risus eget urna mollis ornare vel eu leo.
-        </p>
-      </div>
-
-      {/* 2x2 Image Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        {gridImages.map((src, idx) => (
-          <motion.div 
-            key={idx}
-            className="aspect-[16/10] overflow-hidden rounded-sm shadow-md"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: idx * 0.1 }}
-          >
-            <img 
-              src={src} 
-              alt={`Blog image ${idx + 1}`} 
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-              referrerPolicy="no-referrer"
-            />
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Bottom Text Content */}
-      <div className="text-[17px] leading-[1.8] text-[#5d6d87] mb-16 space-y-8 font-sans">
-        <p>
-          Donec id elit non mi porta gravida at eget metus. Aenean eu leo quam. Pellentesque 
-          ornare sem lacinia quam venenatis vestibulum. Cum sociis natoque penatibus et magnis 
-          dis parturient montes, nascetur ridiculus mus. Lorem ipsum dolor sit amet, 
-          consectetur adipiscing elit.
-        </p>
-        <p>
-          Vestibulum id ligula porta felis euismod semper. Maecenas faucibus mollis interdum. 
-          Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus 
-          eget urna mollis ornare vel eu leo. Morbi leo risus, porta ac consectetur ac, 
-          vestibulum at eros.
-        </p>
-      </div>
+      {/* Dynamic HTML Content */}
+      <div 
+        className="prose prose-lg max-w-none text-[17px] leading-[1.8] text-[#5d6d87] mb-16 space-y-8 font-sans"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
 
       {/* Social Sharing Icons */}
       <div className="mt-8 flex flex-wrap gap-3 justify-center pt-8 border-t border-gray-100">
