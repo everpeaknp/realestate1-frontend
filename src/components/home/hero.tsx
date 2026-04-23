@@ -1,14 +1,36 @@
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
-export default function Hero() {
+interface HeroProps {
+  settings?: {
+    title: string;
+    subtitle: string;
+    background_image?: string;
+    primary_button_text: string;
+    primary_button_link: string;
+    secondary_button_text: string;
+    secondary_button_link: string;
+  };
+}
+
+export default function Hero({ settings }: HeroProps) {
+  // Default values if no settings provided
+  const title = settings?.title || 'Justin Nelson | Boston Realtor';
+  const subtitle = settings?.subtitle || 'I deliver the very best in all facets of real estate. Because you deserve no less.';
+  const backgroundImage = settings?.background_image || 'https://www.realtorpal.hocud.com/wp-content/uploads/Video-Fall-Back.jpg';
+  const primaryButtonText = settings?.primary_button_text || 'CONTACT ME';
+  const primaryButtonLink = settings?.primary_button_link || '/contact';
+  const secondaryButtonText = settings?.secondary_button_text || 'View Listing';
+  const secondaryButtonLink = settings?.secondary_button_link || '/properties';
+
   return (
     <section className="relative min-h-screen h-[110vh] w-full overflow-hidden flex items-center justify-center">
       {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 scale-105"
         style={{ 
-          backgroundImage: `url('https://www.realtorpal.hocud.com/wp-content/uploads/Video-Fall-Back.jpg')`,
+          backgroundImage: `url('${backgroundImage}')`,
           filter: 'brightness(0.4)'
         }}
       />
@@ -22,7 +44,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Justin Nelson <span className="mx-4 text-[#c1a478] font-thin">|</span> Boston Realtor
+          {title}
         </motion.h1>
 
         {/* Subtitle with Swoop */}
@@ -33,19 +55,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <p className="text-xl md:text-[28px] font-bold max-w-3xl mx-auto leading-snug px-4 text-[#EADEC9]">
-            I deliver the very best in all facets of{' '}
-            <span className="relative inline-block text-white">
-              real estate
-              {/* Stylized Swoop Underline - positioned below "real estate" */}
-              <span className="absolute -bottom-4 left-0 w-full h-6 pointer-events-none opacity-90">
-                <svg viewBox="0 0 200 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-[#c1a478]">
-                  <path d="M5 15C60 2 140 2 195 15" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-                </svg>
-              </span>
-            </span>
-            .{' '}
-            <br />
-            Because you deserve no less.
+            {subtitle}
           </p>
         </motion.div>
 
@@ -56,14 +66,18 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <button className="bg-[#c1a478] hover:bg-[#64748b] text-white px-10 py-4 font-bold text-sm tracking-widest transition-all rounded-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-            CONTACT ME
-          </button>
+          <Link href={primaryButtonLink}>
+            <button className="bg-[#c1a478] hover:bg-[#64748b] text-white px-10 py-4 font-bold text-sm tracking-widest transition-all rounded-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+              {primaryButtonText}
+            </button>
+          </Link>
           
-          <button className="group flex items-center gap-1 text-white font-bold text-sm tracking-widest border-b-2 border-white hover:border-[#c1a478] transition-all pb-1">
-            View Listing
-            <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </button>
+          <Link href={secondaryButtonLink}>
+            <button className="group flex items-center gap-1 text-white font-bold text-sm tracking-widest border-b-2 border-white hover:border-[#c1a478] transition-all pb-1">
+              {secondaryButtonText}
+              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
         </motion.div>
       </div>
 

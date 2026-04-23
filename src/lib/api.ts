@@ -88,6 +88,21 @@ export const API_ENDPOINTS = {
     footerLinks: `${API_URL}/api/cms/footer-links/`,
   },
   
+  // Home
+  home: {
+    heroSettings: `${API_URL}/api/home/hero-settings/`,
+    heroCards: `${API_URL}/api/home/hero-cards/`,
+    howItWorks: `${API_URL}/api/home/how-it-works/`,
+    neighborhoods: `${API_URL}/api/home/neighborhoods/`,
+    benefits: `${API_URL}/api/home/benefits/`,
+    benefitGallery: `${API_URL}/api/home/benefit-gallery/`,
+    benefitsContact: `${API_URL}/api/home/benefits-contact/`,
+    contactSection: `${API_URL}/api/home/contact-section/`,
+    instagram: `${API_URL}/api/home/instagram/`,
+    personSection: `${API_URL}/api/home/person-section/`,
+    stats: `${API_URL}/api/home/stats/`,
+  },
+  
   // FAQs
   faqs: {
     list: `${API_URL}/api/faqs/`,
@@ -192,6 +207,62 @@ export const cmsAPI = {
   
   async getFooterLinks() {
     const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.footerLinks);
+    return response.results;
+  },
+};
+
+/**
+ * Home API functions
+ */
+export const homeAPI = {
+  async getHeroSettings() {
+    return await apiRequest<any>(API_ENDPOINTS.home.heroSettings);
+  },
+  
+  async getHeroCards() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.heroCards);
+    return response.results;
+  },
+  
+  async getHowItWorks() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.howItWorks);
+    return response.results;
+  },
+  
+  async getNeighborhoods() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.neighborhoods);
+    return response.results;
+  },
+  
+  async getBenefits() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.benefits);
+    return response.results;
+  },
+  
+  async getBenefitGallery() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.benefitGallery);
+    return response.results;
+  },
+  
+  async getBenefitsContact() {
+    return await apiRequest<any>(API_ENDPOINTS.home.benefitsContact);
+  },
+  
+  async getContactSection() {
+    return await apiRequest<any>(API_ENDPOINTS.home.contactSection);
+  },
+  
+  async getInstagram() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.instagram);
+    return response.results;
+  },
+  
+  async getPersonSection() {
+    return await apiRequest<any>(API_ENDPOINTS.home.personSection);
+  },
+  
+  async getStats() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.stats);
     return response.results;
   },
 };
