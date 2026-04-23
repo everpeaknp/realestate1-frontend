@@ -13,6 +13,7 @@ interface NavigationLink {
 
 interface HeaderSettings {
   id: number;
+  logo_image: string | null;
   logo_text: string;
   phone_number: string;
   is_active: boolean;
@@ -29,6 +30,7 @@ interface FooterLink {
 
 interface FooterSettings {
   id: number;
+  logo_image: string | null;
   logo_text: string;
   phone_number: string;
   email: string;

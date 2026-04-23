@@ -2,6 +2,7 @@
 
 import { Phone, Mail, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { useCMS } from '@/contexts/CMSContext';
 
 // Custom Social Media Icons as SVG components
@@ -33,6 +34,7 @@ export default function Footer() {
   const { footerSettings, loading } = useCMS();
 
   // Fallback data while loading or if no data
+  const logoImage = footerSettings?.logo_image;
   const logoText = footerSettings?.logo_text || 'Realtor Pal';
   const phoneNumber = footerSettings?.phone_number || '+1 (321) 456 7890';
   const email = footerSettings?.email || 'hello@example.com';
@@ -82,25 +84,39 @@ export default function Footer() {
           
           {/* Logo Section */}
           <div className="flex items-center gap-3">
-            <div className="relative h-10 w-12 flex items-center justify-center">
-              <div className="absolute inset-0 flex">
-                <div 
-                  className="w-1/2 h-full bg-[#5d6d87]" 
-                  style={{ clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
-                />
-                <div 
-                  className="w-1/2 h-full bg-[#c1a478]" 
-                  style={{ clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
+            {logoImage ? (
+              // Custom uploaded logo
+              <div className="relative h-10 w-auto">
+                <Image 
+                  src={logoImage} 
+                  alt={logoText}
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto object-contain"
                 />
               </div>
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-4 h-5 bg-white flex flex-col items-center justify-center rounded-t-sm shadow-sm">
-                 <div className="w-1 h-1 bg-[#c1a478] mb-0.5"></div>
-                 <div className="flex gap-0.5">
-                   <div className="w-1 h-1 bg-gray-200"></div>
-                   <div className="w-1 h-1 bg-gray-200"></div>
-                 </div>
+            ) : (
+              // Default logo shape
+              <div className="relative h-10 w-12 flex items-center justify-center">
+                <div className="absolute inset-0 flex">
+                  <div 
+                    className="w-1/2 h-full bg-[#5d6d87]" 
+                    style={{ clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
+                  />
+                  <div 
+                    className="w-1/2 h-full bg-[#c1a478]" 
+                    style={{ clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
+                  />
+                </div>
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-4 h-5 bg-white flex flex-col items-center justify-center rounded-t-sm shadow-sm">
+                   <div className="w-1 h-1 bg-[#c1a478] mb-0.5"></div>
+                   <div className="flex gap-0.5">
+                     <div className="w-1 h-1 bg-gray-200"></div>
+                     <div className="w-1 h-1 bg-gray-200"></div>
+                   </div>
+                </div>
               </div>
-            </div>
+            )}
             <span className="text-3xl font-bold tracking-tight text-[#1a1a1a]">
               {logoText}
             </span>
