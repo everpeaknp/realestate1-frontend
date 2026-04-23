@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { Play, Star } from 'lucide-react';
-
-
+import { useEffect, useState } from 'react';
+import { API_URL } from '@/lib/api';
 
 interface TestimonialItem {
   id: string;
@@ -13,57 +13,6 @@ interface TestimonialItem {
   role: string;
   image: string;
 }
-
-const testimonials: TestimonialItem[] = [
-  {
-    id: '1',
-    title: 'Brilliant Service',
-    text: 'Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-    name: 'Logan Holt',
-    role: 'Happy Buyer',
-    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=300',
-  },
-  {
-    id: '2',
-    title: 'The Best Realtor',
-    text: 'Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-    name: 'Mollie Hope',
-    role: 'Happy Buyer',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=300',
-  },
-  {
-    id: '3',
-    title: 'Highly Recommended',
-    text: 'Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-    name: 'James Wilson',
-    role: 'Happy Seller',
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=300',
-  },
-  {
-    id: '4',
-    title: 'Professional Team',
-    text: 'Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-    name: 'Sarah Jenkins',
-    role: 'Happy Buyer',
-    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80&w=300',
-  },
-  {
-    id: '5',
-    title: 'Great Experience',
-    text: 'Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-    name: 'Emily Davis',
-    role: 'Happy Seller',
-    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80&w=300',
-  },
-  {
-    id: '6',
-    title: 'Very Helpful',
-    text: 'Donec id elit non mi porta gravida at eget metus. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
-    name: 'Michael Brown',
-    role: 'Happy Buyer',
-    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80&w=300',
-  },
-];
 
 function StarRating() {
   return (
@@ -76,6 +25,44 @@ function StarRating() {
 }
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/testimonials/`);
+        if (response.ok) {
+          const data = await response.json();
+          // Handle paginated response
+          setTestimonials(data.results || data);
+        }
+      } catch (error) {
+        console.error('Error fetching testimonials:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="bg-white py-12 pb-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center">
+            <p className="text-[#5d6d87]">Loading testimonials...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (testimonials.length === 0) {
+    return null;
+  }
+
   return (
     <section className="bg-white py-12 pb-24">
       <div className="mx-auto max-w-7xl px-6">

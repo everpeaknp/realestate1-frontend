@@ -1,34 +1,19 @@
+'use client';
+
 import { Play, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { API_URL } from '@/lib/api';
 
-const testimonials = [
-  {
-    id: '1',
-    type: 'video',
-    title: 'Video testimonials from our happy clients',
-    name: 'Alison Bond',
-    role: 'Happy Buyer',
-    image: 'https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?auto=format&fit=crop&q=80&w=800',
-  },
-  {
-    id: '2',
-    type: 'text',
-    title: 'Brilliant Service',
-    text: 'Justin is really brilliant. He assisted me in finding the perfect apartment. I also acquired the apartment for less than the market rate!',
-    name: 'Bella Miller',
-    role: 'Happy Seller',
-    image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=600',
-  },
-  {
-    id: '3',
-    type: 'text',
-    title: 'Very Skilled Agent',
-    text: "Justin was the most skilled realtor I've ever worked with. I would certainly refer him to anybody seeking an excellent solution.",
-    name: 'Colin Butler',
-    role: 'Happy Buyer',
-    image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=600',
-  },
-];
+interface Testimonial {
+  id: string;
+  title: string;
+  text: string;
+  name: string;
+  role: string;
+  image: string;
+  video_url?: string | null;
+}
 
 function StarRating() {
   return (
@@ -41,6 +26,84 @@ function StarRating() {
 }
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [playingVideo, setPlayingVideo] = useState(false);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        console.log('Fetching featured testimonials from:', `${API_URL}/api/testimonials/featured/`);
+        const response = await fetch(`${API_URL}/api/testimonials/featured/`);
+        console.log('Response status:', response.status);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Featured testimonials data:', data);
+          console.log('Is array:', Array.isArray(data));
+          console.log('Length:', data.length);
+          
+          // The featured endpoint returns an array directly, not paginated
+          if (Array.isArray(data) && data.length > 0) {
+            setTestimonials(data.slice(0, 3));
+            console.log('Set testimonials:', data.slice(0, 3));
+          } else {
+            console.warn('No featured testimonials found');
+            setError('No featured testimonials available');
+          }
+        } else {
+          console.error('Failed to fetch testimonials:', response.statusText);
+          setError('Failed to load testimonials');
+        }
+      } catch (error) {
+        console.error('Error fetching featured testimonials:', error);
+        setError('Error loading testimonials');
+      } finally {
+        setLoading(false);
+        console.log('Loading complete');
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  const getYouTubeEmbedUrl = (url?: string | null) => {
+    if (!url) return '';
+    // Convert various YouTube URL formats to embed URL
+    const videoIdMatch = url.match(/(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/watch\?.+&v=))([^&?\/\s]+)/);
+    if (videoIdMatch && videoIdMatch[1]) {
+      return `https://www.youtube.com/embed/${videoIdMatch[1]}?autoplay=1`;
+    }
+    return url;
+  };
+
+  const handleVideoClick = () => {
+    setPlayingVideo(true);
+  };
+
+  console.log('Render state - Loading:', loading, 'Testimonials count:', testimonials.length, 'Error:', error);
+
+  if (loading) {
+    console.log('Returning null - still loading');
+    return null;
+  }
+
+  // If no testimonials, don't render the section
+  if (testimonials.length === 0) {
+    console.log('Returning null - no testimonials');
+    return null;
+  }
+
+  // Determine which testimonial has video (first one by default)
+  const videoTestimonial = testimonials.find(t => t.video_url) || testimonials[0];
+  const textTestimonials = testimonials.filter(t => t.id !== videoTestimonial.id).slice(0, 2);
+  
+  console.log('Rendering testimonials section with:', {
+    videoTestimonial: videoTestimonial.name,
+    textTestimonials: textTestimonials.map(t => t.name)
+  });
+
   return (
     <section className="bg-[#EADEC9] py-24 pb-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 text-center">
@@ -77,90 +140,109 @@ export default function Testimonials() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            onClick={handleVideoClick}
           >
-            <img 
-              src={testimonials[0].image} 
-              alt="Happy Clients"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-12">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold mb-8 max-w-xs leading-tight mx-auto">
-                  {testimonials[0].title}
-                </h3>
-                
-                <div className="mb-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto">
-                  <Play size={24} className="text-[#34465d] ml-1" fill="currentColor" />
-                </div>
+            {playingVideo && videoTestimonial.video_url ? (
+              /* Video Player */
+              <iframe
+                src={getYouTubeEmbedUrl(videoTestimonial.video_url)}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={videoTestimonial.title}
+              />
+            ) : (
+              /* Thumbnail View */
+              <>
+                <img 
+                  src={videoTestimonial.image} 
+                  alt="Happy Clients"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-12">
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold mb-8 max-w-xs leading-tight mx-auto">
+                      {videoTestimonial.title}
+                    </h3>
+                    
+                    <div className="mb-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto">
+                      <Play size={24} className="text-[#34465d] ml-1" fill="currentColor" />
+                    </div>
 
-                <div>
-                  <StarRating />
-                  <p className="font-bold text-lg">{testimonials[0].name}</p>
-                  <p className="text-sm opacity-80">{testimonials[0].role}</p>
+                    <div>
+                      <StarRating />
+                      <p className="font-bold text-lg">{videoTestimonial.name}</p>
+                      <p className="text-sm opacity-80">{videoTestimonial.role}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </motion.div>
 
           {/* Wrapper for the standard testimonials (7/12) */}
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Standard Testimonial Column 1 */}
-            <motion.div 
-              className="bg-white p-8 flex flex-col shadow-lg rounded-sm h-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="h-[201px] overflow-hidden mb-8">
-                <img 
-                  src={testimonials[1].image} 
-                  alt="Property"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1 flex flex-col">
-                <h3 className="text-xl font-bold text-[#1a1a1a] mb-5">{testimonials[1].title}</h3>
-                <p className="text-[#7C7A70] text-[15px] leading-relaxed mb-8 flex-1">
-                  {testimonials[1].text}
-                </p>
-                
-                <div className="pt-6 border-t border-gray-100 mt-auto">
-                  <StarRating />
-                  <p className="font-bold text-[#1a1a1a]">{testimonials[1].name}</p>
-                  <p className="text-xs text-[#7C7A70] uppercase tracking-widest">{testimonials[1].role}</p>
+            {textTestimonials[0] && (
+              <motion.div 
+                className="bg-white p-8 flex flex-col shadow-lg rounded-sm h-full"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <div className="h-[201px] overflow-hidden mb-8">
+                  <img 
+                    src={textTestimonials[0].image} 
+                    alt="Property"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              </div>
-            </motion.div>
+                <div className="flex-1 flex flex-col">
+                  <h3 className="text-xl font-bold text-[#1a1a1a] mb-5">{textTestimonials[0].title}</h3>
+                  <p className="text-[#7C7A70] text-[15px] leading-relaxed mb-8 flex-1">
+                    {textTestimonials[0].text}
+                  </p>
+                  
+                  <div className="pt-6 border-t border-gray-100 mt-auto">
+                    <StarRating />
+                    <p className="font-bold text-[#1a1a1a]">{textTestimonials[0].name}</p>
+                    <p className="text-xs text-[#7C7A70] uppercase tracking-widest">{textTestimonials[0].role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
             {/* Standard Testimonial Column 2 */}
-            <motion.div 
-              className="bg-white p-8 flex flex-col shadow-lg rounded-sm h-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <div className="h-[201px] overflow-hidden mb-8">
-                <img 
-                  src={testimonials[2].image} 
-                  alt="Luxury Home"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1 flex flex-col">
-                <h3 className="text-xl font-bold text-[#1a1a1a] mb-5">{testimonials[2].title}</h3>
-                <p className="text-[#7C7A70] text-[15px] leading-relaxed mb-8 flex-1">
-                  {testimonials[2].text}
-                </p>
-                
-                <div className="pt-6 border-t border-gray-100 mt-auto">
-                  <StarRating />
-                  <p className="font-bold text-[#1a1a1a]">{testimonials[2].name}</p>
-                  <p className="text-xs text-[#7C7A70] uppercase tracking-widest">{testimonials[2].role}</p>
+            {textTestimonials[1] && (
+              <motion.div 
+                className="bg-white p-8 flex flex-col shadow-lg rounded-sm h-full"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <div className="h-[201px] overflow-hidden mb-8">
+                  <img 
+                    src={textTestimonials[1].image} 
+                    alt="Luxury Home"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              </div>
-            </motion.div>
+                <div className="flex-1 flex flex-col">
+                  <h3 className="text-xl font-bold text-[#1a1a1a] mb-5">{textTestimonials[1].title}</h3>
+                  <p className="text-[#7C7A70] text-[15px] leading-relaxed mb-8 flex-1">
+                    {textTestimonials[1].text}
+                  </p>
+                  
+                  <div className="pt-6 border-t border-gray-100 mt-auto">
+                    <StarRating />
+                    <p className="font-bold text-[#1a1a1a]">{textTestimonials[1].name}</p>
+                    <p className="text-xs text-[#7C7A70] uppercase tracking-widest">{textTestimonials[1].role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
 
         </div>
