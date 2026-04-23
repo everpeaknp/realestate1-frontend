@@ -68,6 +68,12 @@ export const API_ENDPOINTS = {
     detail: (slug: string) => `${API_URL}/api/services/${slug}/`,
   },
   
+  // About
+  about: {
+    goals: `${API_URL}/api/about/goals/`,
+    servicesProvide: `${API_URL}/api/about/services-provide/`,
+  },
+  
   // FAQs
   faqs: {
     list: `${API_URL}/api/faqs/`,
@@ -120,3 +126,18 @@ export async function checkApiHealth(): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * About API functions
+ */
+export const aboutAPI = {
+  async getGoals() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.about.goals);
+    return response.results;
+  },
+  
+  async getServicesProvide() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.about.servicesProvide);
+    return response.results;
+  },
+};
