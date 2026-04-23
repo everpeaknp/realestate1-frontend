@@ -2,6 +2,7 @@
 
 import { Phone, Mail, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCMS } from '@/contexts/CMSContext';
 
 // Custom Social Media Icons as SVG components
 const FacebookIcon = () => (
@@ -29,12 +30,49 @@ const LinkedInIcon = () => (
 );
 
 export default function Footer() {
-  const socialLinks = [
-    { icon: <FacebookIcon />, href: '#', label: 'Facebook' },
-    { icon: <TwitterIcon />, href: '#', label: 'Twitter' },
-    { icon: <InstagramIcon />, href: '#', label: 'Instagram' },
-    { icon: <LinkedInIcon />, href: '#', label: 'LinkedIn' },
+  const { footerSettings, loading } = useCMS();
+
+  // Fallback data while loading or if no data
+  const logoText = footerSettings?.logo_text || 'Realtor Pal';
+  const phoneNumber = footerSettings?.phone_number || '+1 (321) 456 7890';
+  const email = footerSettings?.email || 'hello@example.com';
+  const copyrightText = footerSettings?.copyright_text || '2026 Realtor Pal. All rights reserved.';
+  
+  const footerLinks = footerSettings?.footer_links?.filter(link => link.is_active).sort((a, b) => a.order - b.order) || [
+    { id: 1, name: "What's My Home Worth?", href: '/home-worth', order: 1, is_active: true },
+    { id: 2, name: 'Testimonials', href: '/testimonials', order: 2, is_active: true },
+    { id: 3, name: 'FAQs', href: '/faqs', order: 3, is_active: true },
+    { id: 4, name: 'Projects', href: '/projects', order: 4, is_active: true },
+    { id: 5, name: 'Terms & Conditions', href: '#', order: 5, is_active: true },
+    { id: 6, name: 'Privacy Policy', href: '#', order: 6, is_active: true },
   ];
+
+  const socialLinks = [
+    { 
+      icon: <FacebookIcon />, 
+      href: footerSettings?.facebook_url || '#', 
+      label: 'Facebook',
+      show: !!footerSettings?.facebook_url 
+    },
+    { 
+      icon: <TwitterIcon />, 
+      href: footerSettings?.twitter_url || '#', 
+      label: 'Twitter',
+      show: !!footerSettings?.twitter_url 
+    },
+    { 
+      icon: <InstagramIcon />, 
+      href: footerSettings?.instagram_url || '#', 
+      label: 'Instagram',
+      show: !!footerSettings?.instagram_url 
+    },
+    { 
+      icon: <LinkedInIcon />, 
+      href: footerSettings?.linkedin_url || '#', 
+      label: 'LinkedIn',
+      show: !!footerSettings?.linkedin_url 
+    },
+  ].filter(social => social.show || !footerSettings); // Show all if no settings loaded yet
 
   return (
     <footer className="bg-white pt-20 pb-10 border-t border-gray-100">
@@ -64,7 +102,7 @@ export default function Footer() {
               </div>
             </div>
             <span className="text-3xl font-bold tracking-tight text-[#1a1a1a]">
-              Realtor Pal
+              {logoText}
             </span>
           </div>
 
@@ -72,61 +110,49 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center gap-8 lg:gap-16">
             <div className="flex items-center gap-3 text-[#c1a478]">
               <Phone size={18} fill="currentColor" stroke="none" className="rotate-3" />
-              <span className="text-lg font-bold text-[#5d6d87]">+1 (321) 456 7890</span>
+              <span className="text-lg font-bold text-[#5d6d87]">{phoneNumber}</span>
             </div>
             <div className="flex items-center gap-3 text-[#c1a478]">
               <Mail size={18} />
-              <span className="text-lg font-bold text-[#5d6d87]">hello@example.com</span>
+              <span className="text-lg font-bold text-[#5d6d87]">{email}</span>
             </div>
           </div>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-3">
-            {socialLinks.map((social, idx) => (
-              <motion.a
-                key={idx}
-                href={social.href}
-                className="w-10 h-10 bg-[#5d6d87] text-white flex items-center justify-center rounded-sm hover:bg-[#c1a478] transition-colors shadow-sm"
-                whileHover={{ y: -3 }}
-                title={social.label}
-              >
-                {social.icon}
-              </motion.a>
-            ))}
-          </div>
+          {socialLinks.length > 0 && (
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social, idx) => (
+                <motion.a
+                  key={idx}
+                  href={social.href}
+                  className="w-10 h-10 bg-[#5d6d87] text-white flex items-center justify-center rounded-sm hover:bg-[#c1a478] transition-colors shadow-sm"
+                  whileHover={{ y: -3 }}
+                  title={social.label}
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Bottom Row: Links and Copyright */}
         <div className="pt-10 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-0">
           <div className="flex items-center gap-8 flex-wrap justify-center sm:justify-start">
-            <a href="/home-worth" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              What&apos;s My Home Worth?
-            </a>
-            <a href="/testimonials" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              Testimonials
-            </a>
-            <a href="/faqs" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              FAQs
-            </a>
-            <a href="/projects" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              Projects
-            </a>
-            <a href="#" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              Terms & Conditions
-            </a>
-            <a href="#" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
-              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
-              Privacy Policy
-            </a>
+            {footerLinks.map((link) => (
+              <a 
+                key={link.id}
+                href={link.href} 
+                className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors"
+              >
+                <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
+                {link.name}
+              </a>
+            ))}
           </div>
           
           <div className="text-sm font-medium text-[#5d6d87]">
-            <span className="text-lg mr-1">©</span> 2026 Realtor Pal. All rights reserved.
+            <span className="text-lg mr-1">©</span> {copyrightText}
           </div>
         </div>
       </div>

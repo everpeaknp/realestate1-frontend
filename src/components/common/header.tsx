@@ -3,16 +3,22 @@
 import { motion } from 'framer-motion';
 import { ChevronDown, Phone } from 'lucide-react';
 import Link from 'next/link';
+import { useCMS } from '@/contexts/CMSContext';
 
 
 export default function Header() {
-  const navLinks = [
-    { name: 'HOME', href: '/', hasDropdown: false },
-    { name: 'PROPERTIES', href: '/properties', hasDropdown: false },
-    { name: 'SERVICES', href: '/services', hasDropdown: false },
-    { name: 'ABOUT ME', href: '/about', hasDropdown: false },
-    { name: 'BLOG', href: '/blog', hasDropdown: false },
-    { name: 'CONTACT', href: '/contact', hasDropdown: false },
+  const { headerSettings, loading } = useCMS();
+
+  // Fallback data while loading or if no data
+  const logoText = headerSettings?.logo_text || 'Realtor Pal';
+  const phoneNumber = headerSettings?.phone_number || '+1 (321) 456 7890';
+  const navLinks = headerSettings?.navigation_links?.filter(link => link.is_active).sort((a, b) => a.order - b.order) || [
+    { id: 1, name: 'HOME', href: '/', order: 1, is_active: true },
+    { id: 2, name: 'PROPERTIES', href: '/properties', order: 2, is_active: true },
+    { id: 3, name: 'SERVICES', href: '/services', order: 3, is_active: true },
+    { id: 4, name: 'ABOUT ME', href: '/about', order: 4, is_active: true },
+    { id: 5, name: 'BLOG', href: '/blog', order: 5, is_active: true },
+    { id: 6, name: 'CONTACT', href: '/contact', order: 6, is_active: true },
   ];
 
   return (
@@ -42,20 +48,19 @@ export default function Header() {
             </div>
           </div>
           <span className="text-2xl font-bold tracking-tight text-[#1a1a1a]">
-            Realtor Pal
+            {logoText}
           </span>
         </Link>
 
         {/* Navigation Section */}
         <nav className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
-            <motion.div key={link.name} whileHover={{ scale: 1.02 }}>
+            <motion.div key={link.id} whileHover={{ scale: 1.02 }}>
               <Link
                 href={link.href}
                 className="flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] text-[#1a1a1a] hover:text-[#c1a478] transition-colors"
               >
                 {link.name}
-                {link.hasDropdown && <ChevronDown size={12} className="mt-0.5 opacity-40" />}
               </Link>
             </motion.div>
           ))}
@@ -65,7 +70,7 @@ export default function Header() {
         <div className="flex items-center gap-2 text-[#c1a478]">
           <Phone size={20} fill="currentColor" stroke="none" className="opacity-80" />
           <span className="text-lg font-bold text-[#34465d] tracking-normal">
-            +1 (321) 456 7890
+            {phoneNumber}
           </span>
         </div>
       </div>

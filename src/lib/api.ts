@@ -80,6 +80,14 @@ export const API_ENDPOINTS = {
     formSettings: `${API_URL}/api/contact/form-settings/`,
   },
   
+  // CMS
+  cms: {
+    headerSettings: `${API_URL}/api/cms/header-settings/`,
+    navigationLinks: `${API_URL}/api/cms/navigation-links/`,
+    footerSettings: `${API_URL}/api/cms/footer-settings/`,
+    footerLinks: `${API_URL}/api/cms/footer-links/`,
+  },
+  
   // FAQs
   faqs: {
     list: `${API_URL}/api/faqs/`,
@@ -159,6 +167,31 @@ export const contactAPI = {
   
   async getFormSettings() {
     const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.contact.formSettings);
+    return response.results;
+  },
+};
+
+/**
+ * CMS API functions
+ */
+export const cmsAPI = {
+  async getHeaderSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.headerSettings);
+    return response.results;
+  },
+  
+  async getNavigationLinks() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.navigationLinks);
+    return response.results;
+  },
+  
+  async getFooterSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.footerSettings);
+    return response.results;
+  },
+  
+  async getFooterLinks() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.footerLinks);
     return response.results;
   },
 };
