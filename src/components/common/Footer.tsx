@@ -99,6 +99,10 @@ export default function Footer() {
         {/* Bottom Row: Links and Copyright */}
         <div className="pt-10 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-0">
           <div className="flex items-center gap-8 flex-wrap justify-center sm:justify-start">
+            <a href="/home-worth" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
+              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
+              What&apos;s My Home Worth?
+            </a>
             <a href="/testimonials" className="group flex items-center gap-2 text-sm font-medium text-[#5d6d87] hover:text-[#c1a478] transition-colors">
               <ChevronRight size={14} className="text-gray-300 group-hover:text-[#c1a478]" />
               Testimonials
