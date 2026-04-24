@@ -22,8 +22,8 @@ export const API_ENDPOINTS = {
   // Chatbot
   chatbot: {
     chat: `${API_URL}/api/chatbot/chat/`,
-    history: (sessionId: string) => `${API_URL}/api/chatbot/history/?session_id=${sessionId}`,
-    clearSession: (sessionId: string) => `${API_URL}/api/chatbot/clear_session/?session_id=${sessionId}`,
+    history: `${API_URL}/api/chatbot/history/`,
+    clearSession: `${API_URL}/api/chatbot/clear_session/`,
     health: `${API_URL}/api/chatbot/health/`,
   },
   
@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
     featured: `${API_URL}/api/properties/featured/`,
     forSale: `${API_URL}/api/properties/for_sale/`,
     forRent: `${API_URL}/api/properties/for_rent/`,
+    heroSettings: `${API_URL}/api/properties/hero-settings/`,
   },
   
   // Blog
@@ -50,11 +51,13 @@ export const API_ENDPOINTS = {
     detail: (slug: string) => `${API_URL}/api/blog/posts/${slug}/`,
     comments: `${API_URL}/api/blog/comments/`,
     createComment: `${API_URL}/api/blog/comments/`,
+    heroSettings: `${API_URL}/api/blog/hero-settings/`,
   },
   
   // Testimonials
   testimonials: {
     list: `${API_URL}/api/testimonials/`,
+    heroSettings: `${API_URL}/api/testimonials/hero/`,
   },
   
   // Projects
@@ -72,12 +75,14 @@ export const API_ENDPOINTS = {
   about: {
     goals: `${API_URL}/api/about/goals/`,
     servicesProvide: `${API_URL}/api/about/services-provide/`,
+    heroSettings: `${API_URL}/api/about/hero-settings/`,
   },
   
   // Contact
   contact: {
     cards: `${API_URL}/api/contact/cards/`,
     formSettings: `${API_URL}/api/contact/form-settings/`,
+    heroSettings: `${API_URL}/api/contact/hero-settings/`,
   },
   
   // CMS
@@ -88,6 +93,7 @@ export const API_ENDPOINTS = {
     footerLinks: `${API_URL}/api/cms/footer-links/`,
     newsletterSettings: `${API_URL}/api/cms/newsletter-settings/`,
     propertySidebarSettings: `${API_URL}/api/cms/property-sidebar-settings/`,
+    propertiesHeroSettings: `${API_URL}/api/cms/properties-hero-settings/`,
   },
   
   // Home
@@ -115,6 +121,12 @@ export const API_ENDPOINTS = {
     list: `${API_URL}/api/agents/`,
     detail: (id: number) => `${API_URL}/api/agents/${id}/`,
   },
+  
+  // Home Worth
+  homeworth: {
+    heroSettings: `${API_URL}/api/homeworth/hero-settings/`,
+    formSettings: `${API_URL}/api/homeworth/form-settings/`,
+  },
 };
 
 /**
@@ -134,7 +146,23 @@ export async function apiRequest<T>(
     });
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      // Try to get detailed error message from response body
+      let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        if (errorData.message) {
+          errorMessage += ` - ${errorData.message}`;
+        } else if (errorData.error) {
+          errorMessage += ` - ${errorData.error}`;
+        } else if (errorData.detail) {
+          errorMessage += ` - ${errorData.detail}`;
+        } else {
+          errorMessage += ` - ${JSON.stringify(errorData)}`;
+        }
+      } catch {
+        // If response body is not JSON, use default error message
+      }
+      throw new Error(errorMessage);
     }
 
     return await response.json();
