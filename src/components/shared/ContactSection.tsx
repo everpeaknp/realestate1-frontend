@@ -72,7 +72,7 @@ export default function ContactSection({ settings }: ContactSectionProps) {
   }
 
   return (
-    <section className="bg-[#FFFAF3] pt-12 sm:pt-16 md:pt-20 pb-0 overflow-hidden">
+    <section className="bg-[#FFFAF3] pt-12 sm:pt-16 md:pt-20 pb-0 lg:pb-0 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 relative">
         <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
           

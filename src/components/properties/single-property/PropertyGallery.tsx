@@ -49,13 +49,13 @@ export default function PropertyGallery({ property }: { property: PropertyData }
 
   return (
     <div className="bg-white">
-      <h2 className="text-2xl font-bold text-[#1a1a1a] mb-8 font-sans">Gallery</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-6 sm:mb-8">Gallery</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {images.map((image, index) => (
           <motion.div
             key={index}
-            className="relative aspect-[4/3] overflow-hidden group cursor-pointer"
+            className="relative aspect-[4/3] overflow-hidden group cursor-pointer rounded-sm"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -71,7 +71,11 @@ export default function PropertyGallery({ property }: { property: PropertyData }
             />
             
             {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300" />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+              <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-medium">
+                View Full Size
+              </span>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -80,7 +84,7 @@ export default function PropertyGallery({ property }: { property: PropertyData }
       <AnimatePresence>
         {selectedImage !== null && (
           <motion.div
-            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -88,37 +92,40 @@ export default function PropertyGallery({ property }: { property: PropertyData }
           >
             {/* Close Button */}
             <button
-              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white hover:text-gray-300 transition-colors z-10 p-2 bg-black/50 rounded-full"
               onClick={() => setSelectedImage(null)}
+              aria-label="Close gallery"
             >
-              <X size={32} />
+              <X size={24} className="sm:w-8 sm:h-8" />
             </button>
 
             {/* Image Counter */}
-            <div className="absolute top-4 left-4 text-white text-sm font-medium z-10">
+            <div className="absolute top-2 left-2 sm:top-4 sm:left-4 text-white text-xs sm:text-sm font-medium z-10 bg-black/50 px-3 py-1.5 rounded-full">
               {selectedImage + 1} / {images.length}
             </div>
 
             {/* Previous Button */}
             <button
-              className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10"
+              className="absolute left-2 sm:left-4 text-white hover:text-gray-300 transition-colors z-10 p-2 bg-black/50 rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevious();
               }}
+              aria-label="Previous image"
             >
-              <ChevronLeft size={48} />
+              <ChevronLeft size={32} className="sm:w-12 sm:h-12" />
             </button>
 
             {/* Next Button */}
             <button
-              className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10"
+              className="absolute right-2 sm:right-4 text-white hover:text-gray-300 transition-colors z-10 p-2 bg-black/50 rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 handleNext();
               }}
+              aria-label="Next image"
             >
-              <ChevronRight size={48} />
+              <ChevronRight size={32} className="sm:w-12 sm:h-12" />
             </button>
 
             {/* Image */}
@@ -126,7 +133,7 @@ export default function PropertyGallery({ property }: { property: PropertyData }
               key={selectedImage}
               src={getPropertyImage(images[selectedImage])}
               alt={`Property view ${selectedImage + 1}`}
-              className="max-w-[90%] max-h-[90%] object-contain"
+              className="max-w-full max-h-full object-contain"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
@@ -139,7 +146,7 @@ export default function PropertyGallery({ property }: { property: PropertyData }
       </AnimatePresence>
 
       {/* Bottom Divider */}
-      <div className="w-full h-px bg-gray-100 mt-16" />
+      <div className="w-full h-px bg-gray-100 mt-12 sm:mt-16" />
     </div>
   );
 }

@@ -77,7 +77,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="bg-[#5d6d87] py-12 sm:py-16 md:py-20 w-full overflow-hidden">
+    <section className="bg-[#5d6d87] pt-0 pb-12 sm:py-16 md:py-20 w-full overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-20">
 
