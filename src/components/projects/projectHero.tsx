@@ -3,15 +3,50 @@
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '@/lib/api';
+
+interface ProjectsHeroSettings {
+  id: number;
+  title: string;
+  subtitle: string;
+  background_url: string;
+  is_active: boolean;
+}
 
 export default function ProjectHero() {
+  const [heroSettings, setHeroSettings] = useState<ProjectsHeroSettings | null>(null);
+
+  useEffect(() => {
+    const fetchHeroSettings = async () => {
+      try {
+        const response = await fetch(API_ENDPOINTS.projects.heroSettings);
+        const data = await response.json();
+        
+        // API returns paginated results
+        if (data.results && data.results.length > 0) {
+          setHeroSettings(data.results[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching projects hero settings:', error);
+      }
+    };
+
+    fetchHeroSettings();
+  }, []);
+
+  // Default fallback values
+  const title = heroSettings?.title || 'Projects';
+  const subtitle = heroSettings?.subtitle || 'Your exquisite partners in finding home solutions';
+  const backgroundUrl = heroSettings?.background_url || 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920';
+
   return (
     <section className="relative min-h-[300px] sm:min-h-[347px] flex items-center justify-center overflow-hidden">
       {/* Fixed Background Image */}
       <div 
         className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920")',
+          backgroundImage: `url("${backgroundUrl}")`,
         }}
       >
         <div className="absolute inset-0 bg-black/60" />
@@ -25,7 +60,7 @@ export default function ProjectHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Projects
+          {title}
         </motion.h1>
         
         <motion.p 
@@ -35,7 +70,7 @@ export default function ProjectHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Your exquisite partners in finding home solutions
+          {subtitle}
         </motion.p>
 
         {/* Breadcrumb Section */}
@@ -49,7 +84,7 @@ export default function ProjectHero() {
             Home
           </Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-[#c1a478] font-bold">Projects</span>
+          <span className="text-[#c1a478] font-bold">{title}</span>
         </motion.nav>
       </div>
     </section>

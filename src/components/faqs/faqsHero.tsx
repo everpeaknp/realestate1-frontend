@@ -2,15 +2,51 @@
 
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '@/lib/api';
 
-export default function AboutHero() {
+interface FaqsHeroSettings {
+  id: number;
+  title: string;
+  subtitle: string;
+  background_url: string;
+  is_active: boolean;
+}
+
+export default function FaqsHero() {
+  const [heroSettings, setHeroSettings] = useState<FaqsHeroSettings | null>(null);
+
+  useEffect(() => {
+    const fetchHeroSettings = async () => {
+      try {
+        const response = await fetch(API_ENDPOINTS.faqs.heroSettings);
+        const data = await response.json();
+        
+        // API returns paginated results
+        if (data.results && data.results.length > 0) {
+          setHeroSettings(data.results[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching faqs hero settings:', error);
+      }
+    };
+
+    fetchHeroSettings();
+  }, []);
+
+  // Default fallback values
+  const title = heroSettings?.title || 'Common Queries';
+  const subtitle = heroSettings?.subtitle || 'My only purpose is to deliver successful results.';
+  const backgroundUrl = heroSettings?.background_url || 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920';
+
   return (
     <section className="relative h-[347px] flex items-center justify-center overflow-hidden">
       {/* Fixed Background Image */}
       <div 
         className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920")',
+          backgroundImage: `url("${backgroundUrl}")`,
         }}
       >
         <div className="absolute inset-0 bg-black/60" />
@@ -24,7 +60,7 @@ export default function AboutHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-     Common Queries
+          {title}
         </motion.h1>
         
         <motion.p 
@@ -34,8 +70,7 @@ export default function AboutHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-
-My only purpose is to deliver successful results.
+          {subtitle}
         </motion.p>
 
         {/* Breadcrumb Section */}
@@ -45,9 +80,11 @@ My only purpose is to deliver successful results.
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <a href="#" className="hover:text-white transition-colors">Home</a>
+          <Link href="/" className="hover:text-white transition-colors">
+            Home
+          </Link>
           <ChevronRight size={16} />
-          <span className="text-[#c1a478] font-bold">faqs</span>
+          <span className="text-[#c1a478] font-bold">FAQs</span>
         </motion.nav>
       </div>
     </section>

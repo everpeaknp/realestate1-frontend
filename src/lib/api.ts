@@ -63,6 +63,7 @@ export const API_ENDPOINTS = {
   // Projects
   projects: {
     list: `${API_URL}/api/projects/`,
+    heroSettings: `${API_URL}/api/projects/hero/`,
   },
   
   // Services
@@ -114,6 +115,7 @@ export const API_ENDPOINTS = {
   // FAQs
   faqs: {
     list: `${API_URL}/api/faqs/`,
+    heroSettings: `${API_URL}/api/faqs/hero/`,
   },
   
   // Agents
