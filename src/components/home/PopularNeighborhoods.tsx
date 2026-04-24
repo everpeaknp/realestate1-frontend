@@ -8,7 +8,7 @@ interface Neighborhood {
   gridClass: string;
 }
 
-const neighborhoods: Neighborhood[] = [
+const defaultNeighborhoods: Neighborhood[] = [
   {
     id: '1',
     name: 'Westwood',
@@ -41,14 +41,18 @@ const neighborhoods: Neighborhood[] = [
   },
 ];
 
-export default function PopularNeighborhoods() {
+interface PopularNeighborhoodsProps {
+  neighborhoods?: any[];
+}
+
+export default function PopularNeighborhoods({ neighborhoods = defaultNeighborhoods }: PopularNeighborhoodsProps) {
   return (
-    <section className="bg-white py-24 pb-32">
-      <div className="mx-auto max-w-7xl px-6 text-center">
+    <section className="bg-white py-12 sm:py-16 md:py-24 pb-16 sm:pb-24 md:pb-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 text-center">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-12 sm:mb-16">
           <motion.h2 
-            className="text-4xl font-bold text-[#1a1a1a] mb-6"
+            className="text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-4 sm:mb-6"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -57,7 +61,7 @@ export default function PopularNeighborhoods() {
             Popular Neighborhoods
           </motion.h2>
           <motion.p 
-            className="text-[#7C7A70] max-w-2xl mx-auto text-lg leading-relaxed font-medium"
+            className="text-[#7C7A70] max-w-2xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -69,11 +73,11 @@ export default function PopularNeighborhoods() {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-0.5 gap-y-2">
-          {neighborhoods.map((item, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-0.5">
+          {(neighborhoods || defaultNeighborhoods).map((item, index) => (
             <motion.div
               key={item.id}
-              className={`relative overflow-hidden group cursor-pointer rounded-sm ${item.gridClass}`}
+              className={`relative overflow-hidden group cursor-pointer rounded-sm h-[200px] sm:h-[220px] lg:h-auto ${item.gridClass}`}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -93,9 +97,9 @@ export default function PopularNeighborhoods() {
               {/* Label */}
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <div className="bg-[#c1a478] p-1.5 rounded-full mb-3 shadow-lg transform group-hover:scale-110 transition-transform">
-                  <MapPin size={18} fill="white" className="text-[#c1a478]" />
+                  <MapPin size={16} fill="white" className="text-[#c1a478] sm:w-[18px] sm:h-[18px]" />
                 </div>
-                <h3 className="text-xl font-bold text-white tracking-wide shadow-black drop-shadow-md">
+                <h3 className="text-lg sm:text-xl font-bold text-white tracking-wide shadow-black drop-shadow-md">
                   {item.name}
                 </h3>
               </div>

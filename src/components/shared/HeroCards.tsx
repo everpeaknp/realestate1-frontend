@@ -1,6 +1,10 @@
+'use client';
+
 import { Send, Building2, Hourglass, Wallet, ChevronRight, Home, Key, Building, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { homeAPI } from '@/lib/api';
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -25,6 +29,9 @@ interface HeroCardsProps {
 }
 
 export default function HeroCards({ cards: cardsData }: HeroCardsProps) {
+  const [dynamicCards, setDynamicCards] = useState<any[]>([]);
+  const [loading, setLoading] = useState(!cardsData);
+
   // Default cards if no data provided
   const defaultCards = [
     {
@@ -57,7 +64,40 @@ export default function HeroCards({ cards: cardsData }: HeroCardsProps) {
     },
   ];
 
-  const cards = cardsData && cardsData.length > 0 ? cardsData : defaultCards;
+  useEffect(() => {
+    // Only fetch if cards are not provided as props
+    if (!cardsData) {
+      const fetchCards = async () => {
+        try {
+          console.log('Fetching hero cards...');
+          const data = await homeAPI.getHeroCards();
+          console.log('Hero cards data received:', data);
+          if (data && data.length > 0) {
+            console.log('Setting dynamic cards:', data);
+            setDynamicCards(data);
+          } else {
+            console.log('No cards data received, using defaults');
+          }
+        } catch (error) {
+          console.error('Error fetching hero cards:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchCards();
+    }
+  }, [cardsData]);
+
+  // Use provided cards, or fetched cards, or defaults
+  const cards = cardsData || (dynamicCards.length > 0 ? dynamicCards : defaultCards);
+
+  console.log('HeroCards render - cardsData prop:', cardsData, 'dynamicCards:', dynamicCards, 'using:', cards);
+
+  if (loading) {
+    console.log('HeroCards still loading...');
+    return null;
+  }
 
   return (
     <div className="relative z-20 mx-auto max-w-7xl px-6 -mt-20">

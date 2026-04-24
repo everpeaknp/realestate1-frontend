@@ -2,14 +2,23 @@
 
 import { Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { cmsAPI } from '@/lib/api';
 
 interface Agent {
+  id?: number;
   name: string;
   email: string;
   phone: string;
   avatar?: string;
   bio?: string;
+}
+
+interface PropertySidebarSettings {
+  id: number;
+  form_title: string;
+  default_agent: Agent | null;
+  is_active: boolean;
 }
 
 interface PropertySidebarProps {
@@ -27,6 +36,8 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [settings, setSettings] = useState<PropertySidebarSettings | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // Default agent data if none provided
   const defaultAgent = {
@@ -37,7 +48,41 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
     bio: 'Boston Realtor'
   };
 
-  const displayAgent = agent || defaultAgent;
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await cmsAPI.getPropertySidebarSettings();
+        if (data && data.length > 0) {
+          setSettings(data[0]);
+        } else {
+          // Use default settings if fetch fails
+          setSettings({
+            id: 1,
+            form_title: 'Contact For Your Real Estate Solutions',
+            default_agent: null,
+            is_active: true,
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch property sidebar settings:', error);
+        // Use default settings on error
+        setSettings({
+          id: 1,
+          form_title: 'Contact For Your Real Estate Solutions',
+          default_agent: null,
+          is_active: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  // Determine which agent to display: prop > settings default > hardcoded default
+  const displayAgent = agent || settings?.default_agent || defaultAgent;
+  const formTitle = settings?.form_title || 'Contact For Your Real Estate Solutions';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -80,6 +125,10 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
     }
   };
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <aside className="flex flex-col gap-8 w-full">
       {/* Agent Card */}
@@ -112,7 +161,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
         transition={{ delay: 0.1 }}
       >
         <h3 className="text-xl font-bold text-[#1a1a1a] text-center mb-8 font-sans leading-tight">
-          Contact For Your Real Estate Solutions
+          {formTitle}
         </h3>
 
         {submitted ? (

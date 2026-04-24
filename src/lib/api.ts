@@ -86,6 +86,8 @@ export const API_ENDPOINTS = {
     navigationLinks: `${API_URL}/api/cms/navigation-links/`,
     footerSettings: `${API_URL}/api/cms/footer-settings/`,
     footerLinks: `${API_URL}/api/cms/footer-links/`,
+    newsletterSettings: `${API_URL}/api/cms/newsletter-settings/`,
+    propertySidebarSettings: `${API_URL}/api/cms/property-sidebar-settings/`,
   },
   
   // Home
@@ -96,7 +98,7 @@ export const API_ENDPOINTS = {
     neighborhoods: `${API_URL}/api/home/neighborhoods/`,
     benefits: `${API_URL}/api/home/benefits/`,
     benefitGallery: `${API_URL}/api/home/benefit-gallery/`,
-    benefitsContact: `${API_URL}/api/home/benefits-contact/`,
+    benefitsSection: `${API_URL}/api/home/benefits-section/`,
     contactSection: `${API_URL}/api/home/contact-section/`,
     instagram: `${API_URL}/api/home/instagram/`,
     personSection: `${API_URL}/api/home/person-section/`,
@@ -209,6 +211,16 @@ export const cmsAPI = {
     const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.footerLinks);
     return response.results;
   },
+  
+  async getNewsletterSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.newsletterSettings);
+    return response.results;
+  },
+  
+  async getPropertySidebarSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.propertySidebarSettings);
+    return response.results;
+  },
 };
 
 /**
@@ -244,8 +256,8 @@ export const homeAPI = {
     return response.results;
   },
   
-  async getBenefitsContact() {
-    return await apiRequest<any>(API_ENDPOINTS.home.benefitsContact);
+  async getBenefitsSection() {
+    return await apiRequest<any>(API_ENDPOINTS.home.benefitsSection);
   },
   
   async getContactSection() {

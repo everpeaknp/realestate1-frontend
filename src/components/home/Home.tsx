@@ -22,7 +22,7 @@ interface HomeProps {
   neighborhoods: any[];
   benefits: any[];
   benefitGallery: any[];
-  benefitsContact: any;
+  benefitsSection: any;
   contactSection: any;
   instagram: any[];
   personSection: any;
@@ -36,7 +36,7 @@ export default function Home({
   neighborhoods,
   benefits,
   benefitGallery,
-  benefitsContact,
+  benefitsSection,
   contactSection,
   instagram,
   personSection,
@@ -55,7 +55,7 @@ export default function Home({
       <BenefitsSection 
         benefits={benefits}
         gallery={benefitGallery}
-        contact={benefitsContact}
+        section={benefitsSection}
       />
       <Testimonials />
       <ContactSection settings={contactSection} />

@@ -10,7 +10,7 @@ export default async function HomePage() {
     neighborhoods,
     benefits,
     benefitGallery,
-    benefitsContact,
+    benefitsSection,
     contactSection,
     instagram,
     personSection,
@@ -22,7 +22,7 @@ export default async function HomePage() {
     homeAPI.getNeighborhoods().catch(() => []),
     homeAPI.getBenefits().catch(() => []),
     homeAPI.getBenefitGallery().catch(() => []),
-    homeAPI.getBenefitsContact().catch(() => null),
+    homeAPI.getBenefitsSection().catch(() => null),
     homeAPI.getContactSection().catch(() => null),
     homeAPI.getInstagram().catch(() => []),
     homeAPI.getPersonSection().catch(() => null),
@@ -37,7 +37,7 @@ export default async function HomePage() {
       neighborhoods={neighborhoods}
       benefits={benefits}
       benefitGallery={benefitGallery}
-      benefitsContact={benefitsContact}
+      benefitsSection={benefitsSection}
       contactSection={contactSection}
       instagram={instagram}
       personSection={personSection}

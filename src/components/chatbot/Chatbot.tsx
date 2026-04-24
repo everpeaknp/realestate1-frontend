@@ -125,7 +125,7 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
           <div className="w-12 h-12 rounded-full bg-[#c1a478] flex items-center justify-center mb-3">
             <User size={24} color="#fff" />
           </div>
-          <h3 className="text-[16px] font-bold text-[#1a1a1a]">Welcome to Realtor Pal!</h3>
+          <h3 className="text-[16px] font-bold text-[#1a1a1a]">Welcome to Lily White Realestate!</h3>
           <p className="text-[13px] text-[#6c757d] mt-1 text-center">
             Help us serve you better — all fields optional
           </p>
@@ -190,7 +190,7 @@ export default function Chatbot() {
     setShowIntro(false);
     const firstName = info.name ? ' ' + info.name.split(' ')[0] : '';
     setMessages([{
-      text: `Hi${firstName}! I'm your Realtor Pal assistant. How can I help you find your perfect property today?`,
+      text: `Hi${firstName}! I'm your Lily White Realestate assistant. How can I help you find your perfect property today?`,
       isBot: true,
     }]);
   };
@@ -255,7 +255,7 @@ export default function Chatbot() {
           {/* Header */}
           <div className={styles.header}>
             <div className={styles.headerInfo}>
-              <h3>Realtor Pal Bot</h3>
+              <h3>Lily White Realestate Bot</h3>
               <p>Online | Ready to help</p>
             </div>
             <button onClick={() => setIsOpen(false)} aria-label="Close chat">

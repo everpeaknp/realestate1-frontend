@@ -112,8 +112,8 @@ export default function ContactFormSection({
 
           {/* Left Column - Agent Info & Image */}
           <div className="w-full lg:w-[40%] bg-[#fdfaf3] p-12 flex flex-col items-center">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-[#1a1a1a] mb-2 px-4 whitespace-nowrap">
+            <div className="text-center mb-8 w-full">
+              <h2 className="text-2xl font-bold text-[#1a1a1a] mb-2 px-4 break-words">
                 {settings.agent_name} <span className="text-[#d4af37] mx-2">|</span> {settings.agent_title}
               </h2>
 
@@ -132,7 +132,7 @@ export default function ContactFormSection({
             </div>
 
             {/* Agent Image */}
-            <div className="mt-auto w-full flex justify-center">
+            <div className="mt-auto w-full flex justify-center px-4">
               <img
                 src={settings.agent_image}
                 alt={settings.agent_name}

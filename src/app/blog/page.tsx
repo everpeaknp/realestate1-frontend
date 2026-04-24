@@ -5,16 +5,16 @@ import Newsletter from '@/components/shared/newsletter';
 import Instagram from '@/components/shared/instagram';
 import PropertySidebar from '@/components/shared/PropertySidebar';
 import BlogSection from '@/components/blog/BlogSection';
-import { getBlogPosts } from '@/lib/blogApi';
+import { getBlogPosts, BlogPost } from '@/lib/blogApi';
 
 export const metadata = {
-  title: 'Blog | Real Estate Tips & Insights | Realtor Pal',
+  title: 'Blog | Real Estate Tips & Insights | Lily White Realestate',
   description: 'Discover expert real estate advice, market insights, and home buying tips from Boston\'s trusted realtor.',
 };
 
 export default async function BlogPage() {
   // Fetch blog posts from API with error handling
-  let posts = [];
+  let posts: BlogPost[] = [];
   
   try {
     posts = await getBlogPosts();
