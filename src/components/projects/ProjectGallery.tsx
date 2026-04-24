@@ -77,8 +77,8 @@ export default function ProjectGallery() {
 
   if (loading) {
     return (
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 text-center">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-gray-500">Loading projects...</p>
         </div>
       </section>
@@ -90,13 +90,13 @@ export default function ProjectGallery() {
   }
 
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 sm:gap-6 space-y-4 sm:space-y-6">
           {allImages.map((image, index) => (
             <motion.div
               key={index}
-              className="relative group overflow-hidden rounded-sm break-inside-avoid shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl cursor-pointer"
+              className="relative group overflow-hidden rounded-sm break-inside-avoid shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -110,11 +110,11 @@ export default function ProjectGallery() {
               />
               
               {/* Overlay */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                <p className="text-white font-bold text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 sm:p-6">
+                <p className="text-white font-bold text-base sm:text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   {image.title}
                 </p>
-                <div className="w-12 h-1 bg-[#c1a478] mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100" />
+                <div className="w-10 sm:w-12 h-1 bg-[#c1a478] mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100" />
               </div>
             </motion.div>
           ))}
@@ -125,7 +125,7 @@ export default function ProjectGallery() {
       <AnimatePresence>
         {selectedImage !== null && (
           <motion.div
-            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -133,46 +133,49 @@ export default function ProjectGallery() {
           >
             {/* Close Button */}
             <button
-              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white hover:text-gray-300 transition-colors z-10 p-2"
               onClick={() => setSelectedImage(null)}
+              aria-label="Close lightbox"
             >
-              <X size={32} />
+              <X size={24} className="sm:w-8 sm:h-8" />
             </button>
 
             {/* Image Counter */}
-            <div className="absolute top-4 left-4 text-white text-sm font-medium z-10">
+            <div className="absolute top-2 left-2 sm:top-4 sm:left-4 text-white text-xs sm:text-sm font-medium z-10 bg-black/50 px-2 py-1 rounded">
               {selectedImage + 1} / {allImages.length}
             </div>
 
             {/* Previous Button */}
             <button
-              className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10"
+              className="absolute left-2 sm:left-4 text-white hover:text-gray-300 transition-colors z-10 p-2 bg-black/50 rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 handlePrevious();
               }}
+              aria-label="Previous image"
             >
-              <ChevronLeft size={48} />
+              <ChevronLeft size={32} className="sm:w-12 sm:h-12" />
             </button>
 
             {/* Next Button */}
             <button
-              className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10"
+              className="absolute right-2 sm:right-4 text-white hover:text-gray-300 transition-colors z-10 p-2 bg-black/50 rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 handleNext();
               }}
+              aria-label="Next image"
             >
-              <ChevronRight size={48} />
+              <ChevronRight size={32} className="sm:w-12 sm:h-12" />
             </button>
 
             {/* Image Container */}
-            <div className="flex flex-col items-center justify-center max-w-[90%] max-h-[90%]">
+            <div className="flex flex-col items-center justify-center max-w-[95%] sm:max-w-[90%] max-h-[90%]">
               <motion.img
                 key={selectedImage}
                 src={allImages[selectedImage].url}
                 alt={allImages[selectedImage].title}
-                className="max-w-full max-h-[80vh] object-contain"
+                className="max-w-full max-h-[70vh] sm:max-h-[80vh] object-contain"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
@@ -182,17 +185,17 @@ export default function ProjectGallery() {
               
               {/* Title and Caption below image */}
               <motion.div
-                className="mt-6 text-center max-w-2xl"
+                className="mt-4 sm:mt-6 text-center max-w-2xl px-4"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <h3 className="text-white text-xl font-bold mb-2">
+                <h3 className="text-white text-base sm:text-xl font-bold mb-1 sm:mb-2">
                   {allImages[selectedImage].title}
                 </h3>
                 {allImages[selectedImage].caption && (
-                  <p className="text-gray-300 text-sm">
+                  <p className="text-gray-300 text-xs sm:text-sm">
                     {allImages[selectedImage].caption}
                   </p>
                 )}

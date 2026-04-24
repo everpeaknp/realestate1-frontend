@@ -2,10 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AboutHero() {
   return (
-    <section className="relative h-[347px] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[300px] sm:min-h-[347px] flex items-center justify-center overflow-hidden">
       {/* Fixed Background Image */}
       <div 
         className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
@@ -17,9 +18,9 @@ export default function AboutHero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-6">
+      <div className="relative z-10 text-center px-4 sm:px-6 py-8 sm:py-0">
         <motion.h1 
-          className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight font-sans"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 tracking-tight font-sans"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -28,7 +29,7 @@ export default function AboutHero() {
         </motion.h1>
         
         <motion.p 
-          className="text-lg md:text-xl font-bold mb-8"
+          className="text-base sm:text-lg md:text-xl font-bold mb-6 sm:mb-8"
           style={{ color: '#EADEC9' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -44,8 +45,10 @@ export default function AboutHero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <a href="#" className="hover:text-white transition-colors">Home</a>
-          <ChevronRight size={16} />
+          <Link href="/" className="hover:text-white transition-colors">
+            Home
+          </Link>
+          <ChevronRight size={16} className="flex-shrink-0" />
           <span className="text-[#c1a478] font-bold">About</span>
         </motion.nav>
       </div>

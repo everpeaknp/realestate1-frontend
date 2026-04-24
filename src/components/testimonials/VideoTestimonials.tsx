@@ -62,13 +62,13 @@ export default function VideoTestimonials() {
   }
 
   return (
-    <section className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {testimonials.map((item, index) => (
             <motion.div
               key={item.id}
-              className="relative aspect-[16/9] rounded-sm overflow-hidden group cursor-pointer shadow-xl"
+              className="relative aspect-[16/9] rounded-sm overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -98,27 +98,27 @@ export default function VideoTestimonials() {
                   <div className="absolute inset-0 bg-black/40 transition-colors duration-500 group-hover:bg-black/50" />
 
                   {/* Content Overlay */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 text-white">
-                    <h3 className="text-xl md:text-2xl font-bold mb-8 tracking-tight px-4 font-sans">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 sm:p-6 text-white">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-6 sm:mb-8 tracking-tight px-2 sm:px-4 font-sans">
                       {item.title}
                     </h3>
 
                     {/* Play Button */}
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110">
-                      <Play size={24} className="text-[#1a1a1a] fill-current ml-1" />
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center mb-6 sm:mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110">
+                      <Play size={20} className="sm:w-6 sm:h-6 text-[#1a1a1a] fill-current ml-1" />
                     </div>
 
                     {/* Rating */}
-                    <div className="flex gap-1 mb-4">
+                    <div className="flex gap-1 mb-3 sm:mb-4">
                       {[...Array(item.rating || 5)].map((_, i) => (
-                        <Star key={i} size={16} className="text-[#f1c40f] fill-current" />
+                        <Star key={i} size={14} className="sm:w-4 sm:h-4 text-[#f1c40f] fill-current" />
                       ))}
                     </div>
 
                     {/* Info */}
                     <div className="flex flex-col gap-1">
-                      <span className="text-lg font-bold tracking-tight">{item.name}</span>
-                      <span className="text-sm text-white/80 font-medium uppercase tracking-widest">{item.role}</span>
+                      <span className="text-base sm:text-lg font-bold tracking-tight">{item.name}</span>
+                      <span className="text-xs sm:text-sm text-white/80 font-medium uppercase tracking-widest">{item.role}</span>
                     </div>
                   </div>
                 </>

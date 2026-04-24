@@ -34,54 +34,60 @@ export default function HomeLoanSection({
 }: HomeLoanSectionProps) {
   return (
     <section className="bg-white">
-      <div className="flex justify-center items-center px-6">
-        <div className="flex flex-col lg:flex-row gap-16 items-center justify-center max-w-[1280px]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row gap-0 lg:gap-16 items-center">
           {/* Left: Content (Order 2 on mobile, 1 on desktop) */}
           <motion.div 
-            className="flex flex-col gap-8 w-full lg:w-[580px] h-[700px] flex-shrink-0 order-2 lg:order-1 justify-center"
+            className="flex flex-col gap-6 sm:gap-8 w-full lg:flex-1 lg:max-w-[580px] order-2 lg:order-1"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div>
-              <h2 className="text-4xl font-bold text-[#1a1a1a] mb-6 font-sans">{title}</h2>
-              <p className="text-[#7C7A70] text-lg leading-relaxed font-sans mb-8">
+            <div className="-mt-4 lg:mt-0">
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-4 sm:mb-6 font-sans">{title}</h2>
+              <p className="text-[#7C7A70] text-base sm:text-lg leading-relaxed font-sans mb-6 sm:mb-8">
                 {description}
               </p>
 
               {/* List Points */}
-              <div className="flex flex-col gap-4 mb-10">
+              <div className="flex flex-col gap-3 sm:gap-4 mb-8 sm:mb-10">
                 {features.map((feature) => (
-                  <div key={feature.id} className="flex items-center gap-3">
-                    <CheckCircle2 size={20} className="text-[#c1a478]" />
-                    <span className="text-[#5d6d87] font-medium font-sans">{feature.text}</span>
+                  <div key={feature.id} className="flex items-start gap-3">
+                    <CheckCircle2 size={20} className="text-[#c1a478] flex-shrink-0 mt-0.5" />
+                    <span className="text-[#5d6d87] font-medium font-sans text-sm sm:text-base">{feature.text}</span>
                   </div>
                 ))}
               </div>
 
               {/* Action Area */}
-              <div className="flex flex-col gap-8 max-w-lg">
+              <div className="flex flex-col gap-6 sm:gap-8">
                 <a 
                   href="/contact"
-                  className="w-full py-4 bg-[#c1a478] text-white font-bold uppercase tracking-widest text-sm hover:bg-slate-600 transition-colors shadow-md text-center"
+                  className="w-full py-3 sm:py-4 bg-[#c1a478] text-white font-bold uppercase tracking-widest text-xs sm:text-sm hover:bg-slate-600 transition-all shadow-md text-center rounded-sm min-h-[44px] flex items-center justify-center transform hover:-translate-y-0.5"
                 >
                   {buttonText}
                 </a>
 
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-8 gap-y-4">
-                  <div className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer whitespace-nowrap">
-                    <Phone size={18} className="text-[#c1a478]" />
-                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors tracking-tight">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-x-8">
+                  <a 
+                    href={`tel:${phone}`}
+                    className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer min-h-[44px]"
+                  >
+                    <Phone size={18} className="text-[#c1a478] flex-shrink-0" fill="currentColor" stroke="none" />
+                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors text-sm sm:text-base">
                       {phone}
                     </span>
-                  </div>
-                  <div className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer whitespace-nowrap">
-                    <Mail size={18} className="text-[#c1a478]" />
-                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors tracking-tight">
+                  </a>
+                  <a 
+                    href={`mailto:${email}`}
+                    className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer min-h-[44px]"
+                  >
+                    <Mail size={18} className="text-[#c1a478] flex-shrink-0" />
+                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors text-sm sm:text-base break-all">
                       {email}
                     </span>
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -89,7 +95,7 @@ export default function HomeLoanSection({
 
           {/* Right: Image Box (Order 1 on mobile, 2 on desktop) */}
           <motion.div 
-            className="relative overflow-hidden w-full lg:w-[640px] h-[700px] flex-shrink-0 order-1 lg:order-2"
+            className="relative overflow-hidden w-full lg:flex-1 min-h-[400px] sm:min-h-[500px] lg:h-[700px] order-1 lg:order-2"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
