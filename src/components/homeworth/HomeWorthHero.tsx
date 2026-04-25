@@ -1,16 +1,56 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { API_ENDPOINTS } from '@/lib/api';
+
+interface HomeWorthHeroSettings {
+  title: string;
+  subtitle: string;
+  background_url: string;
+  is_active: boolean;
+}
 
 export default function HomeWorthHero() {
+  const [settings, setSettings] = useState<HomeWorthHeroSettings>({
+    title: "What's My Home Worth?",
+    subtitle: 'Get a free, accurate valuation of your property',
+    background_url: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1920',
+    is_active: true,
+  });
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch(API_ENDPOINTS.homeworth.heroSettings);
+        if (response.ok) {
+          const data = await response.json();
+          // Handle paginated response
+          if (data.results && data.results.length > 0) {
+            setSettings(data.results[0]);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch home worth hero settings:', error);
+        // Keep default values on error
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  if (!settings.is_active) {
+    return null;
+  }
+
   return (
     <section className="relative h-[347px] flex items-center justify-center overflow-hidden">
       {/* Fixed Background Image */}
       <div 
         className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1920")',
+          backgroundImage: `url("${settings.background_url}")`,
         }}
       >
         <div className="absolute inset-0 bg-black/60" />
@@ -24,7 +64,7 @@ export default function HomeWorthHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          What&apos;s My Home Worth?
+          {settings.title}
         </motion.h1>
         
         <motion.p 
@@ -34,7 +74,7 @@ export default function HomeWorthHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Get a free, accurate valuation of your property
+          {settings.subtitle}
         </motion.p>
 
         {/* Breadcrumb Section */}

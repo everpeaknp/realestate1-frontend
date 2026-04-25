@@ -198,9 +198,9 @@ export default function Testimonials() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex-1 flex flex-col overflow-hidden">
+                <div className="flex-1 flex flex-col">
                   <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[0].title}</h3>
-                  <p className="text-[#7C7A70] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1 overflow-y-auto">
+                  <p className="text-[#7C7A70] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
                     {textTestimonials[0].text}
                   </p>
                   
@@ -229,9 +229,9 @@ export default function Testimonials() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex-1 flex flex-col overflow-hidden">
+                <div className="flex-1 flex flex-col">
                   <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[1].title}</h3>
-                  <p className="text-[#7C7A70] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1 overflow-y-auto">
+                  <p className="text-[#7C7A70] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
                     {textTestimonials[1].text}
                   </p>
                   

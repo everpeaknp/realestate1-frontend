@@ -141,6 +141,14 @@ export default function HomeWorthForm() {
       });
 
       console.log('Submitting form with images:', propertyImages.length);
+      console.log('FormData entries:');
+      for (const [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          console.log(`  ${key}: File(${value.name}, ${value.size} bytes, ${value.type})`);
+        } else {
+          console.log(`  ${key}: ${value}`);
+        }
+      }
 
       const response = await fetch(`${apiUrl}/api/leads/valuation/`, {
         method: 'POST',
@@ -148,12 +156,26 @@ export default function HomeWorthForm() {
         body: formData,
       });
 
+      console.log('Response received:', response.status, response.statusText);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
       if (response.ok) {
+        const responseData = await response.json();
+        console.log('Success response:', responseData);
         setSubmitStatus('success');
         setPropertyImages([]);
         reset();
       } else {
-        const errorData = await response.json().catch(() => ({}));
+        const responseText = await response.text();
+        console.error('Error response text:', responseText);
+        
+        let errorData = {};
+        try {
+          errorData = JSON.parse(responseText);
+        } catch (e) {
+          console.error('Could not parse error response as JSON');
+        }
+        
         console.error('Validation errors:', errorData);
         console.error('Response status:', response.status);
         console.error('Response statusText:', response.statusText);

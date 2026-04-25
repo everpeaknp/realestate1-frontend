@@ -3,15 +3,55 @@
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { API_ENDPOINTS, apiRequest } from '@/lib/api';
+
+interface AboutHeroSettings {
+  id: number;
+  title: string;
+  subtitle: string;
+  background_image: string | null;
+  background_url: string;
+  background_image_url: string;
+  is_active: boolean;
+}
 
 export default function AboutHero() {
+  const [settings, setSettings] = useState<AboutHeroSettings | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await apiRequest<{ results: AboutHeroSettings[] }>(
+          API_ENDPOINTS.about.heroSettings
+        );
+        
+        if (response.results && response.results.length > 0) {
+          setSettings(response.results[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch about hero settings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  // Default values while loading or if fetch fails
+  const title = settings?.title || "Hello, I'm Justin Nelson";
+  const subtitle = settings?.subtitle || "Boston's most acceptable realtor you can trust.";
+  const backgroundUrl = settings?.background_url || 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920';
+
   return (
     <section className="relative min-h-[300px] sm:min-h-[347px] flex items-center justify-center overflow-hidden">
       {/* Fixed Background Image */}
       <div 
         className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920")',
+          backgroundImage: `url("${backgroundUrl}")`,
         }}
       >
         <div className="absolute inset-0 bg-black/60" />
@@ -25,7 +65,7 @@ export default function AboutHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Hello, I'm Justin Nelson
+          {title}
         </motion.h1>
         
         <motion.p 
@@ -35,7 +75,7 @@ export default function AboutHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Boston's most acceptable realtor you can trust.
+          {subtitle}
         </motion.p>
 
         {/* Breadcrumb Section */}

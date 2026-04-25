@@ -3,15 +3,55 @@
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { API_ENDPOINTS, apiRequest } from '@/lib/api';
+
+interface PropertiesHeroSettings {
+  id: number;
+  title: string;
+  subtitle: string;
+  background_image: string | null;
+  background_url: string;
+  background_image_url: string;
+  is_active: boolean;
+}
 
 export default function PropertiesHero() {
+  const [settings, setSettings] = useState<PropertiesHeroSettings | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await apiRequest<{ results: PropertiesHeroSettings[] }>(
+          API_ENDPOINTS.properties.heroSettings
+        );
+        
+        if (response.results && response.results.length > 0) {
+          setSettings(response.results[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch properties hero settings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSettings();
+  }, []);
+
+  // Default values while loading or if fetch fails
+  const title = settings?.title || 'Properties';
+  const subtitle = settings?.subtitle || 'Find your dream homes with me.';
+  const backgroundUrl = settings?.background_url || 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1920';
+
   return (
     <section className="relative h-[280px] sm:h-[320px] md:h-[347px] flex items-center justify-center overflow-hidden">
       {/* Fixed Background Image */}
       <div 
         className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1920")',
+          backgroundImage: `url("${backgroundUrl}")`,
         }}
       >
         <div className="absolute inset-0 bg-black/50" />
@@ -25,7 +65,7 @@ export default function PropertiesHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Properties
+          {title}
         </motion.h1>
         
         <motion.p 
@@ -34,7 +74,7 @@ export default function PropertiesHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Find your dream homes with me.
+          {subtitle}
         </motion.p>
 
         {/* Breadcrumb */}

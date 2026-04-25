@@ -50,10 +50,23 @@ export default function ContactCards({
             const IconComponent = iconMap[item.icon as keyof typeof iconMap] || Phone;
             const delay = 0.1 * (index + 1);
             
-            // Make phone and email clickable
+            // Make phone, email, and address clickable
             const isPhone = item.icon === 'phone';
             const isEmail = item.icon === 'email';
-            const href = isPhone ? `tel:${item.value.replace(/\s/g, '')}` : isEmail ? `mailto:${item.value}` : undefined;
+            const isAddress = item.icon === 'map';
+            
+            let href: string | undefined;
+            let target: string | undefined;
+            
+            if (isPhone) {
+              href = `tel:${item.value.replace(/\s/g, '')}`;
+            } else if (isEmail) {
+              href = `mailto:${item.value}`;
+            } else if (isAddress) {
+              // Create Google Maps search URL
+              href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.value)}`;
+              target = '_blank';
+            }
             
             return (
               <motion.div
@@ -78,7 +91,9 @@ export default function ContactCards({
                 {href ? (
                   <a 
                     href={href}
-                    className="text-lg sm:text-xl font-bold text-[#c1a478] tracking-tight transition-colors hover:text-[#b09367] break-words"
+                    target={target}
+                    rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+                    className="text-lg sm:text-xl font-bold text-[#c1a478] tracking-tight transition-colors hover:text-[#b09367] break-words cursor-pointer"
                   >
                     {item.value}
                   </a>

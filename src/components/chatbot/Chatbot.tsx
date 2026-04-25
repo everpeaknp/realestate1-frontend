@@ -125,9 +125,9 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
           <div className="w-12 h-12 rounded-full bg-[#c1a478] flex items-center justify-center mb-3">
             <User size={24} color="#fff" />
           </div>
-          <h3 className="text-[16px] font-bold text-[#1a1a1a]">Welcome to Lily White Realestate!</h3>
+          <h3 className="text-[16px] font-bold text-[#1a1a1a]">Welcome to Lily White Real Estate!</h3>
           <p className="text-[13px] text-[#6c757d] mt-1 text-center">
-            Help us serve you better — all fields optional
+            Let's find your perfect property together
           </p>
         </div>
 
@@ -190,7 +190,7 @@ export default function Chatbot() {
     setShowIntro(false);
     const firstName = info.name ? ' ' + info.name.split(' ')[0] : '';
     setMessages([{
-      text: `Hi${firstName}! I'm your Lily White Realestate assistant. How can I help you find your perfect property today?`,
+      text: `Hi${firstName}! I'm your Investment Property Specialist assistant representing Bijen Khadka. With 12+ years of experience and 1500+ satisfied clients, I'm here to help you find the perfect property. What are you looking for today?`,
       isBot: true,
     }]);
   };
@@ -255,8 +255,8 @@ export default function Chatbot() {
           {/* Header */}
           <div className={styles.header}>
             <div className={styles.headerInfo}>
-              <h3>Lily White Realestate Bot</h3>
-              <p>Online | Ready to help</p>
+              <h3>Lily White Real Estate</h3>
+              <p>Investment Property Specialist | Online</p>
             </div>
             <button onClick={() => setIsOpen(false)} aria-label="Close chat">
               <X size={20} />
