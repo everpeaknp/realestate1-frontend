@@ -128,7 +128,9 @@ export default function HomeWorthForm() {
       formData.append('phone', sanitizedData.phone);
       formData.append('message', sanitizedData.message || 'Home valuation request');
       formData.append('property_type_interest', sanitizedData.propertyType);
-      formData.append('budget', sanitizedData.budget);
+      if (sanitizedData.budget) {
+        formData.append('budget', sanitizedData.budget);
+      }
       formData.append('location', sanitizedData.address);
       formData.append('inquiry_type', 'SELLING');
       formData.append('source', 'VALUATION');
@@ -138,13 +140,11 @@ export default function HomeWorthForm() {
         formData.append(`property_image_${index + 1}`, file);
       });
 
+      console.log('Submitting form with images:', propertyImages.length);
+
       const response = await fetch(`${apiUrl}/api/leads/valuation/`, {
         method: 'POST',
-        headers: {
-          // Don't set Content-Type - browser will set it with boundary for FormData
-          // CSRF token would be added here in production
-          // 'X-CSRFToken': getCsrfToken(),
-        },
+        // Don't set Content-Type - browser will set it with boundary for FormData
         body: formData,
       });
 
@@ -155,9 +155,26 @@ export default function HomeWorthForm() {
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error('Validation errors:', errorData);
-        setErrorMessage(
-          errorData.message || 'Submission failed. Please check your information and try again.'
-        );
+        console.error('Response status:', response.status);
+        console.error('Response statusText:', response.statusText);
+        
+        // Extract error message
+        let errorMsg = 'Submission failed. Please check your information and try again.';
+        if (errorData.message) {
+          errorMsg = errorData.message;
+        } else if (errorData.detail) {
+          errorMsg = errorData.detail;
+        } else if (errorData.error) {
+          errorMsg = errorData.error;
+        } else if (typeof errorData === 'object' && Object.keys(errorData).length > 0) {
+          // Format field errors
+          const fieldErrors = Object.entries(errorData)
+            .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+            .join('; ');
+          errorMsg = fieldErrors || errorMsg;
+        }
+        
+        setErrorMessage(errorMsg);
         setSubmitStatus('error');
       }
     } catch (error) {
