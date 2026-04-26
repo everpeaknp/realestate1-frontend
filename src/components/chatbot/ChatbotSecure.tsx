@@ -21,7 +21,7 @@ import DOMPurify from 'dompurify';
 import styles from './Chatbot.module.css';
 import { API_ENDPOINTS, apiRequest } from '@/lib/api';
 import { useChatbotStore, type ChatMessage, type UserInfo } from '@/store/chatbotStore';
-
+ 
 // ------------------------------------------------------------------ //
 // Constants
 // ------------------------------------------------------------------ //
@@ -366,40 +366,64 @@ export default function ChatbotSecure() {
         )}
       </AnimatePresence>
 
-      {/* Chat window */}
+      {/* Chat window + cat mascot wrapper */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className={styles.container}
-            initial={{ opacity: 0, scale: 0.85, y: 20, originX: 1, originY: 1 }}
+            style={{ position: 'absolute', bottom: 0, right: 0, zIndex: 2001 }}
+            initial={{ opacity: 0, scale: 0.85, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             transition={{ type: 'spring', stiffness: 280, damping: 24 }}
           >
-            {/* Header */}
-            <div className={styles.header}>
-              <div className={styles.headerInfo}>
-                <h3>Lily White Real Estate</h3>
-                <p>Investment Property Specialist | Online</p>
+            {/* Cat face peeking over top of chatbox - right side */}
+            <motion.div
+              style={{
+                position: 'absolute',
+                top: -80,
+                right: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                pointerEvents: 'none',
+                zIndex: 1,
+                overflow: 'visible',
+                width: 350,
+                height: 200,
+              }}
+              initial={{ y: 150, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 150, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.3 }}
+            >
+           
+            </motion.div>
+
+            {/* Chat container */}
+            <div className={styles.container} style={{ position: 'relative', zIndex: 5 }}>
+              {/* Header */}
+              <div className={styles.header}>
+                <div className={styles.headerInfo}>
+                  <h3>Lily White Real Estate</h3>
+                  <p>Investment Property Specialist | Online</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {!showIntro && sessionId && (
+                    <>
+                      <button onClick={() => syncWithBackend(sessionId)}
+                        className="p-1 hover:bg-white/10 rounded transition-colors" title="Sync">
+                        <RefreshCw size={16} />
+                      </button>
+                      <button onClick={handleClear}
+                        className="p-1 hover:bg-white/10 rounded transition-colors" title="Clear chat">
+                        <Trash2 size={16} />
+                      </button>
+                    </>
+                  )}
+                  <button onClick={close} aria-label="Close chat">
+                    <X size={20} />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                {!showIntro && sessionId && (
-                  <>
-                    <button onClick={() => syncWithBackend(sessionId)}
-                      className="p-1 hover:bg-white/10 rounded transition-colors" title="Sync">
-                      <RefreshCw size={16} />
-                    </button>
-                    <button onClick={handleClear}
-                      className="p-1 hover:bg-white/10 rounded transition-colors" title="Clear chat">
-                      <Trash2 size={16} />
-                    </button>
-                  </>
-                )}
-                <button onClick={close} aria-label="Close chat">
-                  <X size={20} />
-                </button>
-              </div>
-            </div>
 
             {/* Body */}
             {showIntro ? (
@@ -469,6 +493,7 @@ export default function ChatbotSecure() {
                 </form>
               </>
             )}
+            </div>{/* end .container */}
           </motion.div>
         )}
       </AnimatePresence>

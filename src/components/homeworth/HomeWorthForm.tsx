@@ -169,7 +169,7 @@ export default function HomeWorthForm() {
         const responseText = await response.text();
         console.error('Error response text:', responseText);
         
-        let errorData = {};
+        let errorData: Record<string, any> = {};
         try {
           errorData = JSON.parse(responseText);
         } catch (e) {
