@@ -233,9 +233,9 @@ export default function ChatbotSecure() {
           if (u) remote.push({ id: genId(), role: 'user', message: u.message, timestamp: u.timestamp });
           if (b) remote.push({ id: genId(), role: 'bot',  message: sanitize(b.message), timestamp: b.timestamp });
         }
-        // Merge: keep local messages not in remote
-        const remoteIds = new Set(remote.map(m => m.message + m.timestamp));
-        const localOnly = messages.filter(m => !remoteIds.has(m.message + m.timestamp));
+        // Merge: keep local messages not in remote by comparing message content + role
+        const remoteKey = new Set(remote.map(m => `${m.role}:${m.message}`));
+        const localOnly = messages.filter(m => !remoteKey.has(`${m.role}:${m.message}`));
         setMessages([...remote, ...localOnly].sort(
           (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
         ));
@@ -254,12 +254,18 @@ export default function ChatbotSecure() {
     setUserInfo(info);
     setShowIntro(false);
     const firstName = info.name ? ' ' + info.name.split(' ')[0] : '';
-    addMessage({
-      id:        genId(),
-      role:      'bot',
-      message:   `Hi${firstName}! I'm your Investment Property Specialist assistant representing Bijen Khadka. With 12+ years of experience and 1500+ satisfied clients, I'm here to help you find the perfect property. What are you looking for today?`,
-      timestamp: new Date().toISOString(),
-    });
+    const greetingMsg = `Hi${firstName}! I'm your Investment Property Specialist assistant representing Bijen Khadka. With 12+ years of experience and 1500+ satisfied clients, I'm here to help you find the perfect property. What are you looking for today?`;
+    
+    // Only add greeting if it's not already in messages
+    const hasGreeting = messages.some(m => m.message === greetingMsg && m.role === 'bot');
+    if (!hasGreeting) {
+      addMessage({
+        id:        genId(),
+        role:      'bot',
+        message:   greetingMsg,
+        timestamp: new Date().toISOString(),
+      });
+    }
   };
 
   const handleSend = async (e?: React.FormEvent) => {
