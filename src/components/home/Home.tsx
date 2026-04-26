@@ -46,7 +46,7 @@ export default function Home({
     <>
       <Header />
       <Hero settings={heroSettings} />
-      <HeroCards cards={heroCards} />
+      
   
       
       <FeaturedProperties />
