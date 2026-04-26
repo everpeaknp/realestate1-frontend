@@ -1,216 +1,131 @@
-/**
- * SECURE PERSISTENT CHATBOT COMPONENT
- * 
- * Security Features:
- * ✓ XSS prevention with DOMPurify sanitization
- * ✓ Input length validation (max 500 chars)
- * ✓ Rate limiting (client-side debounce)
- * ✓ Spam prevention (duplicate message detection)
- * ✓ Secure localStorage with error handling
- * ✓ CSRF-ready structure
- * 
- * Persistence Features:
- * ✓ Messages persist after refresh (localStorage)
- * ✓ Backend sync on load
- * ✓ Merge local + remote messages
- * ✓ Session ID management
- * 
- * UX Features:
- * ✓ Auto-scroll to latest message
- * ✓ Typing indicator
- * ✓ Disabled input while sending
- * ✓ Clear chat button
- * ✓ Error handling with fallback
- * ✓ Timestamps on messages
- */
-
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+/**
+ * ChatbotSecure v2
+ * ================
+ * State:   Zustand store (chatbotStore.ts) — replaces raw localStorage
+ * Animations: Framer Motion — fluid message entrance, widget expansion
+ * NLP:     Backend uses spaCy NER + sentence-transformers (100% local)
+ * Security: DOMPurify XSS sanitization, rate limiting, spam prevention
+ */
+
+import { useEffect, useRef, useState } from 'react';
 import {
-  MessageSquare, X, Send, User, Mail, Phone, Trash2, RefreshCw
+  MessageSquare, X, Send, User, Mail, Phone, Trash2, RefreshCw,
+  Home, DollarSign, Bed, Droplets, Maximize, MapPin, ExternalLink,
+  Clock, CheckCircle, HelpCircle, Calendar, Tag, CreditCard,
+  Search, Info, Car, Trees, Star, BedDouble,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import DOMPurify from 'dompurify';
 import styles from './Chatbot.module.css';
 import { API_ENDPOINTS, apiRequest } from '@/lib/api';
+import { useChatbotStore, type ChatMessage, type UserInfo } from '@/store/chatbotStore';
 
-// ================================================================
-// TYPES
-// ================================================================
-
-interface Message {
-  id: string;
-  role: 'user' | 'bot';
-  message: string;
-  timestamp: string;
-}
-
-interface ChatResponse {
-  response: string;
-  session_id: string;
-  intent?: string;
-  confidence?: number;
-}
-
-interface ChatHistoryResponse {
-  session_id: string;
-  messages: Message[];
-}
-
-interface UserInfo {
-  name: string;
-  email: string;
-  phone: string;
-}
-
-// ================================================================
-// CONSTANTS
-// ================================================================
-
-const STORAGE_KEYS = {
-  MESSAGES: 'chatbot_messages',
-  SESSION_ID: 'chatbot_session_id',
-  USER_INFO: 'chatbot_user_info',
-  LAST_SYNC: 'chatbot_last_sync',
-} as const;
+// ------------------------------------------------------------------ //
+// Constants
+// ------------------------------------------------------------------ //
 
 const MAX_MESSAGE_LENGTH = 500;
-const DEBOUNCE_DELAY = 1000; // 1 second between messages
-const SYNC_INTERVAL = 30000; // Sync with backend every 30 seconds
+const DEBOUNCE_MS        = 1000;
 
-// ================================================================
-// UTILITY FUNCTIONS
-// ================================================================
+// ------------------------------------------------------------------ //
+// Icon map + message parser
+// ------------------------------------------------------------------ //
 
-/**
- * Sanitize bot response for safe display
- * Uses DOMPurify to remove dangerous content from bot responses
- */
-function sanitizeBotResponse(response: string): string {
-  // Basic sanitization for server-side or when DOMPurify is not available
-  const basicSanitize = (text: string) => text
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .trim();
-
-  if (typeof window === 'undefined') {
-    return basicSanitize(response);
-  }
-
-  // Check if DOMPurify is available
-  if (typeof DOMPurify === 'undefined' || !DOMPurify.sanitize) {
-    console.warn('DOMPurify not available, using basic sanitization');
-    return basicSanitize(response);
-  }
-
-  try {
-    // Client-side: use DOMPurify to sanitize bot response
-    const sanitized = DOMPurify.sanitize(response, {
-      ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'br', 'p'],
-      ALLOWED_ATTR: [],
-      KEEP_CONTENT: true,
-    });
-    return sanitized.trim();
-  } catch (error) {
-    console.error('DOMPurify sanitization failed:', error);
-    return basicSanitize(response);
-  }
-}
-
-/**
- * Basic input validation (not sanitization)
- * The backend will handle proper sanitization
- */
-function validateInput(input: string): string {
-  // Just trim whitespace - let backend handle sanitization
-  return input.trim();
-}
-
-/**
- * Validate message before sending
- */
-function validateMessage(message: string): { valid: boolean; error?: string } {
-  const trimmed = validateInput(message);
-
-  if (!trimmed) {
-    return { valid: false, error: 'Message cannot be empty' };
-  }
-
-  if (trimmed.length > MAX_MESSAGE_LENGTH) {
-    return { valid: false, error: `Message is too long (max ${MAX_MESSAGE_LENGTH} characters)` };
-  }
-
-  return { valid: true };
-}
-
-/**
- * Safe localStorage operations with error handling
- */
-const storage = {
-  get: <T,>(key: string, defaultValue: T): T => {
-    try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : defaultValue;
-    } catch {
-      return defaultValue;
-    }
-  },
-
-  set: (key: string, value: any): void => {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error('Failed to save to localStorage:', error);
-    }
-  },
-
-  remove: (key: string): void => {
-    try {
-      localStorage.removeItem(key);
-    } catch (error) {
-      console.error('Failed to remove from localStorage:', error);
-    }
-  },
-
-  clear: (): void => {
-    try {
-      Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
-    } catch (error) {
-      console.error('Failed to clear localStorage:', error);
-    }
-  },
+const ICON_MAP: Record<string, React.ReactNode> = {
+  'home':          <Home size={14} className="inline-block shrink-0 text-[#c1a478]" />,
+  'dollar-sign':   <DollarSign size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'bed':           <Bed size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'droplets':      <Droplets size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'maximize':      <Maximize size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'map-pin':       <MapPin size={14} className="inline-block shrink-0 text-[#c1a478]" />,
+  'external-link': <ExternalLink size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'phone':         <Phone size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'mail':          <Mail size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'user':          <User size={14} className="inline-block shrink-0 text-[#c1a478]" />,
+  'clock':         <Clock size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'check-circle':  <CheckCircle size={14} className="inline-block shrink-0 text-green-500" />,
+  'help-circle':   <HelpCircle size={14} className="inline-block shrink-0 text-[#c1a478]" />,
+  'calendar':      <Calendar size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'tag':           <Tag size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'credit-card':   <CreditCard size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'search':        <Search size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'info':          <Info size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'car':           <Car size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'trees':         <Trees size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
+  'star':          <Star size={14} className="inline-block shrink-0 text-[#c1a478]" />,
+  'bed-double':    <BedDouble size={14} className="inline-block shrink-0 text-[#5d6d87]" />,
 };
 
-/**
- * Generate unique message ID
- */
-function generateMessageId(): string {
-  return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+function parseMessage(text: string): React.ReactNode[] {
+  return text.split('\n').map((line, lineIdx, arr) => {
+    const parts = line.split(/(\[[a-z-]+\])/g);
+    const rendered = parts.map((part, partIdx) => {
+      const m = part.match(/^\[([a-z-]+)\]$/);
+      if (m) {
+        const icon = ICON_MAP[m[1]];
+        return icon
+          ? <span key={partIdx} className="inline-flex items-center mr-1 align-middle">{icon}</span>
+          : null;
+      }
+      if (part.includes('/properties/')) {
+        return (
+          <a key={partIdx} href={part.trim()}
+            className="text-[#c1a478] underline hover:text-[#b09368] transition-colors ml-1">
+            View property
+          </a>
+        );
+      }
+      return <span key={partIdx}>{part}</span>;
+    });
+    return (
+      <span key={lineIdx} className="flex items-start gap-0.5 flex-wrap">
+        {rendered}
+        {lineIdx < arr.length - 1 && <br />}
+      </span>
+    );
+  });
 }
 
-/**
- * Merge local and remote messages, removing duplicates
- */
-function mergeMessages(local: Message[], remote: Message[]): Message[] {
-  const messageMap = new Map<string, Message>();
+// ------------------------------------------------------------------ //
+// Sanitize bot response
+// ------------------------------------------------------------------ //
 
-  // Add local messages
-  local.forEach(msg => messageMap.set(msg.id, msg));
-
-  // Add remote messages (they override local if same ID)
-  remote.forEach(msg => messageMap.set(msg.id, msg));
-
-  // Sort by timestamp
-  return Array.from(messageMap.values()).sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-  );
+function sanitize(text: string): string {
+  if (typeof window === 'undefined') return text.replace(/<script[^>]*>.*?<\/script>/gi, '').trim();
+  try {
+    return DOMPurify.sanitize(text, {
+      ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'br'],
+      ALLOWED_ATTR: [],
+      KEEP_CONTENT: true,
+    }).trim();
+  } catch {
+    return text.trim();
+  }
 }
 
-// ================================================================
-// INTRO FORM COMPONENT
-// ================================================================
+function genId(): string {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+// ------------------------------------------------------------------ //
+// Intro Form — required fields, validation
+// ------------------------------------------------------------------ //
 
 function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
-  const [info, setInfo] = useState<UserInfo>({ name: '', email: '', phone: '' });
+  const [info, setInfo]     = useState<UserInfo>({ name: '', email: '', phone: '' });
+  const [errors, setErrors] = useState<Partial<UserInfo>>({});
+
+  const validate = () => {
+    const e: Partial<UserInfo> = {};
+    if (!info.name.trim())  e.name  = 'Name is required';
+    if (!info.email.trim()) e.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(info.email)) e.email = 'Enter a valid email';
+    if (!info.phone.trim()) e.phone = 'Phone is required';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
 
   const field = (
     label: string,
@@ -219,22 +134,35 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
     type = 'text',
     placeholder = ''
   ) => (
-    <div>
+    <div key={key}>
       <label className="flex items-center gap-1 text-[11px] font-semibold text-[#5d6d87] mb-1">
-        {icon} {label}
+        {icon} {label} <span className="text-red-500 ml-0.5">*</span>
       </label>
       <input
         type={type}
         placeholder={placeholder}
         value={info[key]}
-        onChange={(e) => setInfo(prev => ({ ...prev, [key]: e.target.value }))}
-        className="w-full p-[10px] border border-[#e8e8e8] rounded text-[13px] bg-white focus:border-[#c1a478] focus:outline-none focus:ring-2 focus:ring-[#c1a478]/20 transition-all"
+        onChange={(e) => {
+          setInfo(prev => ({ ...prev, [key]: e.target.value }));
+          if (errors[key]) setErrors(prev => ({ ...prev, [key]: '' }));
+        }}
+        className={`w-full p-[10px] border rounded text-[13px] bg-white focus:outline-none focus:ring-2 transition-all ${
+          errors[key]
+            ? 'border-red-400 focus:border-red-400 focus:ring-red-100'
+            : 'border-[#e8e8e8] focus:border-[#c1a478] focus:ring-[#c1a478]/20'
+        }`}
       />
+      {errors[key] && <p className="text-red-500 text-[11px] mt-1">{errors[key]}</p>}
     </div>
   );
 
   return (
-    <div className={styles.introForm}>
+    <motion.div
+      className={styles.introForm}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="p-6">
         <div className="flex flex-col items-center mb-5">
           <div className="w-12 h-12 rounded-full bg-[#c1a478] flex items-center justify-center mb-3">
@@ -242,456 +170,308 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
           </div>
           <h3 className="text-[16px] font-bold text-[#1a1a1a]">Welcome to Lily White Real Estate!</h3>
           <p className="text-[13px] text-[#6c757d] mt-1 text-center">
-            Let's find your perfect property together
+            Let&apos;s find your perfect property together
           </p>
         </div>
 
         <div className="flex flex-col gap-3">
-          {field('Your Name', <User size={12} />, 'name', 'text', 'John Doe')}
-          {field('Email Address', <Mail size={12} />, 'email', 'email', 'john@example.com')}
-          {field('Phone Number', <Phone size={12} />, 'phone', 'tel', '+1 (555) 123-4567')}
+          {field('Your Name',     <User size={12} />,  'name',  'text',  'John Doe')}
+          {field('Email Address', <Mail size={12} />,  'email', 'email', 'john@example.com')}
+          {field('Phone Number',  <Phone size={12} />, 'phone', 'tel',   '+1 (555) 123-4567')}
         </div>
 
         <button
-          onClick={() => onStart(info)}
+          onClick={() => { if (validate()) onStart(info); }}
           className="w-full mt-5 py-3 bg-[#c1a478] hover:bg-[#b09368] text-white text-[13px] font-bold rounded transition-colors"
         >
           Start Chat
         </button>
-        <button
-          onClick={() => onStart({ name: '', email: '', phone: '' })}
-          className="w-full mt-2 py-2 text-[12px] text-[#6c757d] hover:text-[#1a1a1a] underline bg-transparent border-none cursor-pointer transition-colors"
-        >
-          Skip and chat anonymously
-        </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-// ================================================================
-// MAIN CHATBOT COMPONENT
-// ================================================================
+// ------------------------------------------------------------------ //
+// Main component
+// ------------------------------------------------------------------ //
 
 export default function ChatbotSecure() {
-  // State
-  const [isOpen, setIsOpen] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
-  const [userInfo, setUserInfo] = useState<UserInfo>({ name: '', email: '', phone: '' });
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [sessionId, setSessionId] = useState('');
-  const [error, setError] = useState('');
-  const [lastMessageTime, setLastMessageTime] = useState(0);
+  const {
+    isOpen, showIntro, sessionId, userInfo, messages, isLoading, error,
+    open, close, setShowIntro, setSessionId, setUserInfo,
+    addMessage, setMessages, setLoading, setError, clearSession,
+  } = useChatbotStore();
 
-  // Refs
-  const chatAreaRef = useRef<HTMLDivElement>(null);
-  const syncIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [input, setInput]               = useState('');
+  const [lastMsgTime, setLastMsgTime]   = useState(0);
+  const chatAreaRef                     = useRef<HTMLDivElement>(null);
 
-  // ================================================================
-  // PERSISTENCE FUNCTIONS
-  // ================================================================
-
-  /**
-   * Load messages from localStorage
-   */
-  const loadFromLocalStorage = useCallback(() => {
-    const storedMessages = storage.get<Message[]>(STORAGE_KEYS.MESSAGES, []);
-    const storedSessionId = storage.get<string>(STORAGE_KEYS.SESSION_ID, '');
-    const storedUserInfo = storage.get<UserInfo>(STORAGE_KEYS.USER_INFO, { name: '', email: '', phone: '' });
-
-    if (storedMessages.length > 0) {
-      setMessages(storedMessages);
-      setShowIntro(false);
-    }
-
-    if (storedSessionId) {
-      setSessionId(storedSessionId);
-    }
-
-    if (storedUserInfo.name || storedUserInfo.email) {
-      setUserInfo(storedUserInfo);
-    }
-  }, []);
-
-  /**
-   * Save messages to localStorage
-   */
-  const saveToLocalStorage = useCallback((msgs: Message[], sessId: string) => {
-    storage.set(STORAGE_KEYS.MESSAGES, msgs);
-    storage.set(STORAGE_KEYS.SESSION_ID, sessId);
-    storage.set(STORAGE_KEYS.LAST_SYNC, new Date().toISOString());
-  }, []);
-
-  /**
-   * Sync with backend - fetch history and merge
-   */
-  const syncWithBackend = useCallback(async (sessId: string) => {
-    if (!sessId) return;
-
-    try {
-      const data = await apiRequest<ChatHistoryResponse>(
-        `${API_ENDPOINTS.chatbot.history}?session_id=${sessId}`,
-        { method: 'GET' }
-      );
-
-      if (data.messages && data.messages.length > 0) {
-        setMessages(prevMessages => {
-          const merged = mergeMessages(prevMessages, data.messages);
-          saveToLocalStorage(merged, sessId);
-          return merged;
-        });
-      }
-    } catch (error) {
-      console.error('Failed to sync with backend:', error);
-      // Don't show error to user - fallback to local storage
-    }
-  }, [saveToLocalStorage]);
-
-  // ================================================================
-  // LIFECYCLE HOOKS
-  // ================================================================
-
-  /**
-   * Load from localStorage on mount
-   */
-  useEffect(() => {
-    loadFromLocalStorage();
-  }, [loadFromLocalStorage]);
-
-  /**
-   * Sync with backend when session ID is available
-   */
-  useEffect(() => {
-    if (sessionId && isOpen) {
-      syncWithBackend(sessionId);
-
-      // Set up periodic sync
-      syncIntervalRef.current = setInterval(() => {
-        syncWithBackend(sessionId);
-      }, SYNC_INTERVAL);
-
-      return () => {
-        if (syncIntervalRef.current) {
-          clearInterval(syncIntervalRef.current);
-        }
-      };
-    }
-  }, [sessionId, isOpen, syncWithBackend]);
-
-  /**
-   * Save to localStorage whenever messages change
-   */
-  useEffect(() => {
-    if (messages.length > 0 && sessionId) {
-      saveToLocalStorage(messages, sessionId);
-    }
-  }, [messages, sessionId, saveToLocalStorage]);
-
-  /**
-   * Auto-scroll to latest message
-   */
+  // Auto-scroll
   useEffect(() => {
     if (chatAreaRef.current) {
       chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
     }
   }, [messages, isLoading]);
 
-  // ================================================================
-  // EVENT HANDLERS
-  // ================================================================
+  // Sync with backend on open
+  useEffect(() => {
+    if (isOpen && sessionId && !showIntro) {
+      syncWithBackend(sessionId);
+    }
+  }, [isOpen]);
 
-  /**
-   * Handle chat open
-   */
-  const handleOpen = () => {
-    setIsOpen(true);
-    // Only show intro if no session exists
-    if (!sessionId && messages.length === 0) {
-      setShowIntro(true);
+  const syncWithBackend = async (sid: string) => {
+    try {
+      const data = await apiRequest<{ messages: any[] }>(
+        `${API_ENDPOINTS.chatbot.history}?session_id=${sid}`
+      );
+      if (data.messages?.length) {
+        const remote: ChatMessage[] = [];
+        for (let i = 0; i < data.messages.length; i += 2) {
+          const u = data.messages[i];
+          const b = data.messages[i + 1];
+          if (u) remote.push({ id: genId(), role: 'user', message: u.message, timestamp: u.timestamp });
+          if (b) remote.push({ id: genId(), role: 'bot',  message: sanitize(b.message), timestamp: b.timestamp });
+        }
+        // Merge: keep local messages not in remote
+        const remoteIds = new Set(remote.map(m => m.message + m.timestamp));
+        const localOnly = messages.filter(m => !remoteIds.has(m.message + m.timestamp));
+        setMessages([...remote, ...localOnly].sort(
+          (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+        ));
+      }
+    } catch {
+      // Silently fail — local messages remain
     }
   };
 
-  /**
-   * Handle intro form submission
-   */
+  const handleOpen = () => {
+    open();
+    if (!sessionId) setShowIntro(true);
+  };
+
   const handleStart = (info: UserInfo) => {
     setUserInfo(info);
-    storage.set(STORAGE_KEYS.USER_INFO, info);
     setShowIntro(false);
-
-    // Add welcome message if no messages exist
-    if (messages.length === 0 && typeof window !== 'undefined') {
-      const firstName = info.name ? ' ' + info.name.split(' ')[0] : '';
-      const welcomeText = `Hi${firstName}! I'm your Investment Property Specialist assistant representing Bijen Khadka. With 12+ years of experience and 1500+ satisfied clients, I'm here to help you find the perfect property. What are you looking for today?`;
-      
-      const welcomeMessage: Message = {
-        id: generateMessageId(),
-        role: 'bot',
-        message: sanitizeBotResponse(welcomeText),
-        timestamp: new Date().toISOString(),
-      };
-      setMessages([welcomeMessage]);
-    }
+    const firstName = info.name ? ' ' + info.name.split(' ')[0] : '';
+    addMessage({
+      id:        genId(),
+      role:      'bot',
+      message:   `Hi${firstName}! I'm your Investment Property Specialist assistant representing Bijen Khadka. With 12+ years of experience and 1500+ satisfied clients, I'm here to help you find the perfect property. What are you looking for today?`,
+      timestamp: new Date().toISOString(),
+    });
   };
 
-  /**
-   * Handle message send with security and rate limiting
-   */
   const handleSend = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-
     const msg = input.trim();
     if (!msg || isLoading) return;
 
-    // Rate limiting check (client-side debounce)
+    // Rate limit
     const now = Date.now();
-    if (now - lastMessageTime < DEBOUNCE_DELAY) {
+    if (now - lastMsgTime < DEBOUNCE_MS) {
       setError('Please wait a moment before sending another message');
       setTimeout(() => setError(''), 3000);
       return;
     }
 
-    // Validate message
-    const validation = validateMessage(msg);
-    if (!validation.valid) {
-      setError(validation.error || 'Invalid message');
+    // Length check
+    if (msg.length > MAX_MESSAGE_LENGTH) {
+      setError(`Message too long (max ${MAX_MESSAGE_LENGTH} chars)`);
+      return;
+    }
+
+    // Spam check
+    const lastUser = [...messages].reverse().find(m => m.role === 'user');
+    if (lastUser?.message === msg) {
+      setError("Please don't send the same message twice");
       setTimeout(() => setError(''), 3000);
       return;
     }
 
-    const trimmedMessage = validateInput(msg);
-
-    // Check for duplicate message (spam prevention)
-    if (messages.length > 0) {
-      const lastUserMessage = [...messages].reverse().find(m => m.role === 'user');
-      if (lastUserMessage && lastUserMessage.message === trimmedMessage) {
-        setError('Please don\'t send the same message twice');
-        setTimeout(() => setError(''), 3000);
-        return;
-      }
-    }
-
-    // Add user message to state
-    const userMessage: Message = {
-      id: generateMessageId(),
-      role: 'user',
-      message: trimmedMessage,
-      timestamp: new Date().toISOString(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
+    addMessage({ id: genId(), role: 'user', message: msg, timestamp: new Date().toISOString() });
     setInput('');
-    setIsLoading(true);
+    setLoading(true);
     setError('');
-    setLastMessageTime(now);
+    setLastMsgTime(now);
 
     try {
-      const payload: Record<string, string> = { message: trimmedMessage };
-
+      const payload: Record<string, string> = { message: msg };
       if (sessionId) {
         payload.session_id = sessionId;
       } else {
-        // First message - attach user info if provided
-        if (userInfo.name) payload.user_name = userInfo.name;
+        if (userInfo.name)  payload.user_name  = userInfo.name;
         if (userInfo.email) payload.user_email = userInfo.email;
         if (userInfo.phone) payload.user_phone = userInfo.phone;
       }
 
-      const data = await apiRequest<ChatResponse>(API_ENDPOINTS.chatbot.chat, {
-        method: 'POST',
-        body: JSON.stringify(payload),
+      const data = await apiRequest<{ response: string; session_id: string }>(
+        API_ENDPOINTS.chatbot.chat,
+        { method: 'POST', body: JSON.stringify(payload) }
+      );
+
+      if (data.session_id && !sessionId) setSessionId(data.session_id);
+
+      addMessage({
+        id:        genId(),
+        role:      'bot',
+        message:   sanitize(data.response),
+        timestamp: new Date().toISOString(),
       });
-
-      // Update session ID if new
-      if (data.session_id && !sessionId) {
-        setSessionId(data.session_id);
-        storage.set(STORAGE_KEYS.SESSION_ID, data.session_id);
-      }
-
-      // Add bot response (sanitize for safe display)
-      const botMessage: Message = {
-        id: generateMessageId(),
-        role: 'bot',
-        message: sanitizeBotResponse(data.response),
+    } catch {
+      addMessage({
+        id:        genId(),
+        role:      'bot',
+        message:   "I'm having trouble connecting right now. Please try again or contact us directly.",
         timestamp: new Date().toISOString(),
-      };
-
-      setMessages(prev => [...prev, botMessage]);
-    } catch (err) {
-      console.error('Chat error:', err);
-      const errorMsg = err instanceof Error ? err.message : 'Connection error';
-      setError(errorMsg);
-      
-      // Add error message to chat (sanitized)
-      const errorMessage: Message = {
-        id: generateMessageId(),
-        role: 'bot',
-        message: sanitizeBotResponse("I'm having trouble connecting right now. Please try again or contact us directly at Bijen@lilywhiterealestate.com.au or +600414701721."),
-        timestamp: new Date().toISOString(),
-      };
-
-      setMessages(prev => [...prev, errorMessage]);
+      });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  /**
-   * Handle clear chat
-   */
-  const handleClearChat = async () => {
-    if (!confirm('Are you sure you want to clear this chat? This cannot be undone.')) {
-      return;
-    }
-
+  const handleClear = async () => {
+    if (!confirm('Clear this chat? This cannot be undone.')) return;
     try {
-      // Clear backend session if exists
       if (sessionId) {
-        await apiRequest(
-          `${API_ENDPOINTS.chatbot.clearSession}?session_id=${sessionId}`,
-          { method: 'DELETE' }
-        );
+        await apiRequest(`${API_ENDPOINTS.chatbot.clearSession}?session_id=${sessionId}`, { method: 'DELETE' });
       }
-    } catch (error) {
-      console.error('Failed to clear backend session:', error);
-    }
-
-    // Clear local state and storage
-    setMessages([]);
-    setSessionId('');
-    setShowIntro(true);
-    storage.clear();
+    } catch { /* ignore */ }
+    clearSession();
   };
 
-  /**
-   * Handle refresh/sync
-   */
-  const handleRefresh = () => {
-    if (sessionId) {
-      syncWithBackend(sessionId);
-    }
-  };
-
-  // ================================================================
-  // RENDER
-  // ================================================================
+  // ---------------------------------------------------------------- //
+  // Render
+  // ---------------------------------------------------------------- //
 
   return (
     <div className={styles.wrapper}>
-      {/* Floating Action Button */}
-      {!isOpen && (
-        <button className={styles.fab} onClick={handleOpen} aria-label="Open chat">
-          <MessageSquare size={24} />
-          <span className={styles.pulse} />
-        </button>
-      )}
+      {/* FAB */}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.button
+            className={styles.fab}
+            onClick={handleOpen}
+            aria-label="Open chat"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          >
+            <MessageSquare size={24} />
+            <span className={styles.pulse} />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Chat Window */}
-      {isOpen && (
-        <div className={styles.container}>
-          {/* Header */}
-          <div className={styles.header}>
-            <div className={styles.headerInfo}>
-              <h3>Lily White Real Estate</h3>
-              <p>Investment Property Specialist | Online</p>
-            </div>
-            <div className="flex items-center gap-2">
-              {!showIntro && sessionId && (
-                <>
-                  <button
-                    onClick={handleRefresh}
-                    aria-label="Refresh chat"
-                    className="p-1 hover:bg-white/10 rounded transition-colors"
-                    title="Sync with server"
-                  >
-                    <RefreshCw size={16} />
-                  </button>
-                  <button
-                    onClick={handleClearChat}
-                    aria-label="Clear chat"
-                    className="p-1 hover:bg-white/10 rounded transition-colors"
-                    title="Clear chat history"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </>
-              )}
-              <button onClick={() => setIsOpen(false)} aria-label="Close chat">
-                <X size={20} />
-              </button>
-            </div>
-          </div>
-
-          {/* Intro Form or Chat */}
-          {showIntro ? (
-            <IntroForm onStart={handleStart} />
-          ) : (
-            <>
-              {/* Chat Area */}
-              <div className={styles.chatArea} ref={chatAreaRef}>
-                {messages.map((m) => (
-                  <div
-                    key={m.id}
-                    className={`${styles.message} ${m.role === 'bot' ? styles.bot : styles.user}`}
-                  >
-                    <div className="flex flex-col">
-                      <div>{m.message}</div>
-                      <div className="text-[10px] opacity-60 mt-1">
-                        {new Date(m.timestamp).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Typing Indicator */}
-                {isLoading && (
-                  <div className={`${styles.message} ${styles.bot} ${styles.loading}`}>
-                    <span /><span /><span />
-                  </div>
-                )}
-
-                {/* Error Message */}
-                {error && (
-                  <div className="text-center text-red-500 text-xs py-2">
-                    {error}
-                  </div>
-                )}
+      {/* Chat window */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className={styles.container}
+            initial={{ opacity: 0, scale: 0.85, y: 20, originX: 1, originY: 1 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85, y: 20 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 24 }}
+          >
+            {/* Header */}
+            <div className={styles.header}>
+              <div className={styles.headerInfo}>
+                <h3>Lily White Real Estate</h3>
+                <p>Investment Property Specialist | Online</p>
               </div>
+              <div className="flex items-center gap-2">
+                {!showIntro && sessionId && (
+                  <>
+                    <button onClick={() => syncWithBackend(sessionId)}
+                      className="p-1 hover:bg-white/10 rounded transition-colors" title="Sync">
+                      <RefreshCw size={16} />
+                    </button>
+                    <button onClick={handleClear}
+                      className="p-1 hover:bg-white/10 rounded transition-colors" title="Clear chat">
+                      <Trash2 size={16} />
+                    </button>
+                  </>
+                )}
+                <button onClick={close} aria-label="Close chat">
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
 
-              {/* Input Area */}
-              <form className={styles.inputArea} onSubmit={handleSend}>
-                <input
-                  type="text"
-                  placeholder="Type your message..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  disabled={isLoading}
-                  maxLength={MAX_MESSAGE_LENGTH}
-                  autoFocus
-                  aria-label="Message input"
-                />
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-gray-400">
-                    {input.length}/{MAX_MESSAGE_LENGTH}
-                  </span>
-                  <button
-                    type="submit"
-                    disabled={isLoading || !input.trim()}
-                    aria-label="Send message"
-                  >
-                    <Send size={18} />
-                  </button>
+            {/* Body */}
+            {showIntro ? (
+              <IntroForm onStart={handleStart} />
+            ) : (
+              <>
+                {/* Messages */}
+                <div className={styles.chatArea} ref={chatAreaRef}>
+                  <AnimatePresence initial={false}>
+                    {messages.map((m) => (
+                      <motion.div
+                        key={m.id}
+                        className={`${styles.message} ${m.role === 'bot' ? styles.bot : styles.user}`}
+                        initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                      >
+                        <div className="flex flex-col">
+                          <div>
+                            {m.role === 'bot' ? parseMessage(m.message) : m.message}
+                          </div>
+                          <div className="text-[10px] opacity-60 mt-1">
+                            {new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+
+                  {/* Typing indicator */}
+                  <AnimatePresence>
+                    {isLoading && (
+                      <motion.div
+                        className={`${styles.message} ${styles.bot} ${styles.loading}`}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                      >
+                        <span /><span /><span />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {error && (
+                    <div className="text-center text-red-500 text-xs py-2">{error}</div>
+                  )}
                 </div>
-              </form>
-            </>
-          )}
-        </div>
-      )}
+
+                {/* Input */}
+                <form className={styles.inputArea} onSubmit={handleSend}>
+                  <input
+                    type="text"
+                    placeholder="Type your message..."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    disabled={isLoading}
+                    maxLength={MAX_MESSAGE_LENGTH}
+                    autoFocus
+                    aria-label="Message input"
+                  />
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-gray-400">{input.length}/{MAX_MESSAGE_LENGTH}</span>
+                    <button type="submit" disabled={isLoading || !input.trim()} aria-label="Send">
+                      <Send size={18} />
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

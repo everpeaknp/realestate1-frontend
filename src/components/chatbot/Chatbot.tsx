@@ -95,6 +95,21 @@ function parseMessage(text: string): React.ReactNode[] {
 
 function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
   const [info, setInfo] = useState<UserInfo>({ name: '', email: '', phone: '' });
+  const [errors, setErrors] = useState<Partial<UserInfo>>({});
+
+  const validate = () => {
+    const e: Partial<UserInfo> = {};
+    if (!info.name.trim()) e.name = 'Name is required';
+    if (!info.email.trim()) e.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(info.email)) e.email = 'Enter a valid email';
+    if (!info.phone.trim()) e.phone = 'Phone is required';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validate()) onStart(info);
+  };
 
   const field = (
     label: string,
@@ -105,15 +120,25 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
   ) => (
     <div>
       <label className="flex items-center gap-1 text-[11px] font-semibold text-[#5d6d87] mb-1">
-        {icon} {label}
+        {icon} {label} <span className="text-red-500 ml-0.5">*</span>
       </label>
       <input
         type={type}
         placeholder={placeholder}
         value={info[key]}
-        onChange={(e) => setInfo(prev => ({ ...prev, [key]: e.target.value }))}
-        className="w-full p-[10px] border border-[#e8e8e8] rounded text-[13px] bg-white focus:border-[#c1a478] focus:outline-none focus:ring-2 focus:ring-[#c1a478]/20 transition-all"
+        onChange={(e) => {
+          setInfo(prev => ({ ...prev, [key]: e.target.value }));
+          if (errors[key]) setErrors(prev => ({ ...prev, [key]: '' }));
+        }}
+        className={`w-full p-[10px] border rounded text-[13px] bg-white focus:outline-none focus:ring-2 transition-all ${
+          errors[key]
+            ? 'border-red-400 focus:border-red-400 focus:ring-red-100'
+            : 'border-[#e8e8e8] focus:border-[#c1a478] focus:ring-[#c1a478]/20'
+        }`}
       />
+      {errors[key] && (
+        <p className="text-red-500 text-[11px] mt-1">{errors[key]}</p>
+      )}
     </div>
   );
 
@@ -127,7 +152,7 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
           </div>
           <h3 className="text-[16px] font-bold text-[#1a1a1a]">Welcome to Lily White Real Estate!</h3>
           <p className="text-[13px] text-[#6c757d] mt-1 text-center">
-            Let's find your perfect property together
+            Let&apos;s find your perfect property together
           </p>
         </div>
 
@@ -138,18 +163,12 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
           {field('Phone Number',  <Phone size={12} />, 'phone', 'tel',   '+1 (555) 123-4567')}
         </div>
 
-        {/* Buttons */}
+        {/* Button */}
         <button
-          onClick={() => onStart(info)}
+          onClick={handleSubmit}
           className="w-full mt-5 py-3 bg-[#c1a478] hover:bg-[#b09368] text-white text-[13px] font-bold rounded transition-colors"
         >
           Start Chat
-        </button>
-        <button
-          onClick={() => onStart({ name: '', email: '', phone: '' })}
-          className="w-full mt-2 py-2 text-[12px] text-[#6c757d] hover:text-[#1a1a1a] underline bg-transparent border-none cursor-pointer transition-colors"
-        >
-          Skip and chat anonymously
         </button>
       </div>
     </div>
