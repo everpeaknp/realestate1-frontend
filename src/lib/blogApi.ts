@@ -50,10 +50,11 @@ export interface CommentSubmission {
 }
 
 /**
- * Fetch all blog posts
+ * Fetch all blog posts, optionally filtered by search query
  */
-export async function getBlogPosts(): Promise<BlogPost[]> {
-  const endpoint = `${API_URL}/api/blog/posts/`;
+export async function getBlogPosts(search?: string): Promise<BlogPost[]> {
+  const params = search ? `?search=${encodeURIComponent(search)}` : '';
+  const endpoint = `${API_URL}/api/blog/posts/${params}`;
   
   console.log('🔍 Fetching blog posts from:', endpoint);
   

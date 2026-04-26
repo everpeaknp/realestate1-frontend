@@ -6,7 +6,7 @@ import ServicesHero from '@/components/services/ServicesHero';
 import BuyPropertySection from '@/components/services/BuyPropertySection';
 import SellPropertySection from '@/components/services/SellPropertySection';
 import RentPropertySection from '@/components/services/RentPropertySection';
-import HomeLoanSection from '@/components/services/HomeLoanSection';
+ 
 import StatsSection from '@/components/shared/StatsSection';
 import ContactSection from '@/components/shared/ContactSection';
 import Newsletter from '@/components/shared/newsletter';
@@ -104,15 +104,7 @@ export default function ServicesPage() {
             buttonText={rentProperty?.button_text}
             features={rentProperty?.features}
           />
-          <HomeLoanSection
-            title={homeLoan?.title}
-            description={homeLoan?.description}
-            image={homeLoan?.image}
-            phone={homeLoan?.phone}
-            email={homeLoan?.email}
-            buttonText={homeLoan?.button_text}
-            features={homeLoan?.features}
-          />
+          
         </>
       )}
       <StatsSection />

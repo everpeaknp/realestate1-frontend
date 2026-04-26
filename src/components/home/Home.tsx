@@ -47,20 +47,22 @@ export default function Home({
       <Header />
       <Hero settings={heroSettings} />
       <HeroCards cards={heroCards} />
-      <PersonSection settings={personSection} />
-      <StatsSection stats={stats} />
+  
+      
       <FeaturedProperties />
+      <StatsSection stats={stats} />
       <PopularNeighborhoods neighborhoods={neighborhoods} />
       <HowItWorks steps={howItWorks} />
-      <BenefitsSection 
+  
+      <Testimonials />
+          <BenefitsSection 
         benefits={benefits}
         gallery={benefitGallery}
         section={benefitsSection}
       />
-      <Testimonials />
       <ContactSection settings={contactSection} />
       <Newsletter />
-      <InstagramGallery images={instagram} />
+      <InstagramGallery />
       <Footer />
     </>
   );
