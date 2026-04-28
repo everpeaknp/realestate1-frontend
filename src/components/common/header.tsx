@@ -3,14 +3,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
 import { useState, useEffect } from 'react';
 
 
 export default function Header() {
-  const { headerSettings, loading } = useCMS();
+  const { headerSettings } = useCMS();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -52,6 +51,14 @@ export default function Header() {
     return pathname.startsWith(href);
   };
 
+  // Helper function to ensure absolute URL for images
+  const getImageUrl = (url: string | null): string | null => {
+    if (!url) return null;
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return `${process.env.NEXT_PUBLIC_API_URL}${url}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
+  };
+
   return (
     <>
       <header className="w-full border-b border-gray-100 bg-white shadow-sm sticky top-0 z-50">
@@ -60,13 +67,15 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             {logoImage ? (
               // Custom uploaded logo
-              <div className="relative h-8 sm:h-10 w-auto">
-                <Image 
-                  src={logoImage} 
+              <div className="relative h-12 sm:h-16 md:h-20 w-auto">
+                <img 
+                  src={getImageUrl(logoImage) || ''} 
                   alt={logoText}
-                  width={120}
-                  height={40}
-                  className="h-8 sm:h-10 w-auto object-contain"
+                  className="h-12 sm:h-16 md:h-20 w-auto object-contain"
+                  onError={(e) => {
+                    console.error('Logo image failed to load:', getImageUrl(logoImage));
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                 />
               </div>
             ) : (

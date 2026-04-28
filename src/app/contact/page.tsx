@@ -76,7 +76,7 @@ export default function ContactPage() {
           <ContactFormSection />
         </>
       )}
-      <ContactSection />
+       
       <Newsletter />
       <Instagram />
       <Footer />

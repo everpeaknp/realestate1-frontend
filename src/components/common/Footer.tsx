@@ -2,7 +2,6 @@
 
 import { Phone, Mail, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
@@ -43,6 +42,14 @@ export default function Footer() {
   const email = footerSettings?.email || 'hello@example.com';
   const copyrightText = footerSettings?.copyright_text || '2026 Lily White Realestate. All rights reserved.';
   
+  // Helper function to ensure absolute URL for images
+  const getImageUrl = (url: string | null): string | null => {
+    if (!url) return null;
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return `${process.env.NEXT_PUBLIC_API_URL}${url}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
+  };
+
   const footerLinks = footerSettings?.footer_links?.filter(link => link.is_active).sort((a, b) => a.order - b.order) || [
     { id: 1, name: "What's My Home Worth?", href: '/home-worth', order: 1, is_active: true },
     { id: 2, name: 'Testimonials', href: '/testimonials', order: 2, is_active: true },
@@ -102,13 +109,15 @@ export default function Footer() {
             transition={{ duration: 0.6 }}
           >
             {logoImage ? (
-              <div className="relative h-8 sm:h-10 w-auto">
-                <Image 
-                  src={logoImage} 
+              <div className="relative h-12 sm:h-16 md:h-20 w-auto">
+                <img 
+                  src={getImageUrl(logoImage) || ''} 
                   alt={logoText}
-                  width={120}
-                  height={40}
-                  className="h-8 sm:h-10 w-auto object-contain"
+                  className="h-12 sm:h-16 md:h-20 w-auto object-contain"
+                  onError={(e) => {
+                    console.error('Footer logo image failed to load:', getImageUrl(logoImage));
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                 />
               </div>
             ) : (
