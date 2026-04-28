@@ -238,7 +238,10 @@ export default function InfiniteCarousel() {
 
           <Link
             href="/properties"
-            className="text-blue-600 flex items-center gap-1 hover:text-blue-700 transition-colors"
+            className="flex items-center gap-1 transition-colors"
+            style={{ color: '#C1A478' }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
             View all <ChevronRight size={16} />
           </Link>
@@ -307,9 +310,12 @@ function PropertyCard({ property, onClick }: PropertyCardProps) {
             <div
               className={`absolute top-3 -left-8 w-36 py-1 text-center text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 ${
                 property.property_type === 'FOR_SALE'
-                  ? 'bg-blue-600'
+                  ? 'bg-green-600'
                   : 'bg-green-600'
               }`}
+              style={{
+                backgroundColor: property.property_type === 'FOR_SALE' ? '#C1A478' : '#16a34a'
+              }}
             >
               {property.property_type === 'FOR_SALE' ? 'FOR SALE' : 'FOR RENT'}
             </div>
@@ -319,7 +325,12 @@ function PropertyCard({ property, onClick }: PropertyCardProps) {
         {/* Card Content */}
         <div className="p-4">
           {/* Title */}
-          <h3 className="font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+          <h3 
+            className="font-semibold text-gray-900 truncate transition-colors"
+            style={{ '--hover-color': '#C1A478' } as any}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#C1A478')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#111827')}
+          >
             {property.title}
           </h3>
 
