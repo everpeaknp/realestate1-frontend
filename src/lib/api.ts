@@ -138,14 +138,20 @@ export async function apiRequest<T>(
   url: string,
   options?: RequestInit
 ): Promise<T> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
   try {
     const response = await fetch(url, {
       ...options,
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         ...options?.headers,
       },
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       // Try to get detailed error message from response body
