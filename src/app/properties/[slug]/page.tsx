@@ -64,13 +64,19 @@ async function getProperty(slug: string): Promise<PropertyData | null> {
     console.log('Fetching property from:', url);
     console.log('Environment API URL:', process.env.NEXT_PUBLIC_API_URL);
     
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     const response = await fetch(url, {
       cache: 'no-store',
+      signal: controller.signal,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     });
+    
+    clearTimeout(timeoutId);
     
     console.log('Response status:', response.status);
     console.log('Response URL:', response.url);
