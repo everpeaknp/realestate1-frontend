@@ -1,0 +1,104 @@
+name: Frontend CI & Deploy
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+          
+      - name: Lint
+        run: npm run lint
+          
+      - name: Build
+        run: npm run build
+
+  deploy:
+    name: Deploy VPS
+    runs-on: ubuntu-latest
+    needs: build-and-lint
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy stack on VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+
+            # Serialize deploys even if multiple workflows fire close together.
+            flock /tmp/realestate1-deploy.lock bash -c '
+              cd /opt/stacks/realestate1/frontend
+              git fetch origin main
+              git checkout main
+              git reset --hard origin/main
+              git clean -fd
+
+              cd /opt/stacks/realestate1/backend
+              git fetch origin main
+              git checkout main
+              git reset --hard origin/main
+              git clean -fd
+
+              cd /opt/stacks/realestate1
+              docker compose up -d --build realestate1-frontend realestate1-backend
+
+              docker compose ps
+              
+              wait_for_url() {
+                local url="$1"
+                local name="$2"
+                local max_attempts=30
+                local delay_seconds=3
+                local attempt=1
+
+                while [ "$attempt" -le "$max_attempts" ]; do
+                  if curl -fsS "$url" >/dev/null; then
+                    echo "$name is ready: $url"
+                    return 0
+                  fi
+                  echo "Waiting for $name ($attempt/$max_attempts): $url"
+                  sleep "$delay_seconds"
+                  attempt=$((attempt + 1))
+                done
+
+                echo "$name did not become ready in time: $url"
+                return 1
+              }
+
+              if ! wait_for_url http://127.0.0.1:8000/api/blog/posts/ backend; then
+                docker compose ps
+                docker logs --tail=120 realestate1-backend || true
+                docker logs --tail=120 realestate1-frontend || true
+                exit 1
+              fi
+
+              if ! wait_for_url http://127.0.0.1:3000/ frontend; then
+                docker compose ps
+                docker logs --tail=120 realestate1-backend || true
+                docker logs --tail=120 realestate1-frontend || true
+                exit 1
+              fi
+            '

@@ -59,10 +59,16 @@ export async function getBlogPosts(search?: string): Promise<BlogPost[]> {
   console.log('🔍 Fetching blog posts from:', endpoint);
   
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     const response = await fetch(endpoint, {
       next: { revalidate: 60 }, // Revalidate every 60 seconds
       cache: 'no-store', // Disable caching for debugging
+      signal: controller.signal,
     });
+    
+    clearTimeout(timeoutId);
 
     console.log('📡 Response status:', response.status, response.statusText);
     console.log('📡 Response headers:', {
@@ -133,13 +139,19 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   console.log('🔍 Environment:', typeof window === 'undefined' ? 'SERVER' : 'CLIENT');
   
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     const response = await fetch(endpoint, {
       next: { revalidate: 60 },
       cache: 'no-store', // Disable caching for debugging
+      signal: controller.signal,
       headers: {
         'Accept': 'application/json',
       },
     });
+    
+    clearTimeout(timeoutId);
 
     console.log('📡 Single post response status:', response.status, response.statusText);
     console.log('📡 Single post response headers:', {
@@ -194,9 +206,15 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
  */
 export async function getBlogCategories(): Promise<string[]> {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     const response = await fetch(`${API_URL}/api/blog/posts/categories/`, {
       next: { revalidate: 3600 }, // Revalidate every hour
+      signal: controller.signal,
     });
+    
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch categories: ${response.statusText}`);
