@@ -1,5 +1,15 @@
 'use client';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import { apiRequest, API_ENDPOINTS } from '@/lib/api';
+
+interface AboutHeroSettings {
+  title: string;
+  subtitle: string;
+  background_url: string;
+}
 
 export default function AboutHero() {
   const [settings, setSettings] = useState<AboutHeroSettings | null>(null);
@@ -29,6 +39,14 @@ export default function AboutHero() {
   const title = settings?.title || "Hello, I'm Justin Nelson";
   const subtitle = settings?.subtitle || "Boston's most acceptable realtor you can trust.";
   const backgroundUrl = settings?.background_url || 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920';
+
+  if (loading) {
+    return (
+      <section className="relative min-h-[300px] sm:min-h-[347px] flex items-center justify-center overflow-hidden bg-gray-900">
+        <div className="text-white">Loading...</div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative min-h-[300px] sm:min-h-[347px] flex items-center justify-center overflow-hidden">
