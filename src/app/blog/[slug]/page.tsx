@@ -1,13 +1,3 @@
-import { SinglePost } from '@/components/blog';
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
-
-export default function SinglePostPage({ params }: { params: { slug: string } }) {
-  return (
-    <>
-      <Header />
-      <SinglePost slug={params.slug} />
-      <Footer />
-    </>
-  );
-}
+// Temporarily using client-side rendering to debug the 404 issue
+// The server-side version is having trouble reaching Django backend
+export { default } from './page-client';

@@ -22,8 +22,8 @@ export const API_ENDPOINTS = {
   // Chatbot
   chatbot: {
     chat: `${API_URL}/api/chatbot/chat/`,
-    history: (sessionId: string) => `${API_URL}/api/chatbot/history/?session_id=${sessionId}`,
-    clearSession: (sessionId: string) => `${API_URL}/api/chatbot/clear_session/?session_id=${sessionId}`,
+    history: `${API_URL}/api/chatbot/history/`,
+    clearSession: `${API_URL}/api/chatbot/clear_session/`,
     health: `${API_URL}/api/chatbot/health/`,
   },
   
@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
     featured: `${API_URL}/api/properties/featured/`,
     forSale: `${API_URL}/api/properties/for_sale/`,
     forRent: `${API_URL}/api/properties/for_rent/`,
+    heroSettings: `${API_URL}/api/properties/hero-settings/`,
   },
   
   // Blog
@@ -50,27 +51,83 @@ export const API_ENDPOINTS = {
     detail: (slug: string) => `${API_URL}/api/blog/posts/${slug}/`,
     comments: `${API_URL}/api/blog/comments/`,
     createComment: `${API_URL}/api/blog/comments/`,
+    heroSettings: `${API_URL}/api/blog/hero-settings/`,
   },
   
   // Testimonials
   testimonials: {
     list: `${API_URL}/api/testimonials/`,
+    heroSettings: `${API_URL}/api/testimonials/hero/`,
   },
   
   // Projects
   projects: {
     list: `${API_URL}/api/projects/`,
+    heroSettings: `${API_URL}/api/projects/hero/`,
+  },
+  
+  // Services
+  services: {
+    list: `${API_URL}/api/services/`,
+    detail: (slug: string) => `${API_URL}/api/services/${slug}/`,
+  },
+  
+  // About
+  about: {
+    goals: `${API_URL}/api/about/goals/`,
+    servicesProvide: `${API_URL}/api/about/services-provide/`,
+    heroSettings: `${API_URL}/api/about/hero-settings/`,
+  },
+  
+  // Contact
+  contact: {
+    cards: `${API_URL}/api/contact/cards/`,
+    formSettings: `${API_URL}/api/contact/form-settings/`,
+    heroSettings: `${API_URL}/api/contact/hero-settings/`,
+  },
+  
+  // CMS
+  cms: {
+    headerSettings: `${API_URL}/api/cms/header-settings/`,
+    navigationLinks: `${API_URL}/api/cms/navigation-links/`,
+    footerSettings: `${API_URL}/api/cms/footer-settings/`,
+    footerLinks: `${API_URL}/api/cms/footer-links/`,
+    newsletterSettings: `${API_URL}/api/cms/newsletter-settings/`,
+    propertySidebarSettings: `${API_URL}/api/cms/property-sidebar-settings/`,
+    propertiesHeroSettings: `${API_URL}/api/cms/properties-hero-settings/`,
+  },
+  
+  // Home
+  home: {
+    heroSettings: `${API_URL}/api/home/hero-settings/`,
+    heroCards: `${API_URL}/api/home/hero-cards/`,
+    howItWorks: `${API_URL}/api/home/how-it-works/`,
+    neighborhoods: `${API_URL}/api/home/neighborhoods/`,
+    benefits: `${API_URL}/api/home/benefits/`,
+    benefitGallery: `${API_URL}/api/home/benefit-gallery/`,
+    benefitsSection: `${API_URL}/api/home/benefits-section/`,
+    contactSection: `${API_URL}/api/home/contact-section/`,
+    instagram: `${API_URL}/api/home/instagram/`,
+    personSection: `${API_URL}/api/home/person-section/`,
+    stats: `${API_URL}/api/home/stats/`,
   },
   
   // FAQs
   faqs: {
     list: `${API_URL}/api/faqs/`,
+    heroSettings: `${API_URL}/api/faqs/hero/`,
   },
   
   // Agents
   agents: {
     list: `${API_URL}/api/agents/`,
     detail: (id: number) => `${API_URL}/api/agents/${id}/`,
+  },
+  
+  // Home Worth
+  homeworth: {
+    heroSettings: `${API_URL}/api/homeworth/hero-settings/`,
+    formSettings: `${API_URL}/api/homeworth/form-settings/`,
   },
 };
 
@@ -91,7 +148,23 @@ export async function apiRequest<T>(
     });
 
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      // Try to get detailed error message from response body
+      let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        if (errorData.message) {
+          errorMessage += ` - ${errorData.message}`;
+        } else if (errorData.error) {
+          errorMessage += ` - ${errorData.error}`;
+        } else if (errorData.detail) {
+          errorMessage += ` - ${errorData.detail}`;
+        } else {
+          errorMessage += ` - ${JSON.stringify(errorData)}`;
+        }
+      } catch {
+        // If response body is not JSON, use default error message
+      }
+      throw new Error(errorMessage);
     }
 
     return await response.json();
@@ -114,3 +187,124 @@ export async function checkApiHealth(): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * About API functions
+ */
+export const aboutAPI = {
+  async getGoals() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.about.goals);
+    return response.results;
+  },
+  
+  async getServicesProvide() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.about.servicesProvide);
+    return response.results;
+  },
+};
+
+/**
+ * Contact API functions
+ */
+export const contactAPI = {
+  async getCards() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.contact.cards);
+    return response.results;
+  },
+  
+  async getFormSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.contact.formSettings);
+    return response.results;
+  },
+};
+
+/**
+ * CMS API functions
+ */
+export const cmsAPI = {
+  async getHeaderSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.headerSettings);
+    return response.results;
+  },
+  
+  async getNavigationLinks() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.navigationLinks);
+    return response.results;
+  },
+  
+  async getFooterSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.footerSettings);
+    return response.results;
+  },
+  
+  async getFooterLinks() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.footerLinks);
+    return response.results;
+  },
+  
+  async getNewsletterSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.newsletterSettings);
+    return response.results;
+  },
+  
+  async getPropertySidebarSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.propertySidebarSettings);
+    return response.results;
+  },
+};
+
+/**
+ * Home API functions
+ */
+export const homeAPI = {
+  async getHeroSettings() {
+    return await apiRequest<any>(API_ENDPOINTS.home.heroSettings);
+  },
+  
+  async getHeroCards() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.heroCards);
+    return response.results;
+  },
+  
+  async getHowItWorks() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.howItWorks);
+    return response.results;
+  },
+  
+  async getNeighborhoods() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.neighborhoods);
+    return response.results;
+  },
+  
+  async getBenefits() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.benefits);
+    return response.results;
+  },
+  
+  async getBenefitGallery() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.benefitGallery);
+    return response.results;
+  },
+  
+  async getBenefitsSection() {
+    return await apiRequest<any>(API_ENDPOINTS.home.benefitsSection);
+  },
+  
+  async getContactSection() {
+    return await apiRequest<any>(API_ENDPOINTS.home.contactSection);
+  },
+  
+  async getInstagram() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.instagram);
+    return response.results;
+  },
+  
+  async getPersonSection() {
+    return await apiRequest<any>(API_ENDPOINTS.home.personSection);
+  },
+  
+  async getStats() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.stats);
+    return response.results;
+  },
+};

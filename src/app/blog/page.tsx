@@ -3,8 +3,13 @@ import Header from '@/components/common/header';
 import Footer from '@/components/common/Footer';
 import Newsletter from '@/components/shared/newsletter';
 import Instagram from '@/components/shared/instagram';
-import PropertySidebar from '@/components/properties/single-property/PropertySidebar';
-import BlogSection from '@/components/blog/BlogSection';
+import PropertySidebar from '@/components/shared/PropertySidebar';
+import BlogList from '@/components/blog/BlogList';
+
+export const metadata = {
+  title: 'Blog | Real Estate Tips & Insights | Lily White Realestate',
+  description: "Discover expert real estate advice, market insights, and home buying tips from Boston's trusted realtor.",
+};
 
 export default function BlogPage() {
   return (
@@ -13,8 +18,8 @@ export default function BlogPage() {
       <BlogHero />
       <main className="bg-white">
         <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:items-start">
-          <div className="lg:col-span-8 space-y-12">
-            <BlogSection />
+          <div className="lg:col-span-8">
+            <BlogList />
           </div>
           <div className="lg:col-span-4 sticky top-24">
             <PropertySidebar />

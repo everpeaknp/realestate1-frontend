@@ -16,12 +16,17 @@ export default function SinglePostHero({
   comments = "No Comments",
   backgroundImage = "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=1920"
 }: SinglePostHeroProps) {
+  // Use fallback image if backgroundImage is empty or null
+  const heroImage = backgroundImage && backgroundImage.trim() !== '' 
+    ? backgroundImage 
+    : "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=1920";
+
   return (
     <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Parallax effect */}
       <div 
         className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
-        style={{ backgroundImage: `url("${backgroundImage}")` }}
+        style={{ backgroundImage: `url("${heroImage}")` }}
       >
         <div className="absolute inset-0 bg-black/60" />
       </div>
