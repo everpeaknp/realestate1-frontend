@@ -8,7 +8,7 @@ import {
   Tag, CreditCard, Search, Info, Car, Trees, Star, BedDouble,
 } from 'lucide-react';
 import styles from './Chatbot.module.css';
-import { API_ENDPOINTS, apiRequest } from '@/lib/api';
+import { API_ENDPOINTS, apiRequest, API_URL } from '@/lib/api';
 
 // ------------------------------------------------------------------ //
 // Types
@@ -233,13 +233,21 @@ export default function Chatbot() {
         if (userInfo.phone) payload.user_phone = userInfo.phone;
       }
 
-      console.log('Chatbot: Sending request to:', API_ENDPOINTS.chatbot.chat);
-      console.log('Chatbot: Payload:', payload);
+      console.log('=== CHATBOT DEBUG START ===');
+      console.log('API_URL:', API_URL);
+      console.log('Full endpoint:', API_ENDPOINTS.chatbot.chat);
+      console.log('Payload:', payload);
+      console.log('User info:', userInfo);
+      console.log('Session ID:', sessionId);
+      console.log('=== MAKING REQUEST ===');
 
       const data = await apiRequest<ChatResponse>(API_ENDPOINTS.chatbot.chat, {
         method: 'POST',
         body: JSON.stringify(payload),
       });
+
+      console.log('=== REQUEST SUCCESS ===');
+      console.log('Response:', data);
 
       if (data.session_id && !sessionId) setSessionId(data.session_id);
 
@@ -249,15 +257,28 @@ export default function Chatbot() {
         intent: data.intent,
       }]);
     } catch (err) {
-      console.error('Chatbot error:', err);
+      console.error('=== CHATBOT ERROR ===');
+      console.error('Error object:', err);
+      console.error('Error type:', typeof err);
+      console.error('Error constructor:', err?.constructor?.name);
+      
+      if (err instanceof Error) {
+        console.error('Error name:', err.name);
+        console.error('Error message:', err.message);
+        console.error('Error stack:', err.stack);
+      }
+      
+      // Show detailed error in development
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      console.error('Error details:', errorMessage);
+      const detailedError = `Connection error: ${errorMessage}. Check browser console for details.`;
+      
       setMessages(prev => [...prev, {
-        text: "I'm having trouble connecting right now. Please try again or contact us directly.",
+        text: detailedError,
         isBot: true,
       }]);
     } finally {
       setIsLoading(false);
+      console.log('=== CHATBOT DEBUG END ===');
     }
   };
 
