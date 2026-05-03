@@ -11,8 +11,8 @@ const getApiUrl = () => {
   if (typeof window !== 'undefined') {
     return process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
   }
-  // Server-side: check both NEXT_PUBLIC and regular env vars
-  return process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://127.0.0.1:8000';
+  // Server-side: prefer internal/private API URL, then fall back to public URL.
+  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 };
 
 export const API_URL = getApiUrl();
