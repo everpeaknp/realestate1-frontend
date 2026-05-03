@@ -139,7 +139,7 @@ export async function apiRequest<T>(
   options?: RequestInit
 ): Promise<T> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000);
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for chatbot
 
   try {
     const response = await fetch(url, {
@@ -176,6 +176,14 @@ export async function apiRequest<T>(
     return await response.json();
   } catch (error) {
     console.error('API Request failed:', error);
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        console.error('Request timed out after 30 seconds');
+        throw new Error('Request timed out. The server might be slow to respond.');
+      }
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+    }
     throw error;
   }
 }
