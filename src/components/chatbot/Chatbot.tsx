@@ -187,7 +187,6 @@ export default function Chatbot() {
   const [input,     setInput]     = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState('');
-  const [error,     setError]     = useState('');
   const chatAreaRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll on new messages
@@ -235,6 +234,9 @@ export default function Chatbot() {
         if (userInfo.phone) payload.user_phone = userInfo.phone;
       }
 
+      console.log('Chatbot: Sending request to:', API_ENDPOINTS.chatbot.chat);
+      console.log('Chatbot: Payload:', payload);
+
       const data = await apiRequest<ChatResponse>(API_ENDPOINTS.chatbot.chat, {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -247,8 +249,10 @@ export default function Chatbot() {
         isBot: true,
         intent: data.intent,
       }]);
-    } catch {
-      setError('Connection error. Please try again.');
+    } catch (err) {
+      console.error('Chatbot error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      console.error('Error details:', errorMessage);
       setMessages(prev => [...prev, {
         text: "I'm having trouble connecting right now. Please try again or contact us directly.",
         isBot: true,
