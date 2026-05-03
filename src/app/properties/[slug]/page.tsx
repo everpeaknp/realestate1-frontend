@@ -34,7 +34,7 @@ export default function SinglePropertyPage() {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const data = await apiRequest<PropertyData>(API_ENDPOINTS.PROPERTY_DETAIL(slug));
+        const data = await apiRequest<PropertyData>(API_ENDPOINTS.properties.detail(slug));
         setProperty(data);
       } catch (error) {
         console.error('Error fetching property:', error);
