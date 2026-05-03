@@ -221,7 +221,6 @@ export default function Chatbot() {
     setMessages(prev => [...prev, { text: msg, isBot: false }]);
     setInput('');
     setIsLoading(true);
-    setError('');
 
     try {
       const payload: Record<string, string> = { message: msg };
