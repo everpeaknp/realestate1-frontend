@@ -23,6 +23,14 @@ interface PropertyData {
   price: string;
   sqft: number;
   main_image: string | null;
+  description: string;
+  property_type: string;
+  status: string;
+  beds: number;
+  baths: number;
+  garage: number;
+  lot_size: number | null;
+  year_built: number | null;
 }
 
 export default function SinglePropertyPage() {
