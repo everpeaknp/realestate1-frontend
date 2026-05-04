@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { EagleProperty } from '@/lib/eagle-api';
+import { buildEagleSlug } from '@/lib/eagle-slug';
 
 // ─── Carousel config ──────────────────────────────────────────────────────────
 const SCROLL_SPEED = 0.5;
@@ -158,9 +159,9 @@ export default function FeaturedProperties() {
     handleMouseMove(e.touches[0] as unknown as React.MouseEvent);
   }, [handleMouseMove]);
 
-  const handleCardClick = useCallback((id: string) => {
+  const handleCardClick = useCallback((property: EagleProperty) => {
     if (dragDistanceRef.current < 5) {
-      router.push(`/properties/${id}`);
+      router.push(`/properties/${buildEagleSlug(property.id, property.formattedAddress)}`);
     }
   }, [router]);
 
@@ -224,7 +225,7 @@ export default function FeaturedProperties() {
               <PropertyCard
                 key={`${property.id}-${idx}`}
                 property={property}
-                onClick={() => handleCardClick(property.id)}
+                onClick={() => handleCardClick(property)}
               />
             ))}
           </div>

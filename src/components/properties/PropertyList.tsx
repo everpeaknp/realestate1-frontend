@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { EagleProperty } from '@/lib/eagle-api';
+import { buildEagleSlug } from '@/lib/eagle-slug';
 
 const PAGE_SIZE = 12;
 
@@ -139,7 +140,7 @@ function PropertyListInner() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.04 }}
                 >
-                  <Link href={`/properties/${property.id}`} className="block">
+                  <Link href={`/properties/${buildEagleSlug(property.id, property.formattedAddress)}`} className="block">
                     <div className="relative h-48 sm:h-56 md:h-60 overflow-hidden">
                       <img
                         src={getPropertyImage(property)}
@@ -161,7 +162,7 @@ function PropertyListInner() {
                       <span className="text-xs sm:text-[13px] font-medium text-gray-500 truncate">{property.formattedAddress}</span>
                     </div>
 
-                    <Link href={`/properties/${property.id}`}>
+                    <Link href={`/properties/${buildEagleSlug(property.id, property.formattedAddress)}`}>
                       <h3 className="text-base sm:text-lg font-bold text-[#1a1a1a] mb-3 sm:mb-4 group-hover:text-[#c1a478] transition-colors line-clamp-2 min-h-[3rem]">
                         {property.headline || property.formattedAddress}
                       </h3>
@@ -176,7 +177,7 @@ function PropertyListInner() {
                     <div className="flex items-center justify-between mt-auto pt-3 sm:pt-4 border-t border-gray-100">
                       <span className="text-base sm:text-lg font-bold text-[#c1a478]">{formatPrice(property)}</span>
                       <Link
-                        href={`/properties/${property.id}`}
+                        href={`/properties/${buildEagleSlug(property.id, property.formattedAddress)}`}
                         className="flex items-center gap-1 text-[11px] sm:text-[13px] font-bold text-[#34465d] hover:text-[#c1a478] transition-colors uppercase tracking-wide"
                       >
                         Details

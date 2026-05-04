@@ -13,10 +13,12 @@ import Newsletter from '@/components/shared/newsletter';
 import Header from '@/components/common/header';
 import Footer from '@/components/common/Footer';
 import { EagleProperty } from '@/lib/eagle-api';
+import { extractEagleId } from '@/lib/eagle-slug';
 
 export default function SinglePropertyPage() {
   const params = useParams();
-  const slug = params?.slug as string; // This is the Eagle property ID
+  const slug = params?.slug as string;
+  const eagleId = extractEagleId(slug); // works for both new (address--id) and legacy (plain id) slugs
   const [property, setProperty] = useState<EagleProperty | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export default function SinglePropertyPage() {
         setError(null);
         
         // Fetch from our secure API route
-        const response = await fetch(`/api/eagle/properties/${slug}`);
+        const response = await fetch(`/api/eagle/properties/${eagleId}`);
         const data = await response.json();
 
         if (!response.ok || !data.success) {
@@ -47,7 +49,7 @@ export default function SinglePropertyPage() {
     if (slug) {
       fetchProperty();
     }
-  }, [slug]);
+  }, [slug, eagleId]);
 
   if (loading) {
     return (
@@ -99,7 +101,7 @@ export default function SinglePropertyPage() {
           </div>
           <div className="lg:col-span-4">
             <div className="sticky top-24">
-              <PropertySidebar property={property} />
+              <PropertySidebar />
             </div>
           </div>
         </div>

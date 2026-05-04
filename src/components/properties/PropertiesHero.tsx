@@ -1,11 +1,12 @@
 'use client';
 
-import { ChevronRight, Search, MapPin, X } from 'lucide-react';
+import { ChevronRight, Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { API_ENDPOINTS, API_URL, apiRequest } from '@/lib/api';
+import { buildEagleSlug } from '@/lib/eagle-slug';
 
 interface PropertiesHeroSettings {
   id: number;
@@ -27,6 +28,18 @@ interface PropertyResult {
   property_type: string;
 }
 
+/** Normalised shape used in the dropdown, sourced from either backend */
+interface SearchResult {
+  key: string;
+  slug: string | null;
+  eagleId: string | null;
+  title: string;
+  location: string;
+  price: string;
+  image: string | null;
+  source: 'local' | 'eagle';
+}
+
 function useDebounce<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
@@ -43,7 +56,7 @@ function PropertiesHeroInner() {
 
   const [settings, setSettings] = useState<PropertiesHeroSettings | null>(null);
   const [query, setQuery] = useState(searchParams.get('search') || '');
-  const [results, setResults] = useState<PropertyResult[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [open, setOpen] = useState(false);
   const [searching, setSearching] = useState(false);
 
@@ -61,30 +74,92 @@ function PropertiesHeroInner() {
     setQuery(searchParams.get('search') || '');
   }, [searchParams]);
 
-  // Real-time search
+  // Real-time search — queries both local backend and Eagle API in parallel
   useEffect(() => {
     if (!debouncedQuery.trim() || debouncedQuery.length < 2) {
       setResults([]);
       setOpen(false);
       return;
     }
+
+    const controller = new AbortController();
+
     const fetchResults = async () => {
       setSearching(true);
       try {
-        const res = await fetch(
-          `${API_ENDPOINTS.properties.list}?search=${encodeURIComponent(debouncedQuery.trim())}&page_size=5`
-        );
-        const data = res.ok ? await res.json() : { results: [] };
-        const items: PropertyResult[] = (data.results || data || []).slice(0, 5);
-        setResults(items);
-        setOpen(items.length > 0);
-      } catch {
+        const encoded = encodeURIComponent(debouncedQuery.trim());
+
+        const [localRes, eagleRes] = await Promise.allSettled([
+          fetch(
+            `${API_ENDPOINTS.properties.list}?search=${encoded}&page_size=5`,
+            { signal: controller.signal }
+          ),
+          fetch(
+            `/api/eagle/properties?search=${encoded}&limit=5`,
+            { signal: controller.signal }
+          ),
+        ]);
+
+        const merged: SearchResult[] = [];
+
+        // Local results
+        if (localRes.status === 'fulfilled' && localRes.value.ok) {
+          const data = await localRes.value.json();
+          const items: PropertyResult[] = (data.results || data || []).slice(0, 5);
+          for (const p of items) {
+            merged.push({
+              key: `local-${p.id}`,
+              slug: p.slug,
+              eagleId: null,
+              title: p.title,
+              location: p.location,
+              price: `$${parseFloat(p.price).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+              image: p.main_image,
+              source: 'local',
+            });
+          }
+        }
+
+        // Eagle results
+        if (eagleRes.status === 'fulfilled' && eagleRes.value.ok) {
+          const data = await eagleRes.value.json();
+          if (data.success && Array.isArray(data.properties)) {
+            for (const p of data.properties.slice(0, 5)) {
+              // Skip if already represented by a local result with same address
+              const addr = (p.formattedAddress || '').toLowerCase();
+              const duplicate = merged.some(
+                (r) => r.location.toLowerCase() === addr
+              );
+              if (!duplicate) {
+                const rawPrice = p.advertisedPrice || (p.price ? `$${Number(p.price).toLocaleString()}` : '');
+                merged.push({
+                  key: `eagle-${p.id}`,
+                  slug: buildEagleSlug(p.id, p.formattedAddress),
+                  eagleId: p.id,
+                  title: p.headline || p.formattedAddress || 'Eagle Property',
+                  location: p.formattedAddress || '',
+                  price: rawPrice,
+                  image: p.thumbnailSquare || (p.images?.[0]?.url ?? null),
+                  source: 'eagle',
+                });
+              }
+            }
+          }
+        }
+
+        const top = merged.slice(0, 6);
+        setResults(top);
+        setOpen(top.length > 0);
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === 'AbortError') return;
         setResults([]);
       } finally {
         setSearching(false);
       }
     };
+
     fetchResults();
+    return () => controller.abort();
   }, [debouncedQuery]);
 
   // Close on outside click
@@ -215,15 +290,15 @@ function PropertiesHeroInner() {
               >
                 {results.map((p) => (
                   <Link
-                    key={p.id}
-                    href={`/properties/${p.slug}`}
+                    key={p.key}
+                    href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
                     onClick={() => setOpen(false)}
                     className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
                   >
                     {/* Thumbnail */}
                     <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
                       <img
-                        src={getImage(p.main_image)}
+                        src={getImage(p.image)}
                         alt={p.title}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
@@ -236,10 +311,15 @@ function PropertiesHeroInner() {
                       </p>
                       <p className="text-xs text-gray-400 truncate">{p.location}</p>
                     </div>
-                    {/* Price */}
-                    <span className="text-xs font-bold text-[#c1a478] flex-shrink-0">
-                      ${parseFloat(p.price).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                    </span>
+                    {/* Price + source badge */}
+                    <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                      {p.price && (
+                        <span className="text-xs font-bold text-[#c1a478]">{p.price}</span>
+                      )}
+                      {p.source === 'eagle' && (
+                        <span className="text-[10px] text-gray-400 font-medium">Eagle</span>
+                      )}
+                    </div>
                   </Link>
                 ))}
                 {/* View all */}

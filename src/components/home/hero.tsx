@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { API_ENDPOINTS, API_URL } from '@/lib/api';
+import { buildEagleSlug } from '@/lib/eagle-slug';
 
 interface HeroProps {
   settings?: {
@@ -38,8 +39,20 @@ interface BlogResult {
   featured_image: string | null;
 }
 
+/** Normalised property shape used in the dropdown */
+interface PropertySearchResult {
+  key: string;
+  slug: string | null;
+  eagleId: string | null;
+  title: string;
+  location: string;
+  price: string;
+  image: string | null;
+  source: 'local' | 'eagle';
+}
+
 interface SearchResults {
-  properties: PropertyResult[];
+  properties: PropertySearchResult[];
   blogs: BlogResult[];
 }
 
@@ -95,29 +108,88 @@ export default function Hero({ settings }: HeroProps) {
       setOpen(false);
       return;
     }
+
+    const controller = new AbortController();
+
     const fetchResults = async () => {
       setLoading(true);
       try {
         const q = encodeURIComponent(debouncedQuery.trim());
-        const [propRes, blogRes] = await Promise.all([
-          fetch(`${API_ENDPOINTS.properties.list}?search=${q}&page_size=4`),
-          fetch(`${API_ENDPOINTS.blog.list}?search=${q}&page_size=4`),
+        const [propRes, blogRes, eagleRes] = await Promise.allSettled([
+          fetch(`${API_ENDPOINTS.properties.list}?search=${q}&page_size=4`, { signal: controller.signal }),
+          fetch(`${API_ENDPOINTS.blog.list}?search=${q}&page_size=4`, { signal: controller.signal }),
+          fetch(`/api/eagle/properties?search=${q}&limit=4`, { signal: controller.signal }),
         ]);
-        const propData = propRes.ok ? await propRes.json() : { results: [] };
-        const blogData = blogRes.ok ? await blogRes.json() : { results: [] };
+
+        const mergedProperties: PropertySearchResult[] = [];
+
+        // Local properties
+        if (propRes.status === 'fulfilled' && propRes.value.ok) {
+          const propData = await propRes.value.json();
+          const items: PropertyResult[] = (propData.results || propData || []).slice(0, 4);
+          for (const p of items) {
+            mergedProperties.push({
+              key: `local-${p.id}`,
+              slug: p.slug,
+              eagleId: null,
+              title: p.title,
+              location: p.location,
+              price: `$${parseFloat(p.price).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+              image: p.main_image,
+              source: 'local',
+            });
+          }
+        }
+
+        // Eagle properties
+        if (eagleRes.status === 'fulfilled' && eagleRes.value.ok) {
+          const eagleData = await eagleRes.value.json();
+          if (eagleData.success && Array.isArray(eagleData.properties)) {
+            for (const p of eagleData.properties.slice(0, 4)) {
+              const addr = (p.formattedAddress || '').toLowerCase();
+              const duplicate = mergedProperties.some(
+                (r) => r.location.toLowerCase() === addr
+              );
+              if (!duplicate) {
+                const rawPrice = p.advertisedPrice || (p.price ? `$${Number(p.price).toLocaleString()}` : '');
+                mergedProperties.push({
+                  key: `eagle-${p.id}`,
+                  slug: buildEagleSlug(p.id, p.formattedAddress),
+                  eagleId: p.id,
+                  title: p.headline || p.formattedAddress || 'Eagle Property',
+                  location: p.formattedAddress || '',
+                  price: rawPrice,
+                  image: p.thumbnailSquare || (p.images?.[0]?.url ?? null),
+                  source: 'eagle',
+                });
+              }
+            }
+          }
+        }
+
+        // Blog posts
+        const blogs: BlogResult[] = [];
+        if (blogRes.status === 'fulfilled' && blogRes.value.ok) {
+          const blogData = await blogRes.value.json();
+          blogs.push(...(blogData.results || blogData || []).slice(0, 4));
+        }
+
         setResults({
-          properties: (propData.results || propData || []).slice(0, 4),
-          blogs: (blogData.results || blogData || []).slice(0, 4),
+          properties: mergedProperties.slice(0, 5),
+          blogs,
         });
         updateDropdownPosition();
-        setOpen(true);
-      } catch {
+        setOpen(mergedProperties.length > 0 || blogs.length > 0);
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === 'AbortError') return;
         setResults({ properties: [], blogs: [] });
       } finally {
         setLoading(false);
       }
     };
+
     fetchResults();
+    return () => controller.abort();
   }, [debouncedQuery]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -189,21 +261,26 @@ export default function Hero({ settings }: HeroProps) {
             </div>
             {results.properties.map((p) => (
               <Link
-                key={p.id}
-                href={`/properties/${p.slug}`}
+                key={p.key}
+                href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
               >
                 <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
-                  <img src={getImage(p.main_image)} alt={p.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <img src={getImage(p.image)} alt={p.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">{p.title}</p>
                   <p className="text-xs text-gray-400 truncate">{p.location}</p>
                 </div>
-                <span className="text-xs font-bold text-[#c1a478] flex-shrink-0">
-                  ${parseFloat(p.price).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                </span>
+                <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                  {p.price && (
+                    <span className="text-xs font-bold text-[#c1a478]">{p.price}</span>
+                  )}
+                  {p.source === 'eagle' && (
+                    <span className="text-[10px] text-gray-400 font-medium">Eagle</span>
+                  )}
+                </div>
               </Link>
             ))}
             <Link href={`/properties?search=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}
