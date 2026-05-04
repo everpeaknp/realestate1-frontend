@@ -2,8 +2,39 @@
 
 import { Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '@/lib/api';
+
+interface Agent {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  avatar: string;
+  bio: string;
+}
 
 export default function PropertySidebar() {
+  const [agent, setAgent] = useState<Agent | null>(null);
+
+  useEffect(() => {
+    fetch(API_ENDPOINTS.agents.list)
+      .then((r) => r.ok ? r.json() : null)
+      .then((json) => {
+        // API returns { results: [...] } or plain array
+        const list: Agent[] = Array.isArray(json) ? json : (json?.results ?? []);
+        if (list.length > 0) setAgent(list[0]);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Fall back to static defaults if no agent in Django yet
+  const agentName   = agent?.name   ?? 'Justin Nelson';
+  const agentBio    = agent?.bio    ?? 'Investment property specialist';
+  const agentAvatar = agent?.avatar ?? '/person.png';
+  const agentPhone  = agent?.phone  ?? '0414701721';
+  const agentEmail  = agent?.email  ?? 'bijen@lilywhiterealestate.com.au';
+
   return (
     <aside className="flex flex-col gap-8 w-full">
       {/* Agent Card */}
@@ -15,16 +46,15 @@ export default function PropertySidebar() {
       >
         <div className="w-24 h-24 overflow-hidden rounded-sm flex items-center justify-center">
           <img 
-            src="/person.png" 
-            alt="Justin Nelson" 
+            src={agentAvatar}
+            alt={agentName}
             className="w-full h-full object-contain"
             referrerPolicy="no-referrer"
           />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-[#1a1a1a] font-sans">Justin Nelson</h3>
-          <p className="text-[#5d6d87] text-sm">Investment property specialist
-</p>
+          <h3 className="text-xl font-bold text-[#1a1a1a] font-sans">{agentName}</h3>
+          <p className="text-[#5d6d87] text-sm">{agentBio}</p>
         </div>
       </motion.div>
 
@@ -87,14 +117,20 @@ export default function PropertySidebar() {
         viewport={{ once: true }}
         transition={{ delay: 0.2 }}
       >
-        <div className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors cursor-pointer">
+        <a
+          href={`tel:${agentPhone}`}
+          className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors"
+        >
           <Phone size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">0414701721</span>
-        </div>
-        <div className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors cursor-pointer">
+          <span className="font-bold text-[#1a1a1a] tracking-tight">{agentPhone}</span>
+        </a>
+        <a
+          href={`mailto:${agentEmail}`}
+          className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors"
+        >
           <Mail size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">bijen@lilywhiterealestate.com.au</span>
-        </div>
+          <span className="font-bold text-[#1a1a1a] tracking-tight">{agentEmail}</span>
+        </a>
       </motion.div>
     </aside>
   );

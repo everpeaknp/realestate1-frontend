@@ -8,44 +8,37 @@ import PropertyGallery from '@/components/properties/single-property/PropertyGal
 import PropertyFeatures from '@/components/properties/single-property/PropertyFeatures';
 import PropertyFloorPlan from '@/components/properties/single-property/PropertyFloorPlan';
 import PropertySidebar from '@/components/properties/single-property/PropertySidebar';
-import FeaturedProperties from '@/components/home/FeaturedProperties';
 import ContactSection from '@/components/shared/ContactSection';
 import Newsletter from '@/components/shared/newsletter';
 import Header from '@/components/common/header';
 import Footer from '@/components/common/Footer';
-import { apiRequest, API_ENDPOINTS } from '@/lib/api';
-
-interface PropertyData {
-  title: string;
-  location: {
-    display: string;
-  };
-  price: string;
-  sqft: number;
-  main_image: string | null;
-  description: string;
-  property_type: string;
-  status: string;
-  beds: number;
-  baths: number;
-  garage: number;
-  lot_size: number | null;
-  year_built: number | null;
-}
+import { EagleProperty } from '@/lib/eagle-api';
 
 export default function SinglePropertyPage() {
   const params = useParams();
-  const slug = params?.slug as string;
-  const [property, setProperty] = useState<PropertyData | null>(null);
+  const slug = params?.slug as string; // This is the Eagle property ID
+  const [property, setProperty] = useState<EagleProperty | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const data = await apiRequest<PropertyData>(API_ENDPOINTS.properties.detail(slug));
-        setProperty(data);
-      } catch (error) {
-        console.error('Error fetching property:', error);
+        setLoading(true);
+        setError(null);
+        
+        // Fetch from our secure API route
+        const response = await fetch(`/api/eagle/properties/${slug}`);
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || 'Failed to fetch property');
+        }
+
+        setProperty(data.property);
+      } catch (err) {
+        console.error('Error fetching property:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load property');
       } finally {
         setLoading(false);
       }
@@ -60,20 +53,32 @@ export default function SinglePropertyPage() {
     return (
       <>
         <Header />
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">Loading...</div>
+        <div className="min-h-screen flex items-center justify-center bg-white">
+          <div className="text-center">
+            <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-[#c1a478] border-r-transparent mb-4"></div>
+            <p className="text-gray-600">Loading property details...</p>
+          </div>
         </div>
         <Footer />
       </>
     );
   }
 
-  if (!property) {
+  if (error || !property) {
     return (
       <>
         <Header />
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">Property not found</div>
+        <div className="min-h-screen flex items-center justify-center bg-white">
+          <div className="text-center max-w-md px-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Property Not Found</h2>
+            <p className="text-gray-600 mb-6">{error || 'The property you are looking for does not exist.'}</p>
+            <a
+              href="/properties"
+              className="inline-block bg-[#c1a478] text-white px-6 py-3 rounded hover:bg-[#b39468] transition-colors"
+            >
+              View All Properties
+            </a>
+          </div>
         </div>
         <Footer />
       </>
@@ -88,13 +93,13 @@ export default function SinglePropertyPage() {
         <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-8 space-y-12">
             <PropertyDescription property={property} />
-            <PropertyGallery />
-            <PropertyFeatures />
-            <PropertyFloorPlan />
+            <PropertyGallery property={property} />
+            <PropertyFeatures property={property} />
+            <PropertyFloorPlan property={property} />
           </div>
           <div className="lg:col-span-4">
             <div className="sticky top-24">
-              <PropertySidebar />
+              <PropertySidebar property={property} />
             </div>
           </div>
         </div>

@@ -1,50 +1,63 @@
 'use client';
 
-import { Building2, Bookmark, Maximize, Bed, Bath, Car, Ruler, Calendar } from 'lucide-react';
+import { Building2, Bookmark, Maximize, Ruler, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { EagleProperty } from '@/lib/eagle-api';
 
-interface PropertyData {
-  description: string;
-  property_type: string;
-  status: string;
-  sqft: number;
-  beds: number;
-  baths: number;
-  garage: number;
-  lot_size: number | null;
-  year_built: number | null;
+interface PropertyDescriptionProps {
+  property: EagleProperty;
 }
 
-export default function PropertyDescription({ property }: { property: PropertyData }) {
+export default function PropertyDescription({ property }: PropertyDescriptionProps) {
   const details = [
-    { icon: <Maximize size={18} className="sm:w-5 sm:h-5" />, value: property.sqft.toLocaleString(), label: 'Property Size' },
-    { icon: <Bed size={18} className="sm:w-5 sm:h-5" />, value: property.beds.toString(), label: 'Bedrooms' },
-    { icon: <Bath size={18} className="sm:w-5 sm:h-5" />, value: property.baths.toString(), label: 'Bathrooms' },
-    { icon: <Car size={18} className="sm:w-5 sm:h-5" />, value: property.garage.toString(), label: 'Garage' },
-    { icon: <Ruler size={18} className="sm:w-5 sm:h-5" />, value: property.lot_size ? property.lot_size.toLocaleString() : 'N/A', label: 'Lot Size' },
-    { icon: <Calendar size={18} className="sm:w-5 sm:h-5" />, value: property.year_built ? property.year_built.toString() : 'N/A', label: 'Year Built' },
+    {
+      icon: <Maximize size={18} className="sm:w-5 sm:h-5" />,
+      value: property.landSize ?? 'N/A',
+      label: 'Land Size',
+    },
+    {
+      icon: <Ruler size={18} className="sm:w-5 sm:h-5" />,
+      value: property.landSizeUnits ?? '—',
+      label: 'Size Units',
+    },
+    {
+      icon: <Calendar size={18} className="sm:w-5 sm:h-5" />,
+      value: property.createdAt ? new Date(property.createdAt).getFullYear().toString() : 'N/A',
+      label: 'Listed',
+    },
   ];
 
-  const getPropertyTypeDisplay = (type: string) => {
-    return type === 'FOR_SALE' ? 'For Sale' : 'For Rent';
+  const getPropertyTypeDisplay = (type?: string) => {
+    if (!type) return 'Property';
+    return type.split('_').map(word => word.charAt(0) + word.slice(1).toLowerCase()).join(' ');
   };
 
-  const getStatusDisplay = (status: string) => {
+  const getStatusDisplay = (status?: string) => {
+    if (!status) return 'Available';
     return status.charAt(0) + status.slice(1).toLowerCase();
   };
 
   return (
     <div className="bg-white">
-      {/* Description Heading & Text */}
+      {/* Description */}
       <div className="mb-8 sm:mb-12">
         <h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-4 sm:mb-6">Description</h2>
-        <div 
-          className="text-[#7C7A70] text-sm sm:text-[15px] leading-[1.8] max-w-5xl"
-          dangerouslySetInnerHTML={{ __html: property.description }}
-        />
+        {property.description ? (
+          <div className="text-[#7C7A70] text-sm sm:text-[15px] leading-[1.8] max-w-5xl">
+            {property.description.split('\n').map((paragraph, index) =>
+              paragraph.trim() ? (
+                <p key={index} className="mb-4">{paragraph}</p>
+              ) : null
+            )}
+          </div>
+        ) : (
+          <p className="text-[#7C7A70] text-sm sm:text-[15px]">
+            Contact us for more information about this property.
+          </p>
+        )}
       </div>
 
-      {/* Property Type & Status Blocks */}
+      {/* Property Type & Status */}
       <div className="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-12">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#5d6d87] flex items-center justify-center text-white rounded-sm flex-shrink-0">
@@ -54,7 +67,9 @@ export default function PropertyDescription({ property }: { property: PropertyDa
             <span className="block text-[10px] sm:text-[11px] font-bold text-[#5d6d87] uppercase tracking-wider mb-1">
               Property Type
             </span>
-            <span className="text-base sm:text-lg font-bold text-[#1a1a1a]">{getPropertyTypeDisplay(property.property_type)}</span>
+            <span className="text-base sm:text-lg font-bold text-[#1a1a1a]">
+              {getPropertyTypeDisplay(property.propertyType)}
+            </span>
           </div>
         </div>
 
@@ -66,7 +81,9 @@ export default function PropertyDescription({ property }: { property: PropertyDa
             <span className="block text-[10px] sm:text-[11px] font-bold text-[#5d6d87] uppercase tracking-wider mb-1">
               Property Status
             </span>
-            <span className="text-base sm:text-lg font-bold text-[#1a1a1a]">{getStatusDisplay(property.status)}</span>
+            <span className="text-base sm:text-lg font-bold text-[#1a1a1a]">
+              {getStatusDisplay(property.status)}
+            </span>
           </div>
         </div>
       </div>
@@ -74,11 +91,11 @@ export default function PropertyDescription({ property }: { property: PropertyDa
       {/* Divider */}
       <div className="w-full h-px bg-gray-100 mb-8 sm:mb-12" />
 
-      {/* Detailed Stats Grid */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-y-10 sm:gap-x-8 md:gap-x-12">
         {details.map((detail, index) => (
-          <motion.div 
-            key={index} 
+          <motion.div
+            key={index}
             className="flex items-center gap-4 sm:gap-5"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}

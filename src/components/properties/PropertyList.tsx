@@ -3,27 +3,11 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Bed, Bath, Car, Maximize, ChevronRight, ChevronLeft } from 'lucide-react';
+import { MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { API_ENDPOINTS } from '@/lib/api';
+import { EagleProperty } from '@/lib/eagle-api';
 
 const PAGE_SIZE = 12;
-
-interface Property {
-  id: number;
-  slug: string;
-  title: string;
-  location: string;
-  price: string;
-  beds: number;
-  baths: number;
-  garage: number;
-  sqft: number;
-  main_image: string | null;
-  property_type: 'FOR_SALE' | 'FOR_RENT';
-  status: string;
-  is_featured: boolean;
-}
 
 function PropertyListInner() {
   const searchParams = useSearchParams();
@@ -31,7 +15,7 @@ function PropertyListInner() {
   const activeSearch = searchParams.get('search') || '';
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
 
-  const [allProperties, setAllProperties] = useState<Property[]>([]);
+  const [allProperties, setAllProperties] = useState<EagleProperty[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,13 +24,19 @@ function PropertyListInner() {
       try {
         setLoading(true);
         setError(null);
+
         const url = activeSearch
-          ? `${API_ENDPOINTS.properties.list}?search=${encodeURIComponent(activeSearch)}&page_size=100`
-          : `${API_ENDPOINTS.properties.list}?page_size=100`;
+          ? `/api/eagle/properties?search=${encodeURIComponent(activeSearch)}&limit=100`
+          : `/api/eagle/properties?limit=100`;
+
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Failed to fetch properties');
         const data = await response.json();
-        setAllProperties(Array.isArray(data) ? data : (data.results || []));
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || 'Failed to fetch properties');
+        }
+
+        setAllProperties(data.properties || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load properties');
       } finally {
@@ -70,15 +60,23 @@ function PropertyListInner() {
     }, 100);
   };
 
-  const formatPrice = (price: string) => {
-    const num = parseFloat(price);
-    return `${num.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+  const formatPrice = (property: EagleProperty) => {
+    if (property.advertisedPrice) return property.advertisedPrice;
+    if (property.price) {
+      return '$' + property.price.toLocaleString('en-AU', { maximumFractionDigits: 0 });
+    }
+    return 'Contact for price';
   };
 
-  const getPropertyImage = (image: string | null) => {
-    if (image && image.startsWith('http')) return image;
-    if (image) return `${process.env.NEXT_PUBLIC_API_URL}${image}`;
+  const getPropertyImage = (property: EagleProperty) => {
+    if (property.thumbnailSquare) return property.thumbnailSquare;
+    if (property.images && property.images.length > 0) return property.images[0].url;
     return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800';
+  };
+
+  const getPropertyType = (status?: string) => {
+    if (!status) return 'FOR SALE';
+    return status.toUpperCase().replace(/_/g, ' ');
   };
 
   return (
@@ -116,7 +114,7 @@ function PropertyListInner() {
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {[...Array(12)].map((_, i) => (
-              <div key={i} className="bg-gray-100 animate-pulse h-[400px] sm:h-[420px] rounded" />
+              <div key={i} className="bg-gray-100 animate-pulse h-[360px] sm:h-[380px] rounded" />
             ))}
           </div>
         )}
@@ -141,19 +139,17 @@ function PropertyListInner() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.04 }}
                 >
-                  <Link href={`/properties/${property.slug}`} className="block">
+                  <Link href={`/properties/${property.id}`} className="block">
                     <div className="relative h-48 sm:h-56 md:h-60 overflow-hidden">
                       <img
-                        src={getPropertyImage(property.main_image)}
-                        alt={property.title}
+                        src={getPropertyImage(property)}
+                        alt={property.formattedAddress}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         referrerPolicy="no-referrer"
                       />
                       <div className="absolute top-0 left-0 overflow-hidden w-24 sm:w-28 h-24 sm:h-28 z-10">
-                        <div className={`absolute top-3 sm:top-4 -left-7 sm:-left-8 w-32 sm:w-36 py-1 text-center text-[9px] sm:text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 ${
-                          property.property_type === 'FOR_SALE' ? 'bg-[#5d6d87]' : 'bg-[#5d6d87]/90'
-                        }`}>
-                          {property.property_type === 'FOR_SALE' ? 'FOR SALE' : 'FOR RENT'}
+                        <div className="absolute top-3 sm:top-4 -left-7 sm:-left-8 w-32 sm:w-36 py-1 text-center text-[9px] sm:text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 bg-[#5d6d87]">
+                          {getPropertyType(property.status)}
                         </div>
                       </div>
                     </div>
@@ -162,38 +158,25 @@ function PropertyListInner() {
                   <div className="p-4 sm:p-5 md:p-6 flex-grow flex flex-col">
                     <div className="flex items-center gap-1.5 text-[#c1a478] mb-2">
                       <MapPin size={14} fill="currentColor" fillOpacity={0.2} className="flex-shrink-0" />
-                      <span className="text-xs sm:text-[13px] font-medium text-gray-500 truncate">{property.location}</span>
+                      <span className="text-xs sm:text-[13px] font-medium text-gray-500 truncate">{property.formattedAddress}</span>
                     </div>
 
-                    <Link href={`/properties/${property.slug}`}>
+                    <Link href={`/properties/${property.id}`}>
                       <h3 className="text-base sm:text-lg font-bold text-[#1a1a1a] mb-3 sm:mb-4 group-hover:text-[#c1a478] transition-colors line-clamp-2 min-h-[3rem]">
-                        {property.title}
+                        {property.headline || property.formattedAddress}
                       </h3>
                     </Link>
 
-                    <div className="grid grid-cols-4 gap-2 mb-4 sm:mb-6 border-t border-gray-100 pt-3 sm:pt-4">
-                      <div className="flex flex-col items-center gap-1">
-                        <Bed size={16} className="text-slate-400" />
-                        <span className="text-xs font-bold text-gray-800">{property.beds}</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-1">
-                        <Bath size={16} className="text-slate-400" />
-                        <span className="text-xs font-bold text-gray-800">{property.baths}</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-1">
-                        <Car size={16} className="text-slate-400" />
-                        <span className="text-xs font-bold text-gray-800">{property.garage}</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-1">
-                        <Maximize size={16} className="text-slate-400" />
-                        <span className="text-xs font-bold text-gray-800">{property.sqft}</span>
-                      </div>
-                    </div>
+                    {property.landSize && (
+                      <p className="text-xs text-gray-500 mb-3">
+                        Land: {property.landSize}{property.landSizeUnits ? ` ${property.landSizeUnits}` : ''}
+                      </p>
+                    )}
 
                     <div className="flex items-center justify-between mt-auto pt-3 sm:pt-4 border-t border-gray-100">
-                      <span className="text-base sm:text-lg font-bold text-[#c1a478]">{formatPrice(property.price)}</span>
+                      <span className="text-base sm:text-lg font-bold text-[#c1a478]">{formatPrice(property)}</span>
                       <Link
-                        href={`/properties/${property.slug}`}
+                        href={`/properties/${property.id}`}
                         className="flex items-center gap-1 text-[11px] sm:text-[13px] font-bold text-[#34465d] hover:text-[#c1a478] transition-colors uppercase tracking-wide"
                       >
                         Details
@@ -268,7 +251,7 @@ export default function PropertyList() {
       <section className="bg-white py-20 px-6">
         <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[...Array(12)].map((_, i) => (
-            <div key={i} className="bg-gray-100 animate-pulse h-[420px] rounded" />
+            <div key={i} className="bg-gray-100 animate-pulse h-[380px] rounded" />
           ))}
         </div>
       </section>

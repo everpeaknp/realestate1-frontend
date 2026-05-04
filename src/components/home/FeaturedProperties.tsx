@@ -1,91 +1,82 @@
 'use client';
 
-import { ChevronRight, Bed, Bath } from 'lucide-react';
+import { ChevronRight, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { API_ENDPOINTS } from '@/lib/api';
+import { EagleProperty } from '@/lib/eagle-api';
 
-interface Property {
-  id: number;
-  slug: string;
-  title: string;
-  location: string;
-  price: string;
-  main_image: string | null;
-  property_type: string;
-  beds: number;
-  baths: number;
-  sqft: number;
-}
-
-// Configuration
-const SCROLL_SPEED = 0.5; // pixels per frame
-const CARD_WIDTH = 320; // w-80 = 320px
-const CARD_GAP = 24; // gap-6 = 24px
+// ─── Carousel config ──────────────────────────────────────────────────────────
+const SCROLL_SPEED = 0.5;
+const CARD_WIDTH = 320;
+const CARD_GAP = 24;
 const MOMENTUM_FRICTION = 0.95;
 const MOMENTUM_MIN_VELOCITY = 0.1;
 
-function formatPrice(price: string): string {
-  const numPrice = parseFloat(price);
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(numPrice);
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function formatPrice(property: EagleProperty): string {
+  if (property.advertisedPrice) return property.advertisedPrice;
+  if (property.price) {
+    return '$' + property.price.toLocaleString('en-AU', { maximumFractionDigits: 0 });
+  }
+  return 'Contact for price';
 }
 
-function getImageUrl(imageUrl: string | null): string {
-  if (!imageUrl)
-    return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000';
-
-  if (imageUrl.startsWith('http')) return imageUrl;
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-  return `${API_URL}${imageUrl}`;
+function getPropertyImage(property: EagleProperty): string {
+  if (property.thumbnailSquare) return property.thumbnailSquare;
+  if (property.images && property.images.length > 0) return property.images[0].url;
+  return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800';
 }
 
-export default function InfiniteCarousel() {
-  // State
-  const [properties, setProperties] = useState<Property[]>([]);
+function getStatusLabel(status?: string): string {
+  if (!status) return 'FOR SALE';
+  return status.replace(/_/g, ' ').toUpperCase();
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+export default function FeaturedProperties() {
+  const [properties, setProperties] = useState<EagleProperty[]>([]);
   const [loading, setLoading] = useState(true);
-  const [displayedProperties, setDisplayedProperties] = useState<Property[]>([]);
+  const [displayedProperties, setDisplayedProperties] = useState<EagleProperty[]>([]);
   const [translateX, setTranslateX] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Refs for performance (no state updates per frame)
-  const isDraggingRef = useRef<boolean>(false);
-  const isAutoScrollingRef = useRef<boolean>(true);
-  const currentTranslateRef = useRef<number>(0);
-  const velocityRef = useRef<number>(0);
-  const startXRef = useRef<number>(0);
-  const dragStartTranslateRef = useRef<number>(0);
-  const dragDistanceRef = useRef<number>(0);
-  const cardWidthWithGapRef = useRef<number>(CARD_WIDTH + CARD_GAP);
+  const isDraggingRef = useRef(false);
+  const isAutoScrollingRef = useRef(true);
+  const currentTranslateRef = useRef(0);
+  const velocityRef = useRef(0);
+  const startXRef = useRef(0);
+  const dragStartTranslateRef = useRef(0);
+  const dragDistanceRef = useRef(0);
+  const cardWidthWithGapRef = useRef(CARD_WIDTH + CARD_GAP);
   const animationFrameRef = useRef<number | undefined>(undefined);
-  const lastTimeRef = useRef<number>(Date.now());
 
   const router = useRouter();
 
-  // Fetch properties
+  // Fetch latest properties from Eagle API via our secure Next.js route
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(API_ENDPOINTS.properties.featured);
+        // Fetch latest 20 properties (sorted by createdAt desc on the API side)
+        const res = await fetch('/api/eagle/properties?limit=20');
         const data = await res.json();
-        const fetchedProps = Array.isArray(data) ? data : data.results || [];
 
-        if (fetchedProps.length > 0) {
-          setProperties(fetchedProps);
+        if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
+          // Sort by createdAt descending to show latest first
+          const sorted = [...data.properties].sort((a, b) => {
+            const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+            const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+            return dateB - dateA;
+          });
+
+          setProperties(sorted);
           // Duplicate 3x for seamless infinite loop
-          setDisplayedProperties([
-            ...fetchedProps,
-            ...fetchedProps,
-            ...fetchedProps,
-          ]);
+          setDisplayedProperties([...sorted, ...sorted, ...sorted]);
         }
       } catch (err) {
-        console.error('Failed to fetch properties:', err);
+        console.error('Failed to fetch Eagle properties:', err);
       } finally {
         setLoading(false);
       }
@@ -97,31 +88,21 @@ export default function InfiniteCarousel() {
   // Main animation loop
   useEffect(() => {
     const animate = () => {
-      const now = Date.now();
-      lastTimeRef.current = now;
-
-      // Auto-scroll when not dragging and not hovering
       if (isAutoScrollingRef.current && !isDraggingRef.current && !isHovering) {
         currentTranslateRef.current -= SCROLL_SPEED;
       }
 
-      // Apply momentum after drag
       if (velocityRef.current !== 0 && !isDraggingRef.current) {
         currentTranslateRef.current += velocityRef.current;
         velocityRef.current *= MOMENTUM_FRICTION;
-
         if (Math.abs(velocityRef.current) < MOMENTUM_MIN_VELOCITY) {
           velocityRef.current = 0;
         }
       }
 
-      // Seamless infinite loop - wrap position mathematically
       if (properties.length > 0) {
         const singleSetWidth = properties.length * cardWidthWithGapRef.current;
-        const totalWidth = singleSetWidth * 3; // 3x duplication
-
-        // Normalize position to stay within bounds
-        if (currentTranslateRef.current <= -totalWidth) {
+        if (currentTranslateRef.current <= -(singleSetWidth * 3)) {
           currentTranslateRef.current += singleSetWidth;
         } else if (currentTranslateRef.current > 0) {
           currentTranslateRef.current -= singleSetWidth;
@@ -133,15 +114,12 @@ export default function InfiniteCarousel() {
     };
 
     animationFrameRef.current = requestAnimationFrame(animate);
-
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
   }, [isHovering, properties.length]);
 
-  // Mouse drag handlers
+  // Drag handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     isDraggingRef.current = true;
     isAutoScrollingRef.current = false;
@@ -153,7 +131,6 @@ export default function InfiniteCarousel() {
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDraggingRef.current) return;
-
     const diff = e.clientX - startXRef.current;
     dragDistanceRef.current = Math.abs(diff);
     currentTranslateRef.current = dragStartTranslateRef.current + diff;
@@ -162,66 +139,49 @@ export default function InfiniteCarousel() {
 
   const handleMouseUp = useCallback(() => {
     if (!isDraggingRef.current) return;
-
     isDraggingRef.current = false;
-
-    // Calculate momentum velocity
     const dragDelta = currentTranslateRef.current - dragStartTranslateRef.current;
-    velocityRef.current = dragDelta * 0.1; // Momentum factor
-
-    // Resume auto-scroll after a delay
-    setTimeout(() => {
-      isAutoScrollingRef.current = true;
-    }, 300);
+    velocityRef.current = dragDelta * 0.1;
+    setTimeout(() => { isAutoScrollingRef.current = true; }, 300);
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    if (isDraggingRef.current) {
-      handleMouseUp();
-    }
-  }, [handleMouseUp]);
-
-  // Touch handlers
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      handleMouseDown(e.touches[0] as any);
-    },
-    [handleMouseDown]
-  );
-
-  const handleTouchMove = useCallback(
-    (e: React.TouchEvent) => {
-      handleMouseMove(e.touches[0] as any);
-    },
-    [handleMouseMove]
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    handleMouseUp();
-  }, [handleMouseUp]);
-
-  // Hover handlers
-  const handleMouseEnter = useCallback(() => {
-    setIsHovering(true);
-  }, []);
-
-  const handleMouseEnterLeave = useCallback(() => {
+    if (isDraggingRef.current) handleMouseUp();
     setIsHovering(false);
-  }, []);
+  }, [handleMouseUp]);
 
-  // Card click handler
-  const handleCardClick = useCallback(
-    (slug: string) => {
-      // Only navigate if drag distance is minimal (less than 5px)
-      if (dragDistanceRef.current < 5) {
-        router.push(`/properties/${slug}`);
-      }
-    },
-    [router]
-  );
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    handleMouseDown(e.touches[0] as unknown as React.MouseEvent);
+  }, [handleMouseDown]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    handleMouseMove(e.touches[0] as unknown as React.MouseEvent);
+  }, [handleMouseMove]);
+
+  const handleCardClick = useCallback((id: string) => {
+    if (dragDistanceRef.current < 5) {
+      router.push(`/properties/${id}`);
+    }
+  }, [router]);
 
   if (loading) {
-    return <div className="h-64 bg-gray-200 animate-pulse rounded-lg" />;
+    return (
+      <section className="bg-slate-50 py-16">
+        <div className="max-w-[1400px] mx-auto px-4">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-2" />
+              <div className="h-4 w-36 bg-gray-200 animate-pulse rounded" />
+            </div>
+          </div>
+          <div className="flex gap-6 overflow-hidden">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="w-80 flex-shrink-0 h-72 bg-gray-200 animate-pulse rounded-lg" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
   }
 
   if (displayedProperties.length === 0) return null;
@@ -232,48 +192,39 @@ export default function InfiniteCarousel() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-3xl font-bold">Featured Homes</h2>
-            <p className="text-gray-600">Explore premium listings</p>
+            <h2 className="text-3xl font-bold">Latest Listings</h2>
+            <p className="text-gray-600">Our most recently added properties</p>
           </div>
-
           <Link
             href="/properties"
-            className="flex items-center gap-1 transition-colors"
+            className="flex items-center gap-1 transition-opacity hover:opacity-80"
             style={{ color: '#C1A478' }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.8')}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
             View all <ChevronRight size={16} />
           </Link>
         </div>
 
-        {/* Carousel Container */}
+        {/* Carousel */}
         <div
-          className={`overflow-hidden rounded-lg ${
-            isDraggingRef.current ? 'cursor-grabbing' : 'cursor-grab'
-          }`}
+          className="overflow-hidden rounded-lg cursor-grab active:cursor-grabbing"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}
-          onMouseEnter={handleMouseEnter}
+          onMouseEnter={() => setIsHovering(true)}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onTouchEnd={handleMouseUp}
         >
-          {/* Carousel Track */}
           <div
             className="flex gap-6 will-change-transform"
-            style={{
-              transform: `translateX(${translateX}px)`,
-              transition: 'none',
-            }}
+            style={{ transform: `translateX(${translateX}px)`, transition: 'none' }}
           >
-            {displayedProperties.map((prop, idx) => (
+            {displayedProperties.map((property, idx) => (
               <PropertyCard
-                key={`${prop.id}-${idx}`}
-                property={prop}
-                onClick={() => handleCardClick(prop.slug)}
+                key={`${property.id}-${idx}`}
+                property={property}
+                onClick={() => handleCardClick(property.id)}
               />
             ))}
           </div>
@@ -283,84 +234,60 @@ export default function InfiniteCarousel() {
   );
 }
 
-// Property Card Component
+// ─── Property Card ────────────────────────────────────────────────────────────
+
 interface PropertyCardProps {
-  property: Property;
+  property: EagleProperty;
   onClick: () => void;
 }
 
 function PropertyCard({ property, onClick }: PropertyCardProps) {
   return (
-    <div
-      className="w-80 flex-shrink-0 cursor-grab group"
-      onClick={onClick}
-    >
+    <div className="w-80 flex-shrink-0 cursor-grab group" onClick={onClick}>
       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-        {/* Image Container */}
+        {/* Image */}
         <div className="h-52 bg-gray-200 relative overflow-hidden">
           <img
-            src={getImageUrl(property.main_image)}
-            alt={property.title}
+            src={getPropertyImage(property)}
+            alt={property.formattedAddress}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             draggable={false}
+            referrerPolicy="no-referrer"
           />
 
-          {/* Property Type Badge */}
+          {/* Status ribbon */}
           <div className="absolute top-0 left-0 overflow-hidden w-24 h-24 z-10">
             <div
-              className={`absolute top-3 -left-8 w-36 py-1 text-center text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 ${
-                property.property_type === 'FOR_SALE'
-                  ? 'bg-green-600'
-                  : 'bg-green-600'
-              }`}
-              style={{
-                backgroundColor: property.property_type === 'FOR_SALE' ? '#C1A478' : '#16a34a'
-              }}
+              className="absolute top-3 -left-8 w-36 py-1 text-center text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45"
+              style={{ backgroundColor: '#C1A478' }}
             >
-              {property.property_type === 'FOR_SALE' ? 'FOR SALE' : 'FOR RENT'}
+              {getStatusLabel(property.status)}
             </div>
           </div>
         </div>
 
-        {/* Card Content */}
+        {/* Content */}
         <div className="p-4">
-          {/* Title */}
-          <h3 
-            className="font-semibold text-gray-900 truncate transition-colors"
-            style={{ '--hover-color': '#C1A478' } as any}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#C1A478')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#111827')}
+          <h3
+            className="font-semibold text-gray-900 truncate transition-colors group-hover:text-[#C1A478]"
           >
-            {property.title}
+            {property.headline || property.formattedAddress}
           </h3>
 
-          {/* Location */}
-          <p className="text-sm text-gray-500 truncate mb-2">
-            {property.location}
-          </p>
-
-          {/* Price */}
-          <p className="text-lg font-bold text-gray-900 mb-3">
-            {formatPrice(property.price)}
-          </p>
-
-          {/* Property Details */}
-          <div className="flex gap-4 text-sm text-gray-600">
-            {/* Beds */}
-            <div className="flex items-center gap-1">
-              <Bed size={16} className="text-gray-400" />
-              <span className="font-medium">{property.beds}</span>
-            </div>
-
-            {/* Baths */}
-            <div className="flex items-center gap-1">
-              <Bath size={16} className="text-gray-400" />
-              <span className="font-medium">{property.baths}</span>
-            </div>
-
-            {/* Sqft */}
-            <span className="font-medium">{property.sqft.toLocaleString()} sqft</span>
+          <div className="flex items-center gap-1 text-sm text-gray-500 truncate mt-1 mb-2">
+            <MapPin size={13} className="flex-shrink-0 text-[#C1A478]" />
+            <span className="truncate">{property.formattedAddress}</span>
           </div>
+
+          <p className="text-lg font-bold text-gray-900 mb-2">
+            {formatPrice(property)}
+          </p>
+
+          {property.landSize && (
+            <p className="text-xs text-gray-500">
+              Land: {property.landSize}{property.landSizeUnits ? ` ${property.landSizeUnits}` : ''}
+            </p>
+          )}
         </div>
       </div>
     </div>
