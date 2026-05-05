@@ -14,7 +14,7 @@ export default function SinglePropertyHero({ property }: SinglePropertyHeroProps
     : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920';
 
   const formatPrice = () => {
-    if (property.priceDisplay) return property.priceDisplay;
+    if (property.advertisedPrice) return property.advertisedPrice;
     if (property.price) {
       return `$${property.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
     }
