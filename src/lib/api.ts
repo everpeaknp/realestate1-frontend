@@ -147,6 +147,25 @@ export async function apiRequest<T>(
   const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for chatbot
 
   try {
+    // Prepare headers
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(options?.headers as any),
+    };
+
+    // If we are on the server and calling internally, tell the backend about the public host
+    if (typeof window === 'undefined' && process.env.NEXT_PUBLIC_API_URL) {
+      try {
+        const publicUrl = new URL(process.env.NEXT_PUBLIC_API_URL);
+        headers['X-Forwarded-Host'] = publicUrl.host;
+        headers['X-Forwarded-Proto'] = publicUrl.protocol.replace(':', '');
+      } catch (e) {
+        // Fallback if URL is invalid
+        headers['X-Forwarded-Host'] = 'bijenkhadka.com.au';
+        headers['X-Forwarded-Proto'] = 'https';
+      }
+    }
+
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
@@ -154,10 +173,7 @@ export async function apiRequest<T>(
       cache: 'no-store',
       // Alternative: use revalidation
       // next: { revalidate: 0 },
-      headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers,
-      },
+      headers,
     });
 
     clearTimeout(timeoutId);
