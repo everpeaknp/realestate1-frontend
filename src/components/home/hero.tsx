@@ -76,30 +76,8 @@ export default function Hero({ settings }: HeroProps) {
   const [mounted, setMounted] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const debouncedQuery = useDebounce(query, 300);
-
-  // If no settings provided, show loading state
-  if (!settings) {
-    return (
-      <section className="relative min-h-[70vh] sm:min-h-[85vh] md:min-h-screen h-auto md:h-[110vh] w-full overflow-hidden flex items-center justify-center bg-gray-900">
-        <div className="text-white text-center">
-          <div className="animate-pulse">Loading...</div>
-        </div>
-      </section>
-    );
-  }
-
-  const title = settings.title;
-  const subtitle = settings.subtitle;
-  const backgroundImage = settings.background_image || 'https://www.realtorpal.hocud.com/wp-content/uploads/Video-Fall-Back.jpg';
-  const primaryButtonText = settings.primary_button_text;
-  const primaryButtonLink = settings.primary_button_link;
-  const secondaryButtonText = settings.secondary_button_text;
-  const secondaryButtonLink = settings.secondary_button_link;
-
-  // Debug logging
-  console.log('Hero settings:', settings);
-  console.log('Background image URL:', backgroundImage);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -208,8 +186,6 @@ export default function Hero({ settings }: HeroProps) {
     return () => controller.abort();
   }, [debouncedQuery]);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
   // Close on outside click — but not when clicking inside the portal dropdown
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -235,6 +211,25 @@ export default function Hero({ settings }: HeroProps) {
       window.removeEventListener('resize', handler);
     };
   }, [open]);
+
+  // If no settings provided, show loading state
+  if (!settings) {
+    return (
+      <section className="relative min-h-[70vh] sm:min-h-[85vh] md:min-h-screen h-auto md:h-[110vh] w-full overflow-hidden flex items-center justify-center bg-gray-900">
+        <div className="text-white text-center">
+          <div className="animate-pulse">Loading...</div>
+        </div>
+      </section>
+    );
+  }
+
+  const title = settings.title;
+  const subtitle = settings.subtitle;
+  const backgroundImage = settings.background_image || 'https://www.realtorpal.hocud.com/wp-content/uploads/Video-Fall-Back.jpg';
+  const primaryButtonText = settings.primary_button_text;
+  const primaryButtonLink = settings.primary_button_link;
+  const secondaryButtonText = settings.secondary_button_text;
+  const secondaryButtonLink = settings.secondary_button_link;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -159,7 +159,7 @@ export async function apiRequest<T>(
         const publicUrl = new URL(process.env.NEXT_PUBLIC_API_URL);
         headers['X-Forwarded-Host'] = publicUrl.host;
         headers['X-Forwarded-Proto'] = publicUrl.protocol.replace(':', '');
-      } catch (e) {
+      } catch (_e) {
         // Fallback if URL is invalid
         headers['X-Forwarded-Host'] = 'bijenkhadka.com.au';
         headers['X-Forwarded-Proto'] = 'https';
