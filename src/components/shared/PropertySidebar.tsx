@@ -142,7 +142,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
       const firstName = nameParts[0] || sanitizedData.name;
       const lastName = nameParts.slice(1).join(' ') || '';
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/api/leads/property-inquiry/`, {
         method: 'POST',
         headers: {

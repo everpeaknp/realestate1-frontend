@@ -118,7 +118,7 @@ export default function HomeWorthForm() {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
       // Create FormData for multipart/form-data submission
       const formData = new FormData();

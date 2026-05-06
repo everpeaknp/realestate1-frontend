@@ -13,8 +13,8 @@ export const metadata = {
 
 async function getDefaultAgent() {
   try {
-    // Use localhost for server-side API calls
-    const apiUrl = 'http://localhost:8000';
+    // Use environment variable for API URL (works in both dev and production)
+    const apiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
     console.log('Fetching agent from:', `${apiUrl}/api/agents/`);
     
     const res = await fetch(`${apiUrl}/api/agents/`, {

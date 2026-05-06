@@ -8,7 +8,8 @@ export default function TestImagesPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/home/hero-settings/')
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    fetch(`${apiUrl}/api/home/hero-settings/`)
       .then(res => res.json())
       .then(data => {
         console.log('Hero settings:', data);
@@ -48,13 +49,13 @@ export default function TestImagesPage() {
       </div>
 
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Test 2: Direct img tag with hardcoded URL</h2>
+        <h2 className="text-xl font-semibold mb-4">Test 2: Direct img tag with environment URL</h2>
         <img 
-          src="http://localhost:8000/media/home/hero/pexels-nevtug-491138436-16404018.jpg"
-          alt="Hero Background Hardcoded"
+          src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/media/home/hero/pexels-nevtug-491138436-16404018.jpg`}
+          alt="Hero Background"
           className="max-w-2xl border-2 border-gray-300"
-          onLoad={() => console.log('✓ Hardcoded image loaded successfully')}
-          onError={(e) => console.error('✗ Hardcoded image failed to load', e)}
+          onLoad={() => console.log('✓ Environment URL image loaded successfully')}
+          onError={(e) => console.error('✗ Environment URL image failed to load', e)}
         />
       </div>
 
