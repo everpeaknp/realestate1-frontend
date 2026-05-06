@@ -32,7 +32,7 @@ export default function LazyImage({
   const [hasError, setHasError] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   // Use fallback if src is empty or null
-  const [currentSrc, setCurrentSrc] = useState<string>(src || fallbackSrc);
+  const [currentSrc, setCurrentSrc] = useState<string>(src || fallbackSrc || '');
 
   // Handle client-side mounting
   useEffect(() => {
