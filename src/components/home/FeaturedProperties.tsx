@@ -206,7 +206,7 @@ export default function FeaturedProperties() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-3xl font-bold">Latest Listings</h2>
+            <h2 className="text-3xl font-bold text-[#1a1a1a]">Latest Listings</h2>
             <p className="text-gray-600">Our most recently added properties</p>
           </div>
           <Link
@@ -220,7 +220,7 @@ export default function FeaturedProperties() {
 
         {/* Carousel */}
         <div
-          className="overflow-hidden rounded-lg cursor-grab active:cursor-grabbing"
+          className="overflow-hidden rounded-lg cursor-grab active:cursor-grabbing select-none"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -266,6 +266,7 @@ function PropertyCard({ property, onClick }: PropertyCardProps) {
             alt={property.formattedAddress}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             referrerPolicy="no-referrer"
+            draggable={false}
           />
 
           {/* Status ribbon */}

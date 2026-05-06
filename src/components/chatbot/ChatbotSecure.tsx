@@ -146,7 +146,7 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
           setInfo(prev => ({ ...prev, [key]: e.target.value }));
           if (errors[key]) setErrors(prev => ({ ...prev, [key]: '' }));
         }}
-        className={`w-full p-[10px] border rounded text-[13px] bg-white focus:outline-none focus:ring-2 transition-all ${
+        className={`w-full p-[10px] border rounded text-[13px] text-[#1a1a1a] bg-white focus:outline-none focus:ring-2 transition-all ${
           errors[key]
             ? 'border-red-400 focus:border-red-400 focus:ring-red-100'
             : 'border-[#e8e8e8] focus:border-[#c1a478] focus:ring-[#c1a478]/20'
