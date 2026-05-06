@@ -23,16 +23,7 @@ export default function PersonSection({ settings }: PersonSectionProps) {
   const [dynamicSettings, setDynamicSettings] = useState<any>(null);
   const [loading, setLoading] = useState(!settings);
 
-  // Default values if settings are not provided
-  const defaultSettings = {
-    title: 'I will help you in every way possible to locate your next residence.',
-    description: 'Since 2010, I have assisted over 1500 customers in saving over $85 million on their real estate transactions. I provide customers with a personalized experience for selling, purchasing, and renting properties, as well as assistance in obtaining a home loan, with complete transparency and flawless service.',
-    person_image: 'https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png',
-    button_text: 'Contact Me',
-    button_link: '/contact',
-    phone: '+1 (321) 456 7890',
-    email: 'hello@example.com'
-  };
+  // No default fallback values - if no data, show loading or nothing
 
   useEffect(() => {
     // Only fetch if settings are not provided as props
@@ -60,13 +51,13 @@ export default function PersonSection({ settings }: PersonSectionProps) {
     }
   }, [settings]);
 
-  // Use provided settings, or fetched settings, or defaults
-  const data = settings || dynamicSettings || defaultSettings;
+  // Use provided settings, or fetched settings, or return null if no data
+  const data = settings || dynamicSettings;
 
   console.log('PersonSection render - settings:', settings, 'dynamicSettings:', dynamicSettings, 'using:', data);
 
-  if (loading) {
-    console.log('PersonSection still loading...');
+  if (loading || !data) {
+    console.log('PersonSection still loading or no data...');
     return null;
   }
 

@@ -78,13 +78,24 @@ export default function Hero({ settings }: HeroProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const debouncedQuery = useDebounce(query, 300);
 
-  const title = settings?.title || 'Justin Nelson | Boston Realtor';
-  const subtitle = settings?.subtitle || 'Help with building and manage investment properties portfolio';
-  const backgroundImage = settings?.background_image || 'https://www.realtorpal.hocud.com/wp-content/uploads/Video-Fall-Back.jpg';
-  const primaryButtonText = settings?.primary_button_text || 'CONTACT ME';
-  const primaryButtonLink = settings?.primary_button_link || '/contact';
-  const secondaryButtonText = settings?.secondary_button_text || 'View Listing';
-  const secondaryButtonLink = settings?.secondary_button_link || '/properties';
+  // If no settings provided, show loading state
+  if (!settings) {
+    return (
+      <section className="relative min-h-[70vh] sm:min-h-[85vh] md:min-h-screen h-auto md:h-[110vh] w-full overflow-hidden flex items-center justify-center bg-gray-900">
+        <div className="text-white text-center">
+          <div className="animate-pulse">Loading...</div>
+        </div>
+      </section>
+    );
+  }
+
+  const title = settings.title;
+  const subtitle = settings.subtitle;
+  const backgroundImage = settings.background_image || 'https://www.realtorpal.hocud.com/wp-content/uploads/Video-Fall-Back.jpg';
+  const primaryButtonText = settings.primary_button_text;
+  const primaryButtonLink = settings.primary_button_link;
+  const secondaryButtonText = settings.secondary_button_text;
+  const secondaryButtonLink = settings.secondary_button_link;
 
   // Debug logging
   console.log('Hero settings:', settings);

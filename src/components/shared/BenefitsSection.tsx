@@ -17,20 +17,7 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
   const [dynamicSection, setDynamicSection] = useState<any>(null);
   const [loading, setLoading] = useState(!benefits.length && !gallery.length && !section);
 
-  // Fallback data
-  const defaultBenefits = [
-    'I will never hurry you through the home-finding process.',
-    'I go above and beyond to find off-market and ignored homes.',
-    'I provide you the confidence-boosting counsel you need.',
-    'I promise maximum care, detail, and devotion.',
-  ];
-
-  const defaultGallery = [
-    'https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-  ];
+  // No fallback data - return null if no data available
 
   useEffect(() => {
     // Only fetch if data is not provided as props
@@ -79,21 +66,22 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
     }
   }, [benefits.length, gallery.length, section]);
 
-  // Use provided data, or fetched data, or defaults
-  const displayBenefits = benefits.length > 0 ? benefits : (dynamicBenefits.length > 0 ? dynamicBenefits : defaultBenefits);
-  const displayGallery = gallery.length > 0 ? gallery : (dynamicGallery.length > 0 ? dynamicGallery : defaultGallery);
-  const sectionData = section || dynamicSection || {};
-  const title = sectionData?.title || 'Benefits of working with me';
-  const description = sectionData?.description || 'My objective is to not only have a good impact on ourselves and our families but also to inspire, encourage, and affect long-term change in everyone we meet.';
-  const phone = sectionData?.phone || '+1 (321) 456 7890';
-  const email = sectionData?.email || 'hello@example.com';
+  // Use provided data, or fetched data, or return null if no data
+  const displayBenefits = benefits.length > 0 ? benefits : dynamicBenefits;
+  const displayGallery = gallery.length > 0 ? gallery : dynamicGallery;
+  const sectionData = section || dynamicSection;
 
   console.log('BenefitsSection render - props:', { benefits, gallery, section }, 'dynamic:', { dynamicBenefits, dynamicGallery, dynamicSection }, 'using:', { displayBenefits, displayGallery, sectionData });
 
-  if (loading) {
-    console.log('BenefitsSection still loading...');
+  if (loading || !displayBenefits.length || !displayGallery.length || !sectionData) {
+    console.log('BenefitsSection still loading or no data...');
     return null;
   }
+
+  const title = sectionData.title;
+  const description = sectionData.description;
+  const phone = sectionData.phone;
+  const email = sectionData.email;
 
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">

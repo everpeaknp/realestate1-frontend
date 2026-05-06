@@ -17,28 +17,7 @@ const iconMap: Record<string, LucideIcon> = {
   star: Star,
 };
 
-const defaultStats = [
-  {
-    icon: 'Crown',
-    label: '12+ Years of Experience',
-    description: 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam.',
-  },
-  {
-    icon: 'Users',
-    label: '1500+ Satisfied Clients',
-    description: 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam.',
-  },
-  {
-    icon: 'MapPinned',
-    label: '24 Locations Covered',
-    description: 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam.',
-  },
-  {
-    icon: 'Star',
-    label: '100+ Five Star Ratings',
-    description: 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam.',
-  },
-];
+// No default stats - components should show loading or nothing if no data
 
 interface StatsSectionProps {
   stats?: any[];
@@ -73,18 +52,18 @@ export default function StatsSection({ stats }: StatsSectionProps) {
     }
   }, [stats]);
 
-  // Use provided stats, or fetched stats, or defaults
-  const statsToUse = stats || (dynamicStats.length > 0 ? dynamicStats : defaultStats);
+  // Use provided stats, or fetched stats, or return null if no data
+  const statsToUse = stats || (dynamicStats.length > 0 ? dynamicStats : null);
 
   console.log('StatsSection render - stats prop:', stats, 'dynamicStats:', dynamicStats, 'using:', statsToUse);
 
-  if (loading) {
-    console.log('StatsSection still loading...');
+  if (loading || !statsToUse) {
+    console.log('StatsSection still loading or no data...');
     return null;
   }
 
   // Merge stats with default icons if needed
-  const statsData = statsToUse.map((stat: any, index: number) => {
+  const statsData = statsToUse.map((stat: any) => {
     // If stat has an icon property that's a string, map it to the component
     let IconComponent;
     
@@ -95,7 +74,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
       // Also check icon_name field from API
       IconComponent = iconMap[stat.icon_name] || iconMap[stat.icon_name.toLowerCase()] || Star;
     } else {
-      IconComponent = stat.icon || defaultStats[index]?.icon || Star;
+      IconComponent = Star;
     }
     
     return {

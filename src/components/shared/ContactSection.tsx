@@ -24,17 +24,7 @@ export default function ContactSection({ settings }: ContactSectionProps) {
   const [dynamicSettings, setDynamicSettings] = useState<any>(null);
   const [loading, setLoading] = useState(!settings);
 
-  // Default values if settings are not provided
-  const defaultSettings = {
-    person_image: 'https://www.realtorpal.hocud.com/wp-content/uploads/Realtor-Pal-Main-Agent-pro.png',
-    card_title: 'I will help you find the property of your dreams.',
-    card_subtitle: 'The only name you need to know for real estate answers:',
-    card_description: 'Justin Nelson | Boston Realtor',
-    button_text: 'Contact Me',
-    button_link: '/contact',
-    phone: '+1 (321) 456 7890',
-    email: 'hello@example.com'
-  };
+  // No default fallback values
 
   useEffect(() => {
     // Only fetch if settings are not provided as props
@@ -62,13 +52,13 @@ export default function ContactSection({ settings }: ContactSectionProps) {
     }
   }, [settings]);
 
-  // Use provided settings, or fetched settings, or defaults
-  const data = settings || dynamicSettings || defaultSettings;
+  // Use provided settings, or fetched settings, or return null if no data
+  const data = settings || dynamicSettings;
 
   console.log('ContactSection render - settings:', settings, 'dynamicSettings:', dynamicSettings, 'using:', data);
 
-  if (loading) {
-    console.log('ContactSection still loading...');
+  if (loading || !data) {
+    console.log('ContactSection still loading or no data...');
     return null;
   }
 
