@@ -17,7 +17,7 @@ interface LazyImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'onLo
 export default function LazyImage({
   src,
   alt,
-  fallbackSrc = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800',
+  fallbackSrc, // No default fallback - let components provide their own if needed
   blurDataURL,
   threshold = 0.01,
   rootMargin = '50px',
@@ -55,24 +55,29 @@ export default function LazyImage({
   };
 
   const handleError = () => {
-    console.error('Image failed to load:', currentSrc);
-    console.error('Image error details:', {
+    const errorDetails = {
       originalSrc: src,
       currentSrc,
       fallbackSrc,
       hasError,
-    });
+      timestamp: new Date().toISOString(),
+      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR',
+    };
     
-    // Only switch to fallback if original image fails
-    if (currentSrc === (src || fallbackSrc) && !hasError) {
-      console.log('Switching to fallback image:', fallbackSrc);
+    console.error('❌ Image failed to load:', currentSrc);
+    console.error('📊 Error details:', errorDetails);
+    
+    // Only switch to fallback if original image fails AND fallback is provided
+    if (currentSrc === (src || fallbackSrc) && !hasError && fallbackSrc) {
+      console.log('🔄 Switching to fallback image:', fallbackSrc);
       setHasError(true);
       setCurrentSrc(fallbackSrc);
       onError?.();
     } else {
-      // Fallback also failed - still mark as loaded to remove skeleton
-      console.error('Fallback image also failed, showing broken image');
-      setIsLoaded(true);
+      // No fallback or fallback also failed - show broken image
+      console.error('💔 No fallback available or fallback also failed');
+      setIsLoaded(true); // Remove skeleton to show broken image icon
+      setHasError(true);
     }
   };
 
