@@ -5,14 +5,19 @@
 
 // Get API URL from environment variable with fallback
 // For server-side rendering, we need to check both client and server env
-// Using localhost for consistency across client and server
 const getApiUrl = () => {
-  // Check client-side env var first
+  // Check client-side env var first (browser)
   if (typeof window !== 'undefined') {
     return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
   }
-  // Server-side: prefer internal/private API URL, then fall back to public URL.
-  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  
+  // Server-side: prefer internal Docker service name for container-to-container communication
+  // This allows the frontend container to communicate with backend container directly
+  const internalApiUrl = process.env.API_URL;
+  const publicApiUrl = process.env.NEXT_PUBLIC_API_URL;
+  
+  // Use internal URL if available (for Docker networking), otherwise fall back to public URL
+  return internalApiUrl || publicApiUrl || 'http://localhost:8000';
 };
 
 export const API_URL = getApiUrl();
