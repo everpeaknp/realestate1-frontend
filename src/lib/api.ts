@@ -1,5 +1,5 @@
 /**
- * API Configuration
+ * API Configuration v1.1 - CI/CD Test
  * Centralized API URL management using environment variables
  */
 
