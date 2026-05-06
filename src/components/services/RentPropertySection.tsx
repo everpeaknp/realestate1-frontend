@@ -1,6 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Phone, Mail } from 'lucide-react';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface ServiceFeature {
   id: number;
@@ -44,11 +45,10 @@ export default function RentPropertySection({
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <img 
+            <LazyImage 
               src={image}
               alt={title}
               className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
             />
           </motion.div>
 

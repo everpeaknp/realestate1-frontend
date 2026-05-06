@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { API_ENDPOINTS, API_URL } from '@/lib/api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface HeroProps {
   settings?: {
@@ -84,6 +85,10 @@ export default function Hero({ settings }: HeroProps) {
   const primaryButtonLink = settings?.primary_button_link || '/contact';
   const secondaryButtonText = settings?.secondary_button_text || 'View Listing';
   const secondaryButtonLink = settings?.secondary_button_link || '/properties';
+
+  // Debug logging
+  console.log('Hero settings:', settings);
+  console.log('Background image URL:', backgroundImage);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -267,7 +272,12 @@ export default function Hero({ settings }: HeroProps) {
                 className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
               >
                 <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
-                  <img src={getImage(p.image)} alt={p.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <LazyImage
+                    src={getImage(p.image)}
+                    alt={p.title}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">{p.title}</p>
@@ -305,7 +315,12 @@ export default function Hero({ settings }: HeroProps) {
                 className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
               >
                 <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
-                  <img src={getImage(b.featured_image)} alt={b.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <LazyImage
+                    src={getImage(b.featured_image)}
+                    alt={b.title}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">{b.title}</p>
@@ -326,11 +341,19 @@ export default function Hero({ settings }: HeroProps) {
 
   return (
     <section className="relative min-h-[70vh] sm:min-h-[85vh] md:min-h-screen h-auto md:h-[110vh] w-full overflow-hidden flex items-center justify-center">
-      {/* Background */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 scale-105"
-        style={{ backgroundImage: `url('${backgroundImage}')`, filter: 'brightness(0.4)' }}
-      />
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <LazyImage
+          src={backgroundImage}
+          alt="Hero Background"
+          fallbackSrc="https://www.realtorpal.hocud.com/wp-content/uploads/Video-Fall-Back.jpg"
+          className="w-full h-full object-cover scale-105 transition-transform duration-1000"
+          style={{ filter: 'brightness(0.4)' }}
+          skeletonClassName="bg-gray-900"
+          threshold={0}
+          rootMargin="0px"
+        />
+      </div>
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 text-center text-white py-12 sm:py-16">

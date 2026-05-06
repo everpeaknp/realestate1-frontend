@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BlogPost, formatDate } from '@/lib/blogApi';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface RelatedPostsProps {
   posts: BlogPost[];
@@ -38,8 +39,8 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
                 >
                   {/* Image Container */}
                   <div className="aspect-[4/3] overflow-hidden rounded-sm mb-4 shadow-sm bg-gray-200">
-                    <img 
-                      src={postImage} 
+                    <LazyImage
+                      src={postImage}
                       alt={post.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        img { max-width: 500px; border: 2px solid #ccc; margin: 10px 0; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Direct Image Loading Test</h1>
+    
+    <h2>Test 1: Backend Image (127.0.0.1)</h2>
+    <div id="status1" class="status">Loading...</div>
+    <img id="img1" src="http://127.0.0.1:8000/media/home/hero/pexels-nevtug-491138436-16404018.jpg" alt="Test 1">
+    
+    <h2>Test 2: Backend Image (localhost)</h2>
+    <div id="status2" class="status">Loading...</div>
+    <img id="img2" src="http://localhost:8000/media/home/hero/pexels-nevtug-491138436-16404018.jpg" alt="Test 2">
+    
+    <h2>Test 3: External Image</h2>
+    <div id="status3" class="status">Loading...</div>
+    <img id="img3" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="Test 3">
+    
+    <script>
+        function setupTest(imgId, statusId) {
+            const img = document.getElementById(imgId);
+            const status = document.getElementById(statusId);
+            
+            img.onload = () => {
+                status.textContent = '✓ Image loaded successfully';
+                status.className = 'status success';
+            };
+            
+            img.onerror = (e) => {
+                status.textContent = '✗ Failed to load image';
+                status.className = 'status error';
+                console.error('Image error:', e);
+            };
+        }
+        
+        setupTest('img1', 'status1');
+        setupTest('img2', 'status2');
+        setupTest('img3', 'status3');
+    </script>
+</body>
+</html>

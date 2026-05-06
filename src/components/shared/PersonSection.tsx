@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { homeAPI } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface PersonSectionProps {
   settings?: {
@@ -122,11 +123,10 @@ export default function PersonSection({ settings }: PersonSectionProps) {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="relative w-full max-w-md lg:max-w-none h-[400px] sm:h-[500px] md:h-[602px]">
-              <img 
+              <LazyImage 
                 src={data.person_image} 
                 alt="Real Estate Agent"
                 className="w-full h-full object-contain object-bottom"
-                referrerPolicy="no-referrer"
               />
               {/* Optional: Subtle backdrop element to mimic the screenshot's depth */}
               <div className="absolute -bottom-6 -left-6 -z-10 w-48 h-48 sm:w-64 sm:h-64 bg-gray-50 rounded-full blur-3xl opacity-50" />

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Play, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { API_URL } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface VideoTestimonial {
   id: number;
@@ -88,7 +89,7 @@ export default function VideoTestimonials() {
                 /* Thumbnail View */
                 <>
                   {/* Background Image */}
-                  <img 
+                  <LazyImage 
                     src={item.image} 
                     alt={item.name} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

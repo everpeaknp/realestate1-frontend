@@ -4,6 +4,7 @@ import { Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { API_ENDPOINTS } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface Agent {
   id: number;
@@ -45,11 +46,10 @@ export default function PropertySidebar() {
         viewport={{ once: true }}
       >
         <div className="w-24 h-24 overflow-hidden rounded-sm flex items-center justify-center">
-          <img 
+          <LazyImage 
             src={agentAvatar}
             alt={agentName}
             className="w-full h-full object-contain"
-            referrerPolicy="no-referrer"
           />
         </div>
         <div>

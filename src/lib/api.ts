@@ -5,14 +5,14 @@
 
 // Get API URL from environment variable with fallback
 // For server-side rendering, we need to check both client and server env
-// Using 127.0.0.1 instead of localhost for better SSR compatibility
+// Using localhost for consistency across client and server
 const getApiUrl = () => {
   // Check client-side env var first
   if (typeof window !== 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
   }
   // Server-side: prefer internal/private API URL, then fall back to public URL.
-  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 };
 
 export const API_URL = getApiUrl();
@@ -145,6 +145,10 @@ export async function apiRequest<T>(
     const response = await fetch(url, {
       ...options,
       signal: controller.signal,
+      // Disable Next.js caching to ensure fresh data on every request
+      cache: 'no-store',
+      // Alternative: use revalidation
+      // next: { revalidate: 0 },
       headers: {
         'Content-Type': 'application/json',
         ...options?.headers,

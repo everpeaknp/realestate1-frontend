@@ -1,17 +1,26 @@
 'use client';
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import LazyImage from '@/components/shared/LazyImage';
 
 export default function ServicesHero() {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <section className="relative h-[300px] sm:h-[347px] flex items-center justify-center overflow-hidden">
-      {/* Fixed Background Image */}
-      <div 
-        className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
-        style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1920")',
-        }}
-      >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <LazyImage
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1920"
+          alt="Services Hero Background"
+          fallbackSrc="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1920"
+          className="w-full h-full object-cover"
+          onLoad={() => setImageLoaded(true)}
+          skeletonClassName="bg-gray-800"
+          threshold={0}
+          rootMargin="0px"
+        />
         <div className="absolute inset-0 bg-black/60" />
       </div>
 

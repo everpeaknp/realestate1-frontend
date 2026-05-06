@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { API_ENDPOINTS, API_URL } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface BlogPost {
   id: number;
@@ -71,11 +72,10 @@ export default function InstagramGallery() {
               transition={{ duration: 0.5, delay: index * 0.05 }}
             >
               <Link href={`/blog/${post.slug}`} className="block w-full h-full">
-                <img
+                <LazyImage
                   src={getBlogImage(post.featured_image)}
                   alt={post.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
                 />
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-[#c1a478]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

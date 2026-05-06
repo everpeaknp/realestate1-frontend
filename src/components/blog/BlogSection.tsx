@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { BlogPost, formatDate } from '@/lib/blogApi';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface BlogSectionProps {
   posts: BlogPost[];
@@ -38,11 +39,10 @@ export default function BlogSection({ posts }: BlogSectionProps) {
               >
                 <div className="aspect-[16/10] overflow-hidden rounded-sm mb-4 sm:mb-6 bg-gray-200">
                   {post.featured_image ? (
-                    <img 
+                    <LazyImage 
                       src={post.featured_image} 
                       alt={post.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      referrerPolicy="no-referrer"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">

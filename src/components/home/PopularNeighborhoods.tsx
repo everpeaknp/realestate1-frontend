@@ -1,5 +1,6 @@
 import { MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface Neighborhood {
   id: string;
@@ -84,11 +85,10 @@ export default function PopularNeighborhoods({ neighborhoods = defaultNeighborho
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               {/* Neighborhood Image */}
-              <img 
+              <LazyImage 
                 src={item.image} 
                 alt={item.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                referrerPolicy="no-referrer"
               />
               
               {/* Overlay Overlay */}

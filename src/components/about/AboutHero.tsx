@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { apiRequest, API_ENDPOINTS } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface AboutHeroSettings {
   title: string;
@@ -14,6 +15,7 @@ interface AboutHeroSettings {
 export default function AboutHero() {
   const [settings, setSettings] = useState<AboutHeroSettings | null>(null);
   const [loading, setLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -50,13 +52,18 @@ export default function AboutHero() {
 
   return (
     <section className="relative min-h-[300px] sm:min-h-[347px] flex items-center justify-center overflow-hidden">
-      {/* Fixed Background Image */}
-      <div 
-        className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
-        style={{ 
-          backgroundImage: `url("${backgroundUrl}")`,
-        }}
-      >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <LazyImage
+          src={backgroundUrl}
+          alt="About Hero Background"
+          fallbackSrc="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920"
+          className="w-full h-full object-cover"
+          onLoad={() => setImageLoaded(true)}
+          skeletonClassName="bg-gray-800"
+          threshold={0}
+          rootMargin="0px"
+        />
         <div className="absolute inset-0 bg-black/60" />
       </div>
 

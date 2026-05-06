@@ -7,6 +7,7 @@ import { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { API_ENDPOINTS, API_URL, apiRequest } from '@/lib/api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface PropertiesHeroSettings {
   id: number;
@@ -210,11 +211,17 @@ function PropertiesHeroInner() {
 
   return (
     <section className="relative h-[340px] sm:h-[380px] md:h-[420px] flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div
-        className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
-        style={{ backgroundImage: `url("${backgroundUrl}")` }}
-      >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <LazyImage
+          src={backgroundUrl}
+          alt="Properties Hero Background"
+          fallbackSrc="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1920"
+          className="w-full h-full object-cover"
+          skeletonClassName="bg-gray-800"
+          threshold={0}
+          rootMargin="0px"
+        />
         <div className="absolute inset-0 bg-black/50" />
       </div>
 
@@ -297,11 +304,10 @@ function PropertiesHeroInner() {
                   >
                     {/* Thumbnail */}
                     <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
-                      <img
+                      <LazyImage
                         src={getImage(p.image)}
                         alt={p.title}
                         className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
                       />
                     </div>
                     {/* Info */}

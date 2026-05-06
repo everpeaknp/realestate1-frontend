@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_URL } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface ProjectImage {
   id: number;
@@ -103,7 +104,7 @@ export default function ProjectGallery() {
               transition={{ duration: 0.5, delay: index % 4 * 0.1 }}
               onClick={() => setSelectedImage(index)}
             >
-              <img 
+              <LazyImage 
                 src={image.url} 
                 alt={image.title}
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"

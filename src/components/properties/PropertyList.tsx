@@ -7,6 +7,8 @@ import { MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { EagleProperty } from '@/lib/eagle-api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
+import LazyImage from '@/components/shared/LazyImage';
+import PropertyCardSkeleton from '@/components/shared/PropertyCardSkeleton';
 
 const PAGE_SIZE = 12;
 
@@ -114,9 +116,7 @@ function PropertyListInner() {
         {/* Loading */}
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-            {[...Array(12)].map((_, i) => (
-              <div key={i} className="bg-gray-100 animate-pulse h-[360px] sm:h-[380px] rounded" />
-            ))}
+            <PropertyCardSkeleton count={12} />
           </div>
         )}
 
@@ -142,7 +142,7 @@ function PropertyListInner() {
                 >
                   <Link href={`/properties/${buildEagleSlug(property.id, property.formattedAddress)}`} className="block">
                     <div className="relative h-48 sm:h-56 md:h-60 overflow-hidden">
-                      <img
+                      <LazyImage
                         src={getPropertyImage(property)}
                         alt={property.formattedAddress}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -250,10 +250,8 @@ export default function PropertyList() {
   return (
     <Suspense fallback={
       <section className="bg-white py-20 px-6">
-        <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[...Array(12)].map((_, i) => (
-            <div key={i} className="bg-gray-100 animate-pulse h-[380px] rounded" />
-          ))}
+        <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <PropertyCardSkeleton count={12} />
         </div>
       </section>
     }>

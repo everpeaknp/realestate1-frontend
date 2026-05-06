@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import LazyImage from '@/components/shared/LazyImage';
 
 
 const faqData = [
@@ -94,11 +95,10 @@ export default function FAQSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <img 
+            <LazyImage 
               src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200" 
               alt="Modern Home Interior/Exterior" 
               className="absolute inset-0 w-full h-full object-cover"
-              referrerPolicy="no-referrer"
             />
           </motion.div>
           

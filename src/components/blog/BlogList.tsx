@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_ENDPOINTS, API_URL } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
+import BlogCardSkeleton from '@/components/shared/BlogCardSkeleton';
 
 const PAGE_SIZE = 8;
 
@@ -82,14 +84,10 @@ function BlogListInner() {
 
   if (loading) {
     return (
-      <div id="blog-list" className="space-y-12 py-8">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="animate-pulse">
-            <div className="aspect-[16/10] bg-gray-100 rounded mb-4" />
-            <div className="h-6 bg-gray-100 rounded w-3/4 mb-2" />
-            <div className="h-4 bg-gray-100 rounded w-1/3" />
-          </div>
-        ))}
+      <div id="blog-list" className="py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-12">
+          <BlogCardSkeleton count={8} variant="grid" />
+        </div>
       </div>
     );
   }
@@ -136,7 +134,7 @@ function BlogListInner() {
                   transition={{ duration: 0.6, delay: index * 0.06 }}
                 >
                   <div className="aspect-[16/10] overflow-hidden rounded-sm mb-4 sm:mb-6 bg-gray-200">
-                    <img
+                    <LazyImage
                       src={getImage(post.featured_image)}
                       alt={post.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -208,14 +206,10 @@ function BlogListInner() {
 export default function BlogList() {
   return (
     <Suspense fallback={
-      <div className="space-y-12 py-8">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="animate-pulse">
-            <div className="aspect-[16/10] bg-gray-100 rounded mb-4" />
-            <div className="h-6 bg-gray-100 rounded w-3/4 mb-2" />
-            <div className="h-4 bg-gray-100 rounded w-1/3" />
-          </div>
-        ))}
+      <div className="py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-12">
+          <BlogCardSkeleton count={8} variant="grid" />
+        </div>
       </div>
     }>
       <BlogListInner />

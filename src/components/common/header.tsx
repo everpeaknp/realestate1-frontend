@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
 import { useState, useEffect } from 'react';
+import LazyImage from '@/components/shared/LazyImage';
 
 
 export default function Header() {
@@ -68,14 +69,11 @@ export default function Header() {
             {logoImage ? (
               // Custom uploaded logo
               <div className="relative h-12 sm:h-16 md:h-20 w-auto">
-                <img 
+                <LazyImage 
                   src={getImageUrl(logoImage) || ''} 
                   alt={logoText}
                   className="h-12 sm:h-16 md:h-20 w-auto object-contain"
-                  onError={(e) => {
-                    console.error('Logo image failed to load:', getImageUrl(logoImage));
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
+                  fallbackSrc=""
                 />
               </div>
             ) : (

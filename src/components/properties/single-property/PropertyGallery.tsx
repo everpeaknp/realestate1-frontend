@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { EagleProperty, EagleImage } from '@/lib/eagle-api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface PropertyGalleryProps {
   property: EagleProperty;
@@ -58,7 +59,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
             className="relative aspect-[4/3] overflow-hidden rounded cursor-pointer group"
             onClick={() => openLightbox(index)}
           >
-            <img
+            <LazyImage
               src={image.url}
               alt={`Property image ${index + 1}`}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -115,7 +116,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               className="max-w-7xl max-h-[90vh] mx-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
+              <LazyImage
                 src={images[selectedImage].url}
                 alt={`Property image ${selectedImage + 1}`}
                 className="max-w-full max-h-[90vh] object-contain"

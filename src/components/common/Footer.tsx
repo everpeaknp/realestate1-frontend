@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
+import LazyImage from '@/components/shared/LazyImage';
 
 // Custom Social Media Icons as SVG components
 const FacebookIcon = () => (
@@ -108,16 +109,12 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            {logoImage ? (
+            {logoImage && getImageUrl(logoImage) ? (
               <div className="relative h-12 sm:h-16 md:h-20 w-auto">
-                <img 
-                  src={getImageUrl(logoImage) || ''} 
+                <LazyImage 
+                  src={getImageUrl(logoImage)!} 
                   alt={logoText}
                   className="h-12 sm:h-16 md:h-20 w-auto object-contain"
-                  onError={(e) => {
-                    console.error('Footer logo image failed to load:', getImageUrl(logoImage));
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
                 />
               </div>
             ) : (

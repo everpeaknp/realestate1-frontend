@@ -19,6 +19,7 @@ import { rateLimiter, formatTimeRemaining } from '@/lib/rateLimit';
 import { FormInput } from '@/components/forms/FormInput';
 import { FormTextarea } from '@/components/forms/FormTextarea';
 import { FormSelect } from '@/components/forms/FormSelect';
+import LazyImage from '@/components/shared/LazyImage';
 
 const INQUIRY_MAP: Record<string, string> = {
   buying: 'BUYING',
@@ -187,11 +188,10 @@ export default function ContactFormSection({
 
             {/* Agent Image */}
             <div className="mt-auto w-full flex justify-center">
-              <img
+              <LazyImage
                 src={settings.agent_image}
                 alt={settings.agent_name}
                 className="w-full max-w-[350px] sm:max-w-[450px] lg:max-w-[500px] h-auto object-contain object-bottom"
-                referrerPolicy="no-referrer"
               />
             </div>
           </div>

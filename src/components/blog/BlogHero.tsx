@@ -7,6 +7,7 @@ import { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { API_ENDPOINTS, API_URL } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface BlogHeroSettings {
   title: string;
@@ -189,7 +190,12 @@ function BlogHeroInner() {
             className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
           >
             <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
-              <img src={getImage(b.featured_image)} alt={b.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <LazyImage
+                src={getImage(b.featured_image)}
+                alt={b.title}
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">{b.title}</p>
@@ -214,11 +220,17 @@ function BlogHeroInner() {
 
   return (
     <section className="relative h-[340px] sm:h-[380px] md:h-[420px] flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div
-        className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
-        style={{ backgroundImage: `url("${settings.background_url}")` }}
-      >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <LazyImage
+          src={settings.background_url}
+          alt="Blog Hero Background"
+          fallbackSrc="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920"
+          className="w-full h-full object-cover"
+          skeletonClassName="bg-gray-800"
+          threshold={0}
+          rootMargin="0px"
+        />
         <div className="absolute inset-0 bg-black/60" />
       </div>
 

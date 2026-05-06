@@ -1,6 +1,10 @@
 import Home from '@/components/home';
 import { homeAPI } from '@/lib/api';
 
+// Force dynamic rendering and disable caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function HomePage() {
   // Fetch all home page data
   const [

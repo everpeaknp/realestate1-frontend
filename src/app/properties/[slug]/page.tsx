@@ -10,6 +10,7 @@ import PropertyFloorPlan from '@/components/properties/single-property/PropertyF
 import PropertySidebar from '@/components/properties/single-property/PropertySidebar';
 import ContactSection from '@/components/shared/ContactSection';
 import Newsletter from '@/components/shared/newsletter';
+import SocialShare from '@/components/shared/SocialShare';
 import Header from '@/components/common/header';
 import Footer from '@/components/common/Footer';
 import { EagleProperty } from '@/lib/eagle-api';
@@ -98,6 +99,10 @@ export default function SinglePropertyPage() {
             <PropertyGallery property={property} />
             <PropertyFeatures property={property} />
             <PropertyFloorPlan property={property} />
+            <SocialShare 
+              title={`Check out this property: ${property.formattedAddress}`}
+              description={`${property.formattedAddress} - ${property.price ? `$${property.price.toLocaleString()}` : property.advertisedPrice || 'Price available upon request'}`}
+            />
           </div>
           <div className="lg:col-span-4">
             <div className="sticky top-24">

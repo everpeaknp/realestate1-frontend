@@ -8,6 +8,7 @@
 import { useState, useRef } from 'react';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface ImageUploadProps {
   maxImages?: number;
@@ -170,7 +171,7 @@ export function ImageUpload({
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="relative group aspect-square rounded-sm overflow-hidden border-2 border-gray-200"
               >
-                <img
+                <LazyImage
                   src={image.preview}
                   alt={`Property ${index + 1}`}
                   className="w-full h-full object-cover"

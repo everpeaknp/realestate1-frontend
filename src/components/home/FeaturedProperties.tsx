@@ -6,6 +6,8 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { EagleProperty } from '@/lib/eagle-api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
+import LazyImage from '@/components/shared/LazyImage';
+import Skeleton from '@/components/shared/Skeleton';
 
 // ─── Carousel config ──────────────────────────────────────────────────────────
 const SCROLL_SPEED = 0.5;
@@ -171,13 +173,24 @@ export default function FeaturedProperties() {
         <div className="max-w-[1400px] mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-2" />
-              <div className="h-4 w-36 bg-gray-200 animate-pulse rounded" />
+              <Skeleton height="32px" width="200px" className="mb-2" />
+              <Skeleton height="20px" width="280px" />
             </div>
+            <Skeleton height="20px" width="100px" />
           </div>
           <div className="flex gap-6 overflow-hidden">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="w-80 flex-shrink-0 h-72 bg-gray-200 animate-pulse rounded-lg" />
+              <div key={i} className="w-80 flex-shrink-0">
+                <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+                  <Skeleton height="208px" className="w-full" />
+                  <div className="p-4">
+                    <Skeleton height="20px" className="mb-2" />
+                    <Skeleton height="16px" className="mb-2" />
+                    <Skeleton height="24px" width="120px" className="mb-2" />
+                    <Skeleton height="12px" width="100px" />
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -248,11 +261,10 @@ function PropertyCard({ property, onClick }: PropertyCardProps) {
       <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
         {/* Image */}
         <div className="h-52 bg-gray-200 relative overflow-hidden">
-          <img
+          <LazyImage
             src={getPropertyImage(property)}
             alt={property.formattedAddress}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            draggable={false}
             referrerPolicy="no-referrer"
           />
 

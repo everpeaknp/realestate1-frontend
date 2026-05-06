@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BlogGalleryImage } from '@/lib/blogApi';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface BlogGalleryProps {
   images: BlogGalleryImage[];
@@ -31,7 +32,7 @@ export default function BlogGallery({ images }: BlogGalleryProps) {
               transition={{ duration: 0.2 }}
               onClick={() => setSelectedImage(image)}
             >
-              <img
+              <LazyImage
                 src={image.image || '/images/blog-placeholder.jpg'}
                 alt={image.caption || 'Gallery image'}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -104,7 +105,7 @@ export default function BlogGallery({ images }: BlogGalleryProps) {
               </button>
 
               {/* Image */}
-              <img
+              <LazyImage
                 src={selectedImage.image || '/images/blog-placeholder.jpg'}
                 alt={selectedImage.caption || 'Gallery image'}
                 className="w-full h-auto max-h-[70vh] sm:max-h-[80vh] object-contain rounded-sm"

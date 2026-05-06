@@ -3,6 +3,7 @@ import { Check, Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { homeAPI } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface BenefitsSectionProps {
   benefits?: any[];
@@ -169,11 +170,10 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
               >
-                <img 
+                <LazyImage 
                   src={typeof img === 'string' ? img : img.image} 
                   alt={typeof img === 'string' ? `Real Estate Gallery ${index + 1}` : (img.alt_text || `Gallery ${index + 1}`)}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
               </motion.div>

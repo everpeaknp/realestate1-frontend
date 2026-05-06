@@ -20,6 +20,7 @@ import { sanitizeFormData } from '@/lib/sanitize';
 import { rateLimiter, formatTimeRemaining } from '@/lib/rateLimit';
 import { FormInput } from '@/components/forms/FormInput';
 import { FormTextarea } from '@/components/forms/FormTextarea';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface Agent {
   id?: number;
@@ -104,6 +105,12 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
   const displayAgent = agent || settings?.default_agent || defaultAgent;
   const formTitle = settings?.form_title || 'Contact For Your Real Estate Solutions';
 
+  // Debug logging
+  console.log('PropertySidebar - Agent prop:', agent);
+  console.log('PropertySidebar - Settings default agent:', settings?.default_agent);
+  console.log('PropertySidebar - Display agent:', displayAgent);
+  console.log('PropertySidebar - Avatar URL:', displayAgent.avatar);
+
   const onSubmit = async (data: PropertyInquiryFormData) => {
     setError('');
     setRateLimitError('');
@@ -187,11 +194,10 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
         viewport={{ once: true }}
       >
         <div className="w-24 h-24 overflow-hidden rounded-sm bg-transparent">
-          <img
-            src={displayAgent.avatar}
+          <LazyImage
+            src={displayAgent.avatar || defaultAgent.avatar}
             alt={displayAgent.name}
             className="w-full h-full object-contain"
-            referrerPolicy="no-referrer"
           />
         </div>
         <div>

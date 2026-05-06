@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Play, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { API_URL } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface TestimonialItem {
   id: string;
@@ -91,11 +92,10 @@ export default function Testimonials() {
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-6 sm:mb-8">
                 {/* Image */}
                 <div className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] flex-shrink-0 mx-auto sm:mx-0">
-                  <img 
+                  <LazyImage 
                     src={item.image} 
                     alt={item.name} 
                     className="w-full h-full object-cover rounded-sm"
-                    referrerPolicy="no-referrer"
                   />
                 </div>
                 

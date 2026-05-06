@@ -4,6 +4,7 @@ import { Play, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { API_URL } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface Testimonial {
   id: string;
@@ -154,7 +155,7 @@ export default function Testimonials() {
             ) : (
               /* Thumbnail View */
               <>
-                <img 
+                <LazyImage 
                   src={videoTestimonial.image} 
                   alt="Happy Clients"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -192,7 +193,7 @@ export default function Testimonials() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <div className="h-[180px] sm:h-[201px] overflow-hidden mb-6 sm:mb-8 flex-shrink-0 rounded-sm">
-                  <img 
+                  <LazyImage 
                     src={textTestimonials[0].image} 
                     alt="Property"
                     className="w-full h-full object-cover"
@@ -223,7 +224,7 @@ export default function Testimonials() {
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
                 <div className="h-[180px] sm:h-[201px] overflow-hidden mb-6 sm:mb-8 flex-shrink-0 rounded-sm">
-                  <img 
+                  <LazyImage 
                     src={textTestimonials[1].image} 
                     alt="Luxury Home"
                     className="w-full h-full object-cover"

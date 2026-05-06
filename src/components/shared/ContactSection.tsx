@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { homeAPI } from '@/lib/api';
+import LazyImage from '@/components/shared/LazyImage';
 
 interface ContactSectionProps {
   settings?: {
@@ -84,11 +85,10 @@ export default function ContactSection({ settings }: ContactSectionProps) {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <img 
+            <LazyImage 
               src={data.person_image} 
               alt="Real Estate Agent"
               className="max-h-[400px] sm:max-h-[500px] md:max-h-[600px] lg:max-h-[700px] w-auto object-contain"
-              referrerPolicy="no-referrer"
             />
           </motion.div>
 
