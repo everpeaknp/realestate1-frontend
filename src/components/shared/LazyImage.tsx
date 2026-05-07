@@ -106,8 +106,19 @@ export default function LazyImage({
       }
     : {};
 
-  // Don't render if no valid src or not mounted yet
-  if (!currentSrc || !isMounted) {
+  // Don't render if no valid src
+  if (!currentSrc) {
+    return (
+      <div style={containerStyle} className={className}>
+        <div
+          className={`absolute inset-0 bg-gray-200 animate-pulse ${skeletonClassName}`}
+        />
+      </div>
+    );
+  }
+
+  // Show skeleton during SSR to prevent hydration mismatch
+  if (!isMounted) {
     return (
       <div style={containerStyle} className={className}>
         <div

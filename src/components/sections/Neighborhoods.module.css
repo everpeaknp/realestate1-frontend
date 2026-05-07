@@ -1,0 +1,82 @@
+.section {
+  padding: 100px 0;
+  background: var(--bg-muted);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.header h2 {
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  height: 500px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* Specific styling for masonry feel */
+.card:nth-child(1) { grid-row: span 2; }
+.card:nth-child(4) { grid-column: span 2; }
+
+.image {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+  transition: background 0.3s ease;
+}
+
+.card:hover .overlay {
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+}
+
+.overlay h3 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  margin: 0;
+}
+
+.overlay p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+  }
+  .card { height: 250px; }
+  .card:nth-child(1), .card:nth-child(4) { grid-column: auto; grid-row: auto; }
+}
+
+@media (max-width: 576px) {
+  .grid { grid-template-columns: 1fr; }
+}

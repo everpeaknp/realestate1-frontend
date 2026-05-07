@@ -61,6 +61,7 @@ function PropertiesHeroInner() {
   const [open, setOpen] = useState(false);
   const [searching, setSearching] = useState(false);
 
+
   const debouncedQuery = useDebounce(query, 300);
 
   // Fetch hero settings
@@ -184,8 +185,14 @@ function PropertiesHeroInner() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setOpen(false);
-    const params = new URLSearchParams();
-    if (query.trim()) params.set('search', query.trim());
+    const params = new URLSearchParams(searchParams.toString());
+    if (query.trim()) {
+      params.set('search', query.trim());
+    } else {
+      params.delete('search');
+    }
+    // Reset to page 1 when searching
+    params.delete('page');
     router.push(`/properties?${params.toString()}`, { scroll: false });
     // Small delay to let the URL update and list re-render before scrolling
     setTimeout(scrollToList, 150);
@@ -195,7 +202,10 @@ function PropertiesHeroInner() {
     setQuery('');
     setResults([]);
     setOpen(false);
-    router.push('/properties');
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('search');
+    params.delete('page');
+    router.push(`/properties?${params.toString()}`);
   };
 
   const getImage = (img: string | null): string => {
@@ -248,7 +258,7 @@ function PropertiesHeroInner() {
         {/* Search Bar */}
         <motion.div
           ref={wrapperRef}
-          className="relative mb-6"
+          className="relative mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35 }}

@@ -34,6 +34,7 @@ interface HeroCardsProps {
 export default function HeroCards({ cards: cardsData }: HeroCardsProps) {
   const [dynamicCards, setDynamicCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(!cardsData);
+  const [isMounted, setIsMounted] = useState(false);
 
   const defaultCards = [
     {
@@ -67,6 +68,10 @@ export default function HeroCards({ cards: cardsData }: HeroCardsProps) {
   ];
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (!cardsData) {
       const fetchCards = async () => {
         try {
@@ -87,7 +92,27 @@ export default function HeroCards({ cards: cardsData }: HeroCardsProps) {
 
   const cards = cardsData || (dynamicCards.length ? dynamicCards : defaultCards);
 
-  if (loading) return null;
+  // Show skeleton during SSR and loading to prevent hydration mismatch
+  if (!isMounted || loading) {
+    return (
+      <div className="relative z-20 -mt-20 flex justify-center px-4">
+        <div className="flex flex-wrap justify-center gap-6 max-w-6xl">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="w-[280px] sm:w-[300px] lg:w-[260px] bg-[#FFFAF3] p-8 shadow-xl animate-pulse"
+            >
+              <div className="space-y-4">
+                <div className="h-6 bg-gray-200 rounded w-3/4" />
+                <div className="h-4 bg-gray-200 rounded w-full" />
+                <div className="h-4 bg-gray-200 rounded w-5/6" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative z-20 -mt-20 flex justify-center px-4">

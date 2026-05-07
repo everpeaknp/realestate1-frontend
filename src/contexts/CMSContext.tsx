@@ -16,6 +16,8 @@ interface HeaderSettings {
   logo_image: string | null;
   logo_text: string;
   phone_number: string;
+  favicon: string | null;
+  site_name: string;
   is_active: boolean;
   navigation_links: NavigationLink[];
 }

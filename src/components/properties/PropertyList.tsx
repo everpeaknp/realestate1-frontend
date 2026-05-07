@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { MapPin, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -9,19 +9,28 @@ import { EagleProperty } from '@/lib/eagle-api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
 import LazyImage from '@/components/shared/LazyImage';
 import PropertyCardSkeleton from '@/components/shared/PropertyCardSkeleton';
+import PropertyFilter from './PropertyFilter';
 
 const PAGE_SIZE = 12;
 
-function PropertyListInner() {
+export default function PropertyList() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const activeSearch = searchParams.get('search') || '';
-  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const activeSearch = searchParams?.get('search') || '';
+  const currentPage = parseInt(searchParams?.get('page') || '1', 10);
+
+  // Filter parameters from URL
+  const propertyType = searchParams?.get('property_type') || '';
+  const minPrice = searchParams?.get('min_price') || '';
+  const maxPrice = searchParams?.get('max_price') || '';
+  const beds = searchParams?.get('beds') || '';
+  const status = searchParams?.get('status') || '';
 
   const [allProperties, setAllProperties] = useState<EagleProperty[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch properties when search term changes
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -32,8 +41,17 @@ function PropertyListInner() {
           ? `/api/eagle/properties?search=${encodeURIComponent(activeSearch)}&limit=100`
           : `/api/eagle/properties?limit=100`;
 
+        console.log('[PropertyList] Fetching from:', url);
+        console.log('[PropertyList] Active search term:', activeSearch);
+
         const response = await fetch(url);
         const data = await response.json();
+
+        console.log('[PropertyList] API response:', {
+          success: data.success,
+          count: data.count,
+          propertiesLength: data.properties?.length || 0
+        });
 
         if (!response.ok || !data.success) {
           throw new Error(data.error || 'Failed to fetch properties');
@@ -41,6 +59,7 @@ function PropertyListInner() {
 
         setAllProperties(data.properties || []);
       } catch (err) {
+        console.error('[PropertyList] Fetch error:', err);
         setError(err instanceof Error ? err.message : 'Failed to load properties');
       } finally {
         setLoading(false);
@@ -49,19 +68,89 @@ function PropertyListInner() {
     fetchProperties();
   }, [activeSearch]);
 
+  // Apply client-side filters - recalculate when URL params change
+  const filteredProperties = useMemo(() => {
+    const filtered = allProperties.filter((property) => {
+      // Property Type filter (FOR_SALE, FOR_RENT, SOLD)
+      if (propertyType) {
+        const propStatus = property.status?.toUpperCase() || '';
+        if (propertyType === 'FOR_SALE' && propStatus !== 'CURRENT' && propStatus !== 'ACTIVE') {
+          return false;
+        }
+        if (propertyType === 'FOR_RENT' && propStatus !== 'LEASED') {
+          return false;
+        }
+        if (propertyType === 'SOLD' && propStatus !== 'SOLD') {
+          return false;
+        }
+      }
+
+      // Price filters
+      const propertyPrice = property.price || 0;
+      if (minPrice && propertyPrice < parseInt(minPrice, 10)) {
+        return false;
+      }
+      if (maxPrice && propertyPrice > parseInt(maxPrice, 10)) {
+        return false;
+      }
+
+      // Bedrooms filter (extract from description or headline)
+      if (beds) {
+        const minBeds = parseInt(beds, 10);
+        const text = `${property.headline || ''} ${property.description || ''}`.toLowerCase();
+        const bedroomMatch = text.match(/(\d+)\s*(?:bed|bedroom)/i);
+        if (bedroomMatch) {
+          const propertyBeds = parseInt(bedroomMatch[1], 10);
+          if (propertyBeds < minBeds) {
+            return false;
+          }
+        } else {
+          // If no bedroom info found, exclude from filtered results
+          return false;
+        }
+      }
+
+      // Status filter (AVAILABLE, PENDING, SOLD)
+      if (status) {
+        const propStatus = property.status?.toUpperCase() || '';
+        if (status === 'AVAILABLE' && propStatus !== 'CURRENT' && propStatus !== 'ACTIVE') {
+          return false;
+        }
+        if (status === 'PENDING' && propStatus !== 'PENDING') {
+          return false;
+        }
+        if (status === 'SOLD' && propStatus !== 'SOLD') {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    console.log('[PropertyList] Filtering:', {
+      allPropertiesCount: allProperties.length,
+      filteredCount: filtered.length,
+      activeFilters: { propertyType, minPrice, maxPrice, beds, status, activeSearch }
+    });
+
+    return filtered;
+  }, [allProperties, propertyType, minPrice, maxPrice, beds, status, activeSearch]);
+
   // Client-side pagination
-  const totalPages = Math.ceil(allProperties.length / PAGE_SIZE);
+  const totalPages = Math.ceil(filteredProperties.length / PAGE_SIZE);
   const safePage = Math.min(Math.max(currentPage, 1), totalPages || 1);
-  const properties = allProperties.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const properties = filteredProperties.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   const goToPage = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || '');
     params.set('page', String(page));
     router.push(`/properties?${params.toString()}`, { scroll: false });
     setTimeout(() => {
       document.getElementById('property-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   };
+
+  const hasActiveFilters = !!(propertyType || minPrice || maxPrice || beds || status);
 
   const formatPrice = (property: EagleProperty) => {
     if (property.advertisedPrice) return property.advertisedPrice;
@@ -105,13 +194,26 @@ function PropertyListInner() {
           >
             Browse through our carefully curated selection of properties
           </motion.p>
-          {activeSearch && (
-            <p className="mt-2 text-sm text-[#5d6d87]">
-              {allProperties.length} propert{allProperties.length === 1 ? 'y' : 'ies'} found
-              <Link href="/properties" className="ml-2 text-[#c1a478] hover:underline">Clear</Link>
-            </p>
+          {!loading && (activeSearch || hasActiveFilters) && (
+            <div className="mt-3 text-sm text-[#5d6d87]">
+              <p className="mb-2">
+                {filteredProperties.length} propert{filteredProperties.length === 1 ? 'y' : 'ies'} found
+                {allProperties.length !== filteredProperties.length && (
+                  <span className="text-gray-400"> (filtered from {allProperties.length})</span>
+                )}
+              </p>
+            </div>
+          )}
+          {loading && (
+            <div className="mt-3 text-sm text-[#c1a478] flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-[#c1a478] border-t-transparent rounded-full animate-spin" />
+              <span>Searching properties...</span>
+            </div>
           )}
         </div>
+
+        {/* Property Filter Component */}
+        <PropertyFilter />
 
         {/* Loading */}
         {loading && (
@@ -231,31 +333,22 @@ function PropertyListInner() {
         {/* No results */}
         {!loading && !error && properties.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-base sm:text-lg">
-              {activeSearch ? `No properties found for "${activeSearch}".` : 'No properties available at the moment.'}
+            <p className="text-gray-500 text-base sm:text-lg mb-4">
+              {activeSearch || hasActiveFilters
+                ? 'No properties match your search criteria.'
+                : 'No properties available at the moment.'}
             </p>
-            {activeSearch && (
-              <Link href="/properties" className="mt-3 inline-block text-[#c1a478] font-semibold hover:underline text-sm">
-                View all properties
-              </Link>
+            {(activeSearch || hasActiveFilters) && (
+              <div className="space-y-2">
+                <p className="text-sm text-gray-400">Try adjusting your filters or search terms</p>
+                <Link href="/properties" className="inline-block text-[#c1a478] font-semibold hover:underline text-sm">
+                  View all properties
+                </Link>
+              </div>
             )}
           </div>
         )}
       </div>
     </section>
-  );
-}
-
-export default function PropertyList() {
-  return (
-    <Suspense fallback={
-      <section className="bg-white py-20 px-6">
-        <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          <PropertyCardSkeleton count={12} />
-        </div>
-      </section>
-    }>
-      <PropertyListInner />
-    </Suspense>
   );
 }

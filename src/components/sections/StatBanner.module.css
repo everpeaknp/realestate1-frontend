@@ -1,0 +1,31 @@
+.banner {
+  background: var(--secondary);
+  padding: 60px 0;
+  color: var(--white);
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+}
+
+.iconWrapper {
+  color: var(--accent);
+}
+
+.value {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  margin: 0;
+  line-height: 1;
+}
+
+.label {
+  font-size: 14px;
+  color: #ccc;
+  margin: 5px 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

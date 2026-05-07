@@ -1,0 +1,117 @@
+.card {
+  background: white;
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.ribbon {
+  position: absolute;
+  top: 15px;
+  left: -5px;
+  z-index: 10;
+  padding: 8px 15px;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  border-radius: 0 4px 4px 0;
+}
+
+.ribbon.sale { background: var(--color-surface-muted); }
+.ribbon.sold { background: var(--secondary); }
+
+.ribbon:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border-right: 5px solid rgba(0,0,0,0.3);
+  border-bottom: 5px solid transparent;
+}
+
+.imageContainer {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.status {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 5px 15px;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+.content {
+  padding: var(--space-2);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.price {
+  font-size: 22px;
+  color: var(--color-surface-muted);
+  font-weight: 800;
+  margin-bottom: 5px;
+  letter-spacing: -0.5px;
+}
+
+.title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: auto;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.stat span {
+  font-weight: 400;
+  color: #999;
+}

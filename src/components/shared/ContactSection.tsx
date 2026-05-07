@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { homeAPI } from '@/lib/api';
 import LazyImage from '@/components/shared/LazyImage';
+import dynamic from 'next/dynamic';
 
 interface ContactSectionProps {
   settings?: {
@@ -20,26 +21,25 @@ interface ContactSectionProps {
   };
 }
 
-export default function ContactSection({ settings }: ContactSectionProps) {
+function ContactSection({ settings }: ContactSectionProps) {
   const [dynamicSettings, setDynamicSettings] = useState<any>(null);
   const [loading, setLoading] = useState(!settings);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // No default fallback values
+  // Handle client-side mounting to prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     // Only fetch if settings are not provided as props
     if (!settings) {
       const fetchSettings = async () => {
         try {
-          console.log('Fetching contact section settings...');
           const data = await homeAPI.getContactSection();
-          console.log('Contact section data received:', data);
           // The API returns the object directly, not wrapped in results
           if (data && Object.keys(data).length > 0) {
-            console.log('Setting dynamic settings:', data);
             setDynamicSettings(data);
-          } else {
-            console.log('No data received, using defaults');
           }
         } catch (error) {
           console.error('Error fetching contact section settings:', error);
@@ -52,14 +52,36 @@ export default function ContactSection({ settings }: ContactSectionProps) {
     }
   }, [settings]);
 
-  // Use provided settings, or fetched settings, or return null if no data
+  // Use provided settings, or fetched settings, or return skeleton
   const data = settings || dynamicSettings;
 
-  console.log('ContactSection render - settings:', settings, 'dynamicSettings:', dynamicSettings, 'using:', data);
-
-  if (loading || !data) {
-    console.log('ContactSection still loading or no data...');
-    return null;
+  // Show skeleton during SSR and initial load to prevent hydration mismatch
+  if (!isMounted || loading || !data) {
+    return (
+      <section className="bg-[#FFFAF3] pt-12 sm:pt-16 md:pt-20 pb-0 lg:pb-0 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 relative">
+          <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end lg:pr-12 relative z-0 order-2 lg:order-1">
+              <div className="max-h-[400px] sm:max-h-[500px] md:max-h-[600px] lg:max-h-[700px] w-64 bg-gray-200 animate-pulse rounded" />
+            </div>
+            <div className="w-full lg:w-1/2 relative lg:static flex justify-center lg:justify-start order-1 lg:order-2">
+              <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-sm relative lg:-ml-32 lg:mb-0 z-10 w-full max-w-md lg:max-w-[396px] min-h-[400px] sm:min-h-[430px]">
+                <div className="space-y-4 animate-pulse">
+                  <div className="h-8 bg-gray-200 rounded w-3/4" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2" />
+                  <div className="h-4 bg-gray-200 rounded w-full" />
+                  <div className="space-y-2">
+                    <div className="h-6 bg-gray-200 rounded w-2/3" />
+                    <div className="h-6 bg-gray-200 rounded w-2/3" />
+                  </div>
+                  <div className="h-12 bg-gray-200 rounded w-full mt-6" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -74,6 +96,7 @@ export default function ContactSection({ settings }: ContactSectionProps) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            key="contact-image"
           >
             <LazyImage 
               src={data.person_image} 
@@ -89,6 +112,7 @@ export default function ContactSection({ settings }: ContactSectionProps) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            key="contact-card"
           >
             <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-sm relative lg:-ml-32 lg:mb-0 z-10 w-full max-w-md lg:max-w-[396px] flex flex-col justify-between min-h-[400px] sm:min-h-[430px]">
               <div>
@@ -147,3 +171,33 @@ export default function ContactSection({ settings }: ContactSectionProps) {
     </section>
   );
 }
+
+// Export with dynamic import to prevent SSR issues with framer-motion
+export default dynamic(() => Promise.resolve(ContactSection), {
+  ssr: false,
+  loading: () => (
+    <section className="bg-[#FFFAF3] pt-12 sm:pt-16 md:pt-20 pb-0 lg:pb-0 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 relative">
+        <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end lg:pr-12 relative z-0 order-2 lg:order-1">
+            <div className="max-h-[400px] sm:max-h-[500px] md:max-h-[600px] lg:max-h-[700px] w-64 bg-gray-200 animate-pulse rounded" />
+          </div>
+          <div className="w-full lg:w-1/2 relative lg:static flex justify-center lg:justify-start order-1 lg:order-2">
+            <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-sm relative lg:-ml-32 lg:mb-0 z-10 w-full max-w-md lg:max-w-[396px] min-h-[400px] sm:min-h-[430px]">
+              <div className="space-y-4 animate-pulse">
+                <div className="h-8 bg-gray-200 rounded w-3/4" />
+                <div className="h-4 bg-gray-200 rounded w-1/2" />
+                <div className="h-4 bg-gray-200 rounded w-full" />
+                <div className="space-y-2">
+                  <div className="h-6 bg-gray-200 rounded w-2/3" />
+                  <div className="h-6 bg-gray-200 rounded w-2/3" />
+                </div>
+                <div className="h-12 bg-gray-200 rounded w-full mt-6" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ),
+});

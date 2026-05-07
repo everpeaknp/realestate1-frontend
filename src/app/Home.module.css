@@ -1,0 +1,149 @@
+.hero {
+  height: 90vh;
+  min-height: 700px;
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1600');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-tertiary);
+  position: relative;
+}
+
+.heroContent {
+  max-width: 700px;
+}
+
+.heroSubtitle {
+  color: var(--color-surface-muted);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.heroTitle {
+  font-size: 80px;
+  line-height: 1.1;
+  margin-bottom: 30px;
+  color: var(--color-text-tertiary);
+}
+
+.heroDescription {
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.searchBar {
+  background: var(--color-text-tertiary);
+  padding: 10px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+  margin-bottom: 50px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.searchInput {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 10px;
+}
+
+.searchInput input {
+  border: none;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  outline: none;
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.quickStats {
+  display: flex;
+  gap: 40px;
+}
+
+.qStat {
+  display: flex;
+  flex-direction: column;
+}
+
+.qStat strong {
+  font-size: 32px;
+}
+
+.qStat span {
+  font-size: 14px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.categoryTag {
+  color: var(--color-surface-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.sectionHeader h2 {
+  font-size: 48px;
+  color: var(--color-surface-base);
+}
+
+.propertyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.ctaSection {
+  background: var(--color-surface-base);
+  padding: 120px 0;
+  text-align: center;
+  color: var(--color-text-tertiary);
+}
+
+.ctaContent h2 {
+  font-size: 60px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--color-text-tertiary);
+}
+
+.ctaContent p {
+  font-size: 20px;
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+  .heroTitle { font-size: 56px; }
+  .searchBar { flex-direction: column; border-radius: 20px; padding: 20px; width: 100%; }
+  .searchInput { width: 100%; margin-bottom: 15px; }
+  .searchBar button { width: 100%; }
+  .ctaContent h2 { font-size: 40px; }
+}
+
+@media (max-width: 576px) {
+  .heroTitle { font-size: 42px; }
+  .quickStats { flex-direction: column; gap: 20px; }
+}

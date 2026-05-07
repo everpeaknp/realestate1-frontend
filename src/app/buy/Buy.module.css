@@ -1,0 +1,87 @@
+.header {
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 42px;
+  margin-bottom: 5px;
+}
+
+.header p {
+  color: #888;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+}
+
+.sidebar {
+  background: white;
+  padding: 30px;
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-card);
+  height: fit-content;
+  position: sticky;
+  top: 120px;
+}
+
+.filterGroup {
+  margin-bottom: 25px;
+}
+
+.filterGroup h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  color: var(--color-text-secondary);
+}
+
+.input, .select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #eee;
+  border-radius: var(--radius-xs);
+  outline: none;
+  font-size: 14px;
+}
+
+.input:focus, .select:focus {
+  border-color: var(--color-accent);
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.flex {
+  display: flex;
+  gap: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+@media (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+  }
+}

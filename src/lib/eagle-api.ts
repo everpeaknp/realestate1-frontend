@@ -339,7 +339,7 @@ export async function fetchPropertyById(id: string): Promise<EagleProperty | nul
 }
 
 /**
- * Search properties by address — fetches a broader set and filters client-side
+ * Search properties by address, headline, and description — fetches a broader set and filters client-side
  * since Eagle's `properties` field does not support a search argument.
  */
 export async function searchProperties(
@@ -348,9 +348,22 @@ export async function searchProperties(
 ): Promise<EagleProperty[]> {
   const all = await fetchProperties({ limit: Math.max(limit * 5, 100) });
   const lower = searchTerm.toLowerCase();
-  return all
-    .filter((p) => p.formattedAddress?.toLowerCase().includes(lower))
-    .slice(0, limit);
+  
+  console.log(`[Eagle Search] Searching for "${searchTerm}" in ${all.length} properties`);
+  
+  const filtered = all.filter((p) => {
+    const address = (p.formattedAddress || '').toLowerCase();
+    const headline = (p.headline || '').toLowerCase();
+    const description = (p.description || '').toLowerCase();
+    
+    return address.includes(lower) || 
+           headline.includes(lower) || 
+           description.includes(lower);
+  });
+  
+  console.log(`[Eagle Search] Found ${filtered.length} matching properties`);
+  
+  return filtered.slice(0, limit);
 }
 
 /**

@@ -24,6 +24,11 @@ function getBlogImage(image: string | null): string {
 export default function InstagramGallery() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -42,7 +47,8 @@ export default function InstagramGallery() {
     fetchPosts();
   }, []);
 
-  if (loading || posts.length === 0) return null;
+  // Don't render during SSR or if no posts to prevent hydration mismatch
+  if (!isMounted || loading || posts.length === 0) return null;
 
   return (
     <section className="bg-white py-8 sm:py-12 pb-0 overflow-hidden">
