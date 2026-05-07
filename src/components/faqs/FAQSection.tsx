@@ -55,14 +55,14 @@ export default function FAQSection() {
                   className="w-full flex items-center justify-between p-6 text-left transition-colors hover:bg-gray-50/50"
                 >
                   <span className={`text-[17px] font-bold leading-tight transition-colors ${
-                    openIndex === index ? 'text-[#BF974F]' : 'text-[#1a1a1a]'
+                    openIndex === index ? 'text-blue-600' : 'text-[#1a1a1a]'
                   }`}>
                     {faq.question}
                   </span>
                   <motion.div
                     animate={{ rotate: openIndex === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-[#c1a478] flex-shrink-0 ml-4"
+                    className="text-blue-600 flex-shrink-0 ml-4"
                   >
                     <ChevronDown size={24} />
                   </motion.div>
@@ -77,7 +77,7 @@ export default function FAQSection() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-6 text-[#5d6d87] leading-relaxed text-[15px]">
+                      <div className="px-6 pb-6 text-slate-600 leading-relaxed text-[15px]">
                         {faq.answer}
                       </div>
                     </motion.div>
@@ -89,7 +89,7 @@ export default function FAQSection() {
 
           {/* Image Side */}
           <motion.div 
-            className="relative h-full min-h-[500px] lg:min-h-[700px] rounded-none overflow-hidden shadow-2xl"
+            className="relative h-full min-h-[500px] lg:min-h-[700px] rounded-lg overflow-hidden shadow-xl"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}

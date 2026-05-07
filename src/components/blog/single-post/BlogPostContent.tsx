@@ -20,7 +20,7 @@ export default function BlogPostContent({ content }: BlogPostContentProps) {
             const url = encodeURIComponent(window.location.href);
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
           }}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-[#3b5998] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg" 
+          className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-[#3b5998] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer" 
           title="Share on Facebook"
           aria-label="Share on Facebook"
         >
@@ -35,7 +35,7 @@ export default function BlogPostContent({ content }: BlogPostContentProps) {
             const text = encodeURIComponent('Check out this blog post!');
             window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank', 'width=600,height=400');
           }}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-[#1da1f2] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg" 
+          className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-[#1da1f2] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer" 
           title="Share on Twitter"
           aria-label="Share on Twitter"
         >
@@ -49,7 +49,7 @@ export default function BlogPostContent({ content }: BlogPostContentProps) {
             const url = encodeURIComponent(window.location.href);
             window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=400');
           }}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-[#0077b5] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg" 
+          className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-[#0077b5] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer" 
           title="Share on LinkedIn"
           aria-label="Share on LinkedIn"
         >
@@ -63,7 +63,7 @@ export default function BlogPostContent({ content }: BlogPostContentProps) {
             const url = encodeURIComponent(window.location.href);
             window.open(`https://pinterest.com/pin/create/button/?url=${url}`, '_blank', 'width=600,height=400');
           }}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-[#bd081c] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg" 
+          className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-[#bd081c] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer" 
           title="Share on Pinterest"
           aria-label="Share on Pinterest"
         >
@@ -78,7 +78,7 @@ export default function BlogPostContent({ content }: BlogPostContentProps) {
             const text = encodeURIComponent('Check out this blog post!');
             window.open(`https://wa.me/?text=${text}%20${url}`, '_blank', 'width=600,height=400');
           }}
-          className="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-[#25d366] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg" 
+          className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-[#25d366] flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer" 
           title="Share on WhatsApp"
           aria-label="Share on WhatsApp"
         >

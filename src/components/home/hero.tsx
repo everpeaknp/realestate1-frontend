@@ -261,23 +261,23 @@ export default function Hero({ settings }: HeroProps) {
         transition={{ duration: 0.15 }}
         style={dropdownStyle}
         ref={dropdownRef}
-        className="bg-white rounded-sm shadow-2xl overflow-hidden text-left max-h-[420px] overflow-y-auto"
+        className="bg-white rounded-lg shadow-2xl overflow-hidden text-left max-h-[420px] overflow-y-auto border border-blue-100"
       >
         {/* Properties */}
         {results.properties.length > 0 && (
           <div>
-            <div className="px-4 py-2 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
-              <Home size={12} className="text-[#c1a478]" />
-              <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Properties</span>
+            <div className="px-4 py-2 bg-gradient-to-r from-blue-50 to-blue-100 border-b border-blue-200 flex items-center gap-2">
+              <Home size={12} className="text-blue-600" />
+              <span className="text-[11px] font-bold text-blue-700 uppercase tracking-widest">Properties</span>
             </div>
             {results.properties.map((p) => (
               <Link
                 key={p.key}
                 href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
+                className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors duration-200 border-b border-blue-50 group cursor-pointer"
               >
-                <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
+                <div className="w-12 h-10 rounded-md overflow-hidden flex-shrink-0 bg-blue-100 ring-1 ring-blue-200">
                   <LazyImage
                     src={getImage(p.image)}
                     alt={p.title}
@@ -286,21 +286,21 @@ export default function Hero({ settings }: HeroProps) {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">{p.title}</p>
-                  <p className="text-xs text-gray-400 truncate">{p.location}</p>
+                  <p className="text-sm font-semibold text-slate-800 truncate group-hover:text-blue-600 transition-colors duration-200">{p.title}</p>
+                  <p className="text-xs text-slate-500 truncate">{p.location}</p>
                 </div>
                 <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
                   {p.price && (
-                    <span className="text-xs font-bold text-[#c1a478]">{p.price}</span>
+                    <span className="text-xs font-bold text-blue-600">{p.price}</span>
                   )}
                   {p.source === 'eagle' && (
-                    <span className="text-[10px] text-gray-400 font-medium">Eagle</span>
+                    <span className="text-[10px] text-slate-400 font-medium">Eagle</span>
                   )}
                 </div>
               </Link>
             ))}
             <Link href={`/properties?search=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}
-              className="block px-4 py-2 text-xs text-[#c1a478] font-semibold hover:bg-gray-50 text-center">
+              className="block px-4 py-2 text-xs text-blue-600 font-semibold hover:bg-blue-50 text-center transition-colors duration-200 cursor-pointer">
               View all property results →
             </Link>
           </div>
@@ -309,18 +309,18 @@ export default function Hero({ settings }: HeroProps) {
         {/* Blog */}
         {results.blogs.length > 0 && (
           <div>
-            <div className="px-4 py-2 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
-              <FileText size={12} className="text-[#5d6d87]" />
-              <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Blog Posts</span>
+            <div className="px-4 py-2 bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 flex items-center gap-2">
+              <FileText size={12} className="text-slate-600" />
+              <span className="text-[11px] font-bold text-slate-700 uppercase tracking-widest">Blog Posts</span>
             </div>
             {results.blogs.map((b) => (
               <Link
                 key={b.id}
                 href={`/blog/${b.slug}`}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
+                className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors duration-200 border-b border-blue-50 group cursor-pointer"
               >
-                <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
+                <div className="w-12 h-10 rounded-md overflow-hidden flex-shrink-0 bg-slate-100 ring-1 ring-slate-200">
                   <LazyImage
                     src={getImage(b.featured_image)}
                     alt={b.title}
@@ -329,13 +329,13 @@ export default function Hero({ settings }: HeroProps) {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">{b.title}</p>
-                  <p className="text-xs text-gray-400">{b.author_name}</p>
+                  <p className="text-sm font-semibold text-slate-800 truncate group-hover:text-blue-600 transition-colors duration-200">{b.title}</p>
+                  <p className="text-xs text-slate-500">{b.author_name}</p>
                 </div>
               </Link>
             ))}
             <Link href={`/blog?search=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}
-              className="block px-4 py-2 text-xs text-[#5d6d87] font-semibold hover:bg-gray-50 text-center">
+              className="block px-4 py-2 text-xs text-slate-600 font-semibold hover:bg-slate-50 text-center transition-colors duration-200 cursor-pointer">
               View all blog results →
             </Link>
           </div>
@@ -391,7 +391,7 @@ export default function Hero({ settings }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35 }}
         >
-          <form ref={formRef} onSubmit={handleSubmit} className="flex items-stretch w-full shadow-2xl">
+          <form ref={formRef} onSubmit={handleSubmit} className="flex items-stretch w-full shadow-2xl rounded-lg overflow-hidden">
             <div className="relative flex-1">
               <input
                 type="text"
@@ -399,17 +399,17 @@ export default function Hero({ settings }: HeroProps) {
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => hasResults && setOpen(true)}
                 placeholder="Search properties, blog posts..."
-                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-4 text-sm font-medium outline-none rounded-l-sm pr-10"
+                className="w-full bg-white text-slate-800 placeholder-slate-400 px-5 py-4 text-sm font-medium outline-none pr-10 focus:ring-2 focus:ring-blue-500 transition-all duration-200"
               />
               {query && (
                 <button type="button" onClick={clearSearch}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors duration-200 cursor-pointer">
                   <X size={15} />
                 </button>
               )}
             </div>
             <button type="submit"
-              className="bg-[#c1a478] hover:bg-[#a8895f] text-white px-6 py-4 flex items-center gap-2 font-bold text-sm tracking-wider transition-colors rounded-r-sm">
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 cursor-pointer">
               {loading
                 ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 : <Search size={18} />
@@ -430,14 +430,14 @@ export default function Hero({ settings }: HeroProps) {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <Link href={primaryButtonLink} className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto bg-[#c1a478] hover:bg-[#64748b] text-white px-8 sm:px-10 py-3 sm:py-4 font-bold text-xs sm:text-sm tracking-widest transition-all rounded-sm shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            <button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 sm:px-10 py-3 sm:py-4 font-bold text-xs sm:text-sm tracking-widest transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer">
               {primaryButtonText}
             </button>
           </Link>
           <Link href={secondaryButtonLink} className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto group flex items-center justify-center gap-1 text-white font-bold text-xs sm:text-sm tracking-widest border-b-2 border-white hover:border-[#c1a478] transition-all pb-1">
+            <button className="w-full sm:w-auto group flex items-center justify-center gap-1 text-white font-bold text-xs sm:text-sm tracking-widest border-b-2 border-white hover:border-blue-400 transition-all duration-200 pb-1 cursor-pointer">
               {secondaryButtonText}
-              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform duration-200" />
             </button>
           </Link>
         </motion.div>

@@ -83,21 +83,21 @@ export default function StatsSection({ stats }: StatsSectionProps) {
     };
   });
   return (
-    <section className="bg-[#586C89] w-full py-0 text-white overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20">
+    <section className="bg-gradient-to-br from-blue-600 to-blue-700 w-full py-0 text-white overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mx-auto relative max-w-7xl">
         {statsData.map((stat, index) => (
           <div key={stat.label || index} className="relative min-h-[181px]">
             {/* Left border for first item on desktop, top border on mobile */}
             {index === 0 && (
               <>
-                <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-[1px] bg-white/30 z-20" />
-                <div className="block lg:hidden absolute left-0 right-0 top-0 h-[1px] bg-white/30 z-20" />
+                <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-[1px] bg-white/20 z-20" />
+                <div className="block lg:hidden absolute left-0 right-0 top-0 h-[1px] bg-white/20 z-20" />
               </>
             )}
             
             {/* Right border on desktop, bottom border on mobile */}
-            <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[1px] bg-white/30 z-20" />
-            <div className="block lg:hidden absolute left-0 right-0 bottom-0 h-[1px] bg-white/30 z-20" />
+            <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[1px] bg-white/20 z-20" />
+            <div className="block lg:hidden absolute left-0 right-0 bottom-0 h-[1px] bg-white/20 z-20" />
             
             <div className="h-full min-h-[181px] [perspective:1200px]">
             <motion.div
@@ -111,15 +111,15 @@ export default function StatsSection({ stats }: StatsSectionProps) {
             >
               {/* Front Face: Conceptually "Part of the Circle" animation wise */}
               <div 
-                className="absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 gap-4 sm:gap-6 text-center bg-[#586C89] [backface-visibility:hidden]"
+                className="absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 gap-4 sm:gap-6 text-center bg-gradient-to-br from-blue-600 to-blue-700 [backface-visibility:hidden]"
                 style={{ 
                   transform: "translateZ(90.5px)", // 90.5px is half the height (181px)
                   WebkitBackfaceVisibility: "hidden" 
                 }}
               >
                 {/* Brand Elements in original layout */}
-                <div className="text-[#ece6d9]">
-                  <stat.IconComponent size={32} className="sm:w-9 sm:h-9" strokeWidth={1} fill="currentColor" fillOpacity={0.2} />
+                <div className="text-blue-100">
+                  <stat.IconComponent size={32} className="sm:w-9 sm:h-9" strokeWidth={1} fill="currentColor" fillOpacity={0.3} />
                 </div>
                 <h3 className="text-sm sm:text-base md:text-lg font-bold tracking-tight px-2 sm:px-4 leading-snug text-white">
                   {stat.label}
@@ -128,13 +128,13 @@ export default function StatsSection({ stats }: StatsSectionProps) {
 
               {/* Bottom Face (Rotating Up to Front) */}
               <div 
-                className="absolute inset-0 w-full h-full bg-[#586C89] px-6 sm:px-10 flex flex-col items-center justify-center text-center [backface-visibility:hidden]"
+                className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 to-blue-700 px-6 sm:px-10 flex flex-col items-center justify-center text-center [backface-visibility:hidden]"
                 style={{ 
                   transform: "rotateX(-90deg) translateZ(90.5px)", 
                   WebkitBackfaceVisibility: "hidden" 
                 }}
               >
-                <p className="text-xs sm:text-sm md:text-[15px] leading-relaxed text-[#ece6d9] italic font-medium max-w-[240px]">
+                <p className="text-xs sm:text-sm md:text-[15px] leading-relaxed text-blue-50 italic font-medium max-w-[240px]">
                   {stat.description || 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam.'}
                 </p>
               </div>

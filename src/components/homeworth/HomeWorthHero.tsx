@@ -75,8 +75,7 @@ export default function HomeWorthHero() {
         </motion.h1>
         
         <motion.p 
-          className="text-lg md:text-xl font-bold italic mb-8"
-          style={{ color: '#EADEC9' }}
+          className="text-lg md:text-xl font-bold italic mb-8 text-blue-200"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -93,7 +92,7 @@ export default function HomeWorthHero() {
         >
           <a href="/" className="hover:text-white transition-colors">Home</a>
           <ChevronRight size={16} />
-          <span className="text-[#c1a478] font-bold">Home Worth</span>
+          <span className="text-blue-400 font-bold">Home Worth</span>
         </motion.nav>
       </div>
     </section>

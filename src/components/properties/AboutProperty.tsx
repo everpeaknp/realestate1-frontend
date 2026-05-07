@@ -27,26 +27,26 @@ export default function AboutProperty() {
         {/* Right Stats Cards */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
           <motion.div
-            className="border border-[#ece6d9] p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col items-center justify-center text-center aspect-square hover:shadow-lg transition-shadow duration-300"
+            className="border border-blue-100 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col items-center justify-center text-center aspect-square hover:shadow-lg transition-all duration-300 rounded-xl cursor-pointer hover:-translate-y-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(0,0,0,0.1)' }}
+            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(37, 99, 235, 0.2)' }}
           >
-            <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#c1a478] mb-2">12+</span>
+            <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-600 mb-2">12+</span>
             <span className="text-[#34465d] text-xs sm:text-sm font-medium tracking-wide">Years of Experience</span>
           </motion.div>
 
           <motion.div
-            className="border border-[#ece6d9] p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col items-center justify-center text-center aspect-square hover:shadow-lg transition-shadow duration-300"
+            className="border border-blue-100 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col items-center justify-center text-center aspect-square hover:shadow-lg transition-all duration-300 rounded-xl cursor-pointer hover:-translate-y-1"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(0,0,0,0.1)' }}
+            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(37, 99, 235, 0.2)' }}
           >
-            <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#c1a478] mb-2">1,500+</span>
+            <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-600 mb-2">1,500+</span>
             <span className="text-[#34465d] text-xs sm:text-sm font-medium tracking-wide">Satisfied Clients</span>
           </motion.div>
         </div>

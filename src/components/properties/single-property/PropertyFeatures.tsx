@@ -28,13 +28,13 @@ export default function PropertyFeatures({ property }: PropertyFeaturesProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3 }}
-            className="flex items-center gap-4 p-4 bg-[#FFFAF3] border border-gray-100 rounded hover:shadow-md transition-shadow"
+            className="flex items-center gap-4 p-4 bg-blue-50 border border-blue-100 rounded-lg hover:shadow-md transition-all duration-200 cursor-pointer hover:-translate-y-0.5"
           >
-            <div className="w-12 h-12 bg-[#c1a478]/10 rounded flex items-center justify-center flex-shrink-0">
-              <Maximize size={24} className="text-[#c1a478]" />
+            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Maximize size={24} className="text-white" />
             </div>
             <div>
-              <span className="text-sm font-medium text-gray-700">Land Size</span>
+              <span className="text-sm font-medium text-slate-700">Land Size</span>
               <p className="text-base font-bold text-[#1a1a1a]">
                 {property.landSize}{property.landSizeUnits ? ` ${property.landSizeUnits}` : ''}
               </p>

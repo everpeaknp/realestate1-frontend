@@ -85,7 +85,7 @@ function ContactSection({ settings }: ContactSectionProps) {
   }
 
   return (
-    <section className="bg-[#FFFAF3] pt-12 sm:pt-16 md:pt-20 pb-0 lg:pb-0 overflow-hidden">
+    <section className="bg-gradient-to-br from-blue-50 to-white pt-12 sm:pt-16 md:pt-20 pb-0 lg:pb-0 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 relative">
         <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
           
@@ -101,7 +101,7 @@ function ContactSection({ settings }: ContactSectionProps) {
             <LazyImage 
               src={data.person_image} 
               alt="Real Estate Agent"
-              className="max-h-[400px] sm:max-h-[500px] md:max-h-[600px] lg:max-h-[700px] w-auto object-contain"
+              className="max-h-[400px] sm:max-h-[500px] md:max-h-[600px] lg:max-h-[700px] w-auto object-contain drop-shadow-2xl"
             />
           </motion.div>
 
@@ -114,9 +114,9 @@ function ContactSection({ settings }: ContactSectionProps) {
             transition={{ duration: 0.8, delay: 0.2 }}
             key="contact-card"
           >
-            <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-sm relative lg:-ml-32 lg:mb-0 z-10 w-full max-w-md lg:max-w-[396px] flex flex-col justify-between min-h-[400px] sm:min-h-[430px]">
+            <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-xl relative lg:-ml-32 lg:mb-0 z-10 w-full max-w-md lg:max-w-[396px] flex flex-col justify-between min-h-[400px] sm:min-h-[430px] border border-blue-100">
               <div>
-                <h2 className="text-2xl sm:text-[28px] leading-[1.2] font-bold text-[#1a1a1a] mb-4 sm:mb-6">
+                <h2 className="text-2xl sm:text-[28px] leading-[1.2] font-bold text-slate-800 mb-4 sm:mb-6">
                   {data.card_title.split('\n').map((line: string, i: number) => (
                     <span key={i}>
                       {line}
@@ -125,17 +125,17 @@ function ContactSection({ settings }: ContactSectionProps) {
                   ))}
                 </h2>
                 
-                <p className="text-[#5d6d87] text-xs sm:text-[13px] font-medium mb-4 sm:mb-6">
+                <p className="text-slate-600 text-xs sm:text-[13px] font-medium mb-4 sm:mb-6">
                   {data.card_subtitle}
                 </p>
 
                 <div className="mb-4 sm:mb-6">
-                  <p className="text-sm sm:text-[15px] font-bold text-[#1a1a1a]">
+                  <p className="text-sm sm:text-[15px] font-bold text-slate-700">
                     {data.card_description.split('|').map((part: string, i: number) => (
                       <span key={i}>
                         {part.trim()}
                         {i < data.card_description.split('|').length - 1 && (
-                          <span className="text-[#c1a478] mx-2">|</span>
+                          <span className="text-blue-600 mx-2">|</span>
                         )}
                       </span>
                     ))}
@@ -143,15 +143,19 @@ function ContactSection({ settings }: ContactSectionProps) {
                 </div>
 
                 <div className="space-y-3 mb-6">
-                  <a href={`tel:${data.phone}`} className="flex items-center gap-3 group cursor-pointer min-h-[44px]">
-                    <Phone size={16} className="text-[#c1a478] flex-shrink-0" fill="currentColor" stroke="none" />
-                    <span className="text-sm sm:text-[14px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors">
+                  <a href={`tel:${data.phone}`} className="flex items-center gap-3 group cursor-pointer min-h-[44px] transition-all duration-200 hover:translate-x-1">
+                    <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
+                      <Phone size={16} className="text-blue-600 flex-shrink-0" fill="currentColor" stroke="none" />
+                    </div>
+                    <span className="text-sm sm:text-[14px] font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200">
                       {data.phone}
                     </span>
                   </a>
-                  <a href={`mailto:${data.email}`} className="flex items-center gap-3 group cursor-pointer min-h-[44px]">
-                    <Mail size={16} className="text-[#c1a478] flex-shrink-0" />
-                    <span className="text-sm sm:text-[14px] font-bold text-[#5d6d87] group-hover:text-[#c1a478] transition-colors break-all">
+                  <a href={`mailto:${data.email}`} className="flex items-center gap-3 group cursor-pointer min-h-[44px] transition-all duration-200 hover:translate-x-1">
+                    <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
+                      <Mail size={16} className="text-blue-600 flex-shrink-0" />
+                    </div>
+                    <span className="text-sm sm:text-[14px] font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200 break-all">
                       {data.email}
                     </span>
                   </a>
@@ -159,7 +163,7 @@ function ContactSection({ settings }: ContactSectionProps) {
               </div>
 
               <Link href={data.button_link} className="w-full">
-                <button className="bg-[#c1a478] hover:bg-[#64748b] text-white px-6 sm:px-10 py-3 font-bold text-xs tracking-widest transition-all rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px]">
+                <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 sm:px-10 py-3 font-bold text-xs tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px] cursor-pointer">
                   {data.button_text}
                 </button>
               </Link>

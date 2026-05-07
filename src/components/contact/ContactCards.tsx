@@ -36,7 +36,7 @@ export default function ContactCards({
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <motion.p 
-            className="text-[#5d6d87] text-base sm:text-lg md:text-xl lg:text-2xl font-bold max-w-3xl mx-auto leading-relaxed px-4"
+            className="text-slate-600 text-base sm:text-lg md:text-xl lg:text-2xl font-bold max-w-3xl mx-auto leading-relaxed px-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -71,19 +71,19 @@ export default function ContactCards({
             return (
               <motion.div
                 key={item.id}
-                className="group flex flex-col items-center p-8 sm:p-10 lg:p-12 border border-gray-100 bg-white hover:border-[#c1a478] hover:shadow-xl transition-all duration-500 rounded-sm text-center"
+                className="group flex flex-col items-center p-8 sm:p-10 lg:p-12 border-2 border-blue-100 bg-white hover:border-blue-600 hover:shadow-xl transition-all duration-300 rounded-lg text-center cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay }}
               >
                 {/* Icon Container */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-[#5d6d87] flex items-center justify-center mb-6 sm:mb-8 rounded-sm transition-colors group-hover:bg-[#c1a478]">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center mb-6 sm:mb-8 rounded-lg transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
                   <IconComponent size={24} className="sm:w-7 sm:h-7 text-white" />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xs sm:text-sm font-bold text-[#5d6d87] tracking-[0.15em] sm:tracking-[0.2em] mb-2 sm:mb-3 uppercase group-hover:text-[#1a1a1a] transition-colors">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-600 tracking-[0.15em] sm:tracking-[0.2em] mb-2 sm:mb-3 uppercase group-hover:text-blue-600 transition-colors">
                   {item.title}
                 </h3>
 
@@ -93,12 +93,12 @@ export default function ContactCards({
                     href={href}
                     target={target}
                     rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-                    className="text-lg sm:text-xl font-bold text-[#c1a478] tracking-tight transition-colors hover:text-[#b09367] break-words cursor-pointer"
+                    className="text-lg sm:text-xl font-bold text-blue-600 tracking-tight transition-colors hover:text-blue-700 break-words cursor-pointer"
                   >
                     {item.value}
                   </a>
                 ) : (
-                  <p className="text-lg sm:text-xl font-bold text-[#c1a478] tracking-tight transition-colors break-words">
+                  <p className="text-lg sm:text-xl font-bold text-blue-600 tracking-tight transition-colors break-words">
                     {item.value}
                   </p>
                 )}

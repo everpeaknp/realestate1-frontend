@@ -100,9 +100,9 @@ function BlogListInner() {
     <div id="blog-list" className="py-4">
       {/* Search indicator */}
       {activeSearch && (
-        <div className="flex items-center gap-2 text-sm text-[#5d6d87] mb-8">
+        <div className="flex items-center gap-2 text-sm text-slate-600 mb-8">
           <span>Showing results for <strong>&quot;{activeSearch}&quot;</strong> ({allPosts.length} found)</span>
-          <Link href="/blog" className="text-[#c1a478] hover:underline ml-1">Clear</Link>
+          <Link href="/blog" className="text-blue-600 hover:text-blue-700 hover:underline ml-1 cursor-pointer">Clear</Link>
         </div>
       )}
 
@@ -115,7 +115,7 @@ function BlogListInner() {
             {activeSearch ? 'Try a different search term.' : 'Check back soon!'}
           </p>
           {activeSearch && (
-            <Link href="/blog" className="mt-4 inline-block text-[#c1a478] font-semibold hover:underline">
+            <Link href="/blog" className="mt-4 inline-block text-blue-600 font-semibold hover:text-blue-700 hover:underline cursor-pointer">
               View all posts
             </Link>
           )}
@@ -133,7 +133,7 @@ function BlogListInner() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.06 }}
                 >
-                  <div className="aspect-[16/10] overflow-hidden rounded-sm mb-4 sm:mb-6 bg-gray-200">
+                  <div className="aspect-[16/10] overflow-hidden rounded-lg mb-4 sm:mb-6 bg-gray-200">
                     <LazyImage
                       src={getImage(post.featured_image)}
                       alt={post.title}
@@ -143,11 +143,11 @@ function BlogListInner() {
                   </div>
                   <div className="text-center px-2 sm:px-4">
                     {getCategoryName(post.category) && (
-                      <span className="text-[11px] font-bold text-[#c1a478] uppercase tracking-widest mb-2 block">
+                      <span className="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-2 block">
                         {getCategoryName(post.category)}
                       </span>
                     )}
-                    <h3 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-3 group-hover:text-[#c1a478] transition-colors leading-tight">
+                    <h3 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-3 group-hover:text-blue-600 transition-colors leading-tight">
                       {post.title}
                     </h3>
                     <div className="text-[#5d6d87] text-sm font-medium flex flex-wrap items-center justify-center gap-x-2">
@@ -167,7 +167,7 @@ function BlogListInner() {
               <button
                 onClick={() => goToPage(safePage - 1)}
                 disabled={safePage === 1}
-                className="flex items-center gap-1 text-gray-400 hover:text-[#1a1a1a] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2"
+                className="flex items-center gap-1 text-gray-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2 cursor-pointer"
               >
                 <ChevronLeft size={14} /> Previous
               </button>
@@ -177,10 +177,10 @@ function BlogListInner() {
                   <button
                     key={page}
                     onClick={() => goToPage(page)}
-                    className={`w-9 h-9 flex items-center justify-center rounded-sm font-bold text-xs transition-colors ${
+                    className={`w-9 h-9 flex items-center justify-center rounded-lg font-bold text-xs transition-all duration-200 cursor-pointer ${
                       page === safePage
-                        ? 'bg-[#c1a478] text-white'
-                        : 'text-[#1a1a1a] hover:text-[#c1a478]'
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
+                        : 'text-[#1a1a1a] hover:text-blue-600 hover:bg-blue-50'
                     }`}
                   >
                     {page}
@@ -191,7 +191,7 @@ function BlogListInner() {
               <button
                 onClick={() => goToPage(safePage + 1)}
                 disabled={safePage === totalPages}
-                className="flex items-center gap-1 text-[#1a1a1a] hover:text-[#c1a478] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2"
+                className="flex items-center gap-1 text-[#1a1a1a] hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2 cursor-pointer"
               >
                 Next <ChevronRight size={14} />
               </button>

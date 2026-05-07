@@ -213,7 +213,7 @@ export default function HomeWorthForm() {
   }
 
   return (
-    <section id="valuation-form" className="bg-gray-50 py-20">
+    <section id="valuation-form" className="bg-gradient-to-b from-blue-50 to-white py-20">
       <div className="mx-auto max-w-4xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -225,7 +225,7 @@ export default function HomeWorthForm() {
           <h2 className="text-4xl font-bold text-[#1a1a1a] mb-4">
             {formSettings.form_title}
           </h2>
-          <p className="text-lg text-[#7C7A70] max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             {formSettings.form_description}
           </p>
         </motion.div>
@@ -236,13 +236,13 @@ export default function HomeWorthForm() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white rounded-lg shadow-lg p-8 md:p-12"
+          className="bg-white rounded-xl shadow-xl p-8 md:p-12 border border-blue-100"
           noValidate
         >
           {/* Error Messages */}
           {(errorMessage || rateLimitError) && (
             <div
-              className="mb-6 p-4 bg-red-50 border border-red-200 rounded-sm text-red-800 text-sm"
+              className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm"
               role="alert"
             >
               {errorMessage || rateLimitError}
@@ -368,7 +368,7 @@ export default function HomeWorthForm() {
           <button
             type="submit"
             disabled={isSubmitting || !isValid}
-            className="w-full bg-[#c1a478] hover:bg-[#b09367] text-white px-12 py-4 font-bold text-sm tracking-widest transition-all rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-12 py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
             aria-label="Submit valuation request"
           >
             {isSubmitting ? 'SUBMITTING...' : formSettings.submit_button_text}
@@ -379,7 +379,7 @@ export default function HomeWorthForm() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 p-4 bg-green-50 border border-green-200 rounded-sm text-green-800 text-center"
+              className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800 text-center"
               role="alert"
             >
               {formSettings.success_message}
@@ -390,7 +390,7 @@ export default function HomeWorthForm() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 p-4 bg-red-50 border border-red-200 rounded-sm text-red-800 text-center"
+              className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800 text-center"
               role="alert"
             >
               Something went wrong. Please try again or contact us directly.

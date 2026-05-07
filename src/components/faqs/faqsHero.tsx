@@ -17,7 +17,6 @@ interface FaqsHeroSettings {
 
 export default function FaqsHero() {
   const [heroSettings, setHeroSettings] = useState<FaqsHeroSettings | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const fetchHeroSettings = async () => {
@@ -51,7 +50,6 @@ export default function FaqsHero() {
           alt="FAQs Hero Background"
           fallbackSrc="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1920"
           className="w-full h-full object-cover"
-          onLoad={() => setImageLoaded(true)}
           skeletonClassName="bg-gray-800"
           threshold={0}
           rootMargin="0px"
@@ -91,7 +89,7 @@ export default function FaqsHero() {
             Home
           </Link>
           <ChevronRight size={16} />
-          <span className="text-[#c1a478] font-bold">FAQs</span>
+          <span className="text-blue-400 font-bold">FAQs</span>
         </motion.nav>
       </div>
     </section>

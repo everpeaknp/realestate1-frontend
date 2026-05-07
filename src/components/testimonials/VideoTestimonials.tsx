@@ -69,7 +69,7 @@ export default function VideoTestimonials() {
           {testimonials.map((item, index) => (
             <motion.div
               key={item.id}
-              className="relative aspect-[16/9] rounded-sm overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="relative aspect-[16/9] rounded-lg overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -105,14 +105,14 @@ export default function VideoTestimonials() {
                     </h3>
 
                     {/* Play Button */}
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center mb-6 sm:mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110">
-                      <Play size={20} className="sm:w-6 sm:h-6 text-[#1a1a1a] fill-current ml-1" />
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mb-6 sm:mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110">
+                      <Play size={20} className="sm:w-6 sm:h-6 text-white fill-current ml-1" />
                     </div>
 
                     {/* Rating */}
                     <div className="flex gap-1 mb-3 sm:mb-4">
                       {[...Array(item.rating || 5)].map((_, i) => (
-                        <Star key={i} size={14} className="sm:w-4 sm:h-4 text-[#f1c40f] fill-current" />
+                        <Star key={i} size={14} className="sm:w-4 sm:h-4 text-amber-400 fill-current" />
                       ))}
                     </div>
 

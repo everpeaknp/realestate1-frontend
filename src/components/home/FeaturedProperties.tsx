@@ -211,8 +211,7 @@ export default function FeaturedProperties() {
           </div>
           <Link
             href="/properties"
-            className="flex items-center gap-1 transition-opacity hover:opacity-80"
-            style={{ color: '#C1A478' }}
+            className="flex items-center gap-1 transition-colors duration-200 hover:text-blue-700 text-blue-600 cursor-pointer"
           >
             View all <ChevronRight size={16} />
           </Link>
@@ -272,8 +271,7 @@ function PropertyCard({ property, onClick }: PropertyCardProps) {
           {/* Status ribbon */}
           <div className="absolute top-0 left-0 overflow-hidden w-24 h-24 z-10">
             <div
-              className="absolute top-3 -left-8 w-36 py-1 text-center text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45"
-              style={{ backgroundColor: '#C1A478' }}
+              className="absolute top-3 -left-8 w-36 py-1 text-center text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 bg-gradient-to-r from-blue-600 to-blue-700"
             >
               {getStatusLabel(property.status)}
             </div>
@@ -283,13 +281,13 @@ function PropertyCard({ property, onClick }: PropertyCardProps) {
         {/* Content */}
         <div className="p-4">
           <h3
-            className="font-semibold text-gray-900 truncate transition-colors group-hover:text-[#C1A478]"
+            className="font-semibold text-gray-900 truncate transition-colors duration-200 group-hover:text-blue-600"
           >
             {property.headline || property.formattedAddress}
           </h3>
 
           <div className="flex items-center gap-1 text-sm text-gray-500 truncate mt-1 mb-2">
-            <MapPin size={13} className="flex-shrink-0 text-[#C1A478]" />
+            <MapPin size={13} className="flex-shrink-0 text-blue-600" />
             <span className="truncate">{property.formattedAddress}</span>
           </div>
 

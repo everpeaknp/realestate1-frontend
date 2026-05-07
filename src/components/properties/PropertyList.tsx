@@ -205,8 +205,8 @@ export default function PropertyList() {
             </div>
           )}
           {loading && (
-            <div className="mt-3 text-sm text-[#c1a478] flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-[#c1a478] border-t-transparent rounded-full animate-spin" />
+            <div className="mt-3 text-sm text-blue-600 flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
               <span>Searching properties...</span>
             </div>
           )}
@@ -236,7 +236,7 @@ export default function PropertyList() {
               {properties.map((property, index) => (
                 <motion.div
                   key={property.id}
-                  className="bg-[#FFFAF3] border border-gray-100 shadow-sm overflow-hidden group flex flex-col hover:shadow-xl transition-shadow duration-300"
+                  className="bg-white border border-blue-100 shadow-sm overflow-hidden group flex flex-col hover:shadow-xl transition-all duration-300 rounded-xl cursor-pointer"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -251,7 +251,7 @@ export default function PropertyList() {
                         referrerPolicy="no-referrer"
                       />
                       <div className="absolute top-0 left-0 overflow-hidden w-24 sm:w-28 h-24 sm:h-28 z-10">
-                        <div className="absolute top-3 sm:top-4 -left-7 sm:-left-8 w-32 sm:w-36 py-1 text-center text-[9px] sm:text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 bg-[#5d6d87]">
+                        <div className="absolute top-3 sm:top-4 -left-7 sm:-left-8 w-32 sm:w-36 py-1 text-center text-[9px] sm:text-[10px] font-bold tracking-widest text-white shadow-lg transform -rotate-45 bg-gradient-to-r from-blue-600 to-blue-700">
                           {getPropertyType(property.status)}
                         </div>
                       </div>
@@ -259,13 +259,13 @@ export default function PropertyList() {
                   </Link>
 
                   <div className="p-4 sm:p-5 md:p-6 flex-grow flex flex-col">
-                    <div className="flex items-center gap-1.5 text-[#c1a478] mb-2">
+                    <div className="flex items-center gap-1.5 text-blue-600 mb-2">
                       <MapPin size={14} fill="currentColor" fillOpacity={0.2} className="flex-shrink-0" />
                       <span className="text-xs sm:text-[13px] font-medium text-gray-500 truncate">{property.formattedAddress}</span>
                     </div>
 
                     <Link href={`/properties/${buildEagleSlug(property.id, property.formattedAddress)}`}>
-                      <h3 className="text-base sm:text-lg font-bold text-[#1a1a1a] mb-3 sm:mb-4 group-hover:text-[#c1a478] transition-colors line-clamp-2 min-h-[3rem]">
+                      <h3 className="text-base sm:text-lg font-bold text-[#1a1a1a] mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 min-h-[3rem]">
                         {property.headline || property.formattedAddress}
                       </h3>
                     </Link>
@@ -277,10 +277,10 @@ export default function PropertyList() {
                     )}
 
                     <div className="flex items-center justify-between mt-auto pt-3 sm:pt-4 border-t border-gray-100">
-                      <span className="text-base sm:text-lg font-bold text-[#c1a478]">{formatPrice(property)}</span>
+                      <span className="text-base sm:text-lg font-bold text-blue-600">{formatPrice(property)}</span>
                       <Link
                         href={`/properties/${buildEagleSlug(property.id, property.formattedAddress)}`}
-                        className="flex items-center gap-1 text-[11px] sm:text-[13px] font-bold text-[#34465d] hover:text-[#c1a478] transition-colors uppercase tracking-wide"
+                        className="flex items-center gap-1 text-[11px] sm:text-[13px] font-bold text-[#34465d] hover:text-blue-600 transition-colors duration-200 uppercase tracking-wide cursor-pointer"
                       >
                         Details
                         <ChevronRight size={14} className="mt-0.5 flex-shrink-0" />
@@ -297,7 +297,7 @@ export default function PropertyList() {
                 <button
                   onClick={() => goToPage(safePage - 1)}
                   disabled={safePage === 1}
-                  className="flex items-center gap-1 text-gray-400 hover:text-[#1a1a1a] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2"
+                  className="flex items-center gap-1 text-gray-400 hover:text-[#1a1a1a] disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 min-h-[44px] px-2 cursor-pointer"
                 >
                   <ChevronLeft size={14} /> Previous
                 </button>
@@ -307,10 +307,10 @@ export default function PropertyList() {
                     <button
                       key={page}
                       onClick={() => goToPage(page)}
-                      className={`w-9 h-9 flex items-center justify-center rounded-sm font-bold text-xs transition-colors ${
+                      className={`w-9 h-9 flex items-center justify-center rounded-lg font-bold text-xs transition-all duration-200 cursor-pointer ${
                         page === safePage
-                          ? 'bg-[#c1a478] text-white'
-                          : 'text-[#1a1a1a] hover:text-[#c1a478]'
+                          ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
+                          : 'text-[#1a1a1a] hover:text-blue-600 hover:bg-blue-50'
                       }`}
                     >
                       {page}
@@ -321,7 +321,7 @@ export default function PropertyList() {
                 <button
                   onClick={() => goToPage(safePage + 1)}
                   disabled={safePage === totalPages}
-                  className="flex items-center gap-1 text-[#1a1a1a] hover:text-[#c1a478] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2"
+                  className="flex items-center gap-1 text-[#1a1a1a] hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 min-h-[44px] px-2 cursor-pointer"
                 >
                   Next <ChevronRight size={14} />
                 </button>
@@ -341,7 +341,7 @@ export default function PropertyList() {
             {(activeSearch || hasActiveFilters) && (
               <div className="space-y-2">
                 <p className="text-sm text-gray-400">Try adjusting your filters or search terms</p>
-                <Link href="/properties" className="inline-block text-[#c1a478] font-semibold hover:underline text-sm">
+                <Link href="/properties" className="inline-block text-blue-600 font-semibold hover:underline text-sm cursor-pointer">
                   View all properties
                 </Link>
               </div>

@@ -188,12 +188,12 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
     <aside className="flex flex-col gap-8 w-full">
       {/* Agent Card */}
       <motion.div
-        className="bg-[#FFFBF2] p-6 rounded-sm border border-[#F2E8D5] flex items-center gap-6"
+        className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 flex items-center gap-6 shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
       >
-        <div className="w-24 h-24 overflow-hidden rounded-sm bg-transparent">
+        <div className="w-24 h-24 overflow-hidden rounded-lg bg-transparent ring-2 ring-blue-100">
           <LazyImage
             src={displayAgent.avatar || defaultAgent.avatar}
             alt={displayAgent.name}
@@ -201,33 +201,33 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
           />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-[#1a1a1a] font-sans">
+          <h3 className="text-xl font-bold text-slate-800 font-sans">
             {displayAgent.name}
           </h3>
-          <p className="text-[#5d6d87] text-sm">{displayAgent.bio || 'Real Estate Agent'}</p>
+          <p className="text-slate-600 text-sm">{displayAgent.bio || 'Real Estate Agent'}</p>
         </div>
       </motion.div>
 
       {/* Contact Form Card */}
       <motion.div
-        className="bg-[#FFFBF2] p-8 rounded-sm border border-[#F2E8D5]"
+        className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-lg border border-blue-100 shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
       >
-        <h3 className="text-xl font-bold text-[#1a1a1a] text-center mb-8 font-sans leading-tight">
+        <h3 className="text-xl font-bold text-slate-800 text-center mb-8 font-sans leading-tight">
           {formTitle}
         </h3>
 
         {submitted ? (
           <div className="text-center py-6">
-            <div className="text-[#c1a478] text-4xl mb-3">✓</div>
-            <p className="text-[#1a1a1a] font-bold text-lg mb-1">Message Sent!</p>
-            <p className="text-[#7C7A70] text-sm">We'll get back to you shortly.</p>
+            <div className="text-blue-600 text-4xl mb-3">✓</div>
+            <p className="text-slate-800 font-bold text-lg mb-1">Message Sent!</p>
+            <p className="text-slate-600 text-sm">We'll get back to you shortly.</p>
             <button
               onClick={() => setSubmitted(false)}
-              className="mt-4 text-[#5d6d87] text-sm underline hover:text-[#c1a478] transition-colors"
+              className="mt-4 text-blue-600 text-sm underline hover:text-blue-700 transition-colors duration-200 cursor-pointer"
             >
               Send another message
             </button>
@@ -237,7 +237,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
             {/* Error Messages */}
             {(error || rateLimitError) && (
               <div
-                className="p-3 bg-red-50 border border-red-200 rounded-sm text-red-800 text-sm"
+                className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm"
                 role="alert"
               >
                 {error || rateLimitError}
@@ -301,7 +301,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
             <button
               type="submit"
               disabled={submitting || !isValid}
-              className="w-full bg-[#c1a478] text-white font-bold py-4 uppercase tracking-widest text-sm hover:bg-[#b09368] transition-colors mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg mt-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               aria-label="Submit property inquiry"
             >
               {submitting ? 'Sending...' : 'Submit'}
@@ -312,7 +312,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
 
       {/* Contact Info Card */}
       <motion.div
-        className="bg-[#FFFBF2] p-6 rounded-sm border border-[#F2E8D5] flex flex-col gap-3 items-center"
+        className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 flex flex-col gap-3 items-center shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -320,19 +320,19 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
       >
         <a
           href={`tel:${displayAgent.phone}`}
-          className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors"
+          className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
         >
           <Phone size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">
+          <span className="font-bold text-slate-800 tracking-tight">
             {displayAgent.phone}
           </span>
         </a>
         <a
           href={`mailto:${displayAgent.email}`}
-          className="flex items-center gap-3 text-[#5d6d87] hover:text-[#c1a478] transition-colors"
+          className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
         >
           <Mail size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">
+          <span className="font-bold text-slate-800 tracking-tight">
             {displayAgent.email}
           </span>
         </a>

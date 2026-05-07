@@ -178,16 +178,16 @@ function BlogHeroInner() {
         style={dropdownStyle}
         className="bg-white rounded-sm shadow-2xl overflow-hidden text-left max-h-[360px] overflow-y-auto"
       >
-        <div className="px-4 py-2 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
-          <FileText size={12} className="text-[#5d6d87]" />
-          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Blog Posts</span>
+        <div className="px-4 py-2 bg-blue-50 border-b border-blue-100 flex items-center gap-2">
+          <FileText size={12} className="text-blue-600" />
+          <span className="text-[11px] font-bold text-slate-600 uppercase tracking-widest">Blog Posts</span>
         </div>
         {results.map((b) => (
           <Link
             key={b.id}
             href={`/blog/${b.slug}`}
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
+            className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors border-b border-gray-50 group cursor-pointer"
           >
             <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
               <LazyImage
@@ -198,18 +198,18 @@ function BlogHeroInner() {
               />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">{b.title}</p>
+              <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-blue-600 transition-colors">{b.title}</p>
               <p className="text-xs text-gray-400">{b.author_name}</p>
             </div>
             {b.category && (
-              <span className="text-[10px] font-bold text-[#5d6d87] bg-gray-100 px-2 py-0.5 rounded flex-shrink-0">{b.category}</span>
+              <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded flex-shrink-0">{b.category}</span>
             )}
           </Link>
         ))}
         <Link
           href={`/blog?search=${encodeURIComponent(query)}`}
           onClick={() => setOpen(false)}
-          className="block px-4 py-2.5 text-xs text-[#5d6d87] font-semibold hover:bg-gray-50 text-center"
+          className="block px-4 py-2.5 text-xs text-blue-600 font-semibold hover:bg-blue-50 text-center cursor-pointer"
         >
           View all results for &quot;{query}&quot; →
         </Link>
@@ -272,7 +272,7 @@ function BlogHeroInner() {
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => results.length > 0 && setOpen(true)}
                 placeholder="Search blog posts..."
-                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-3 text-sm font-medium outline-none rounded-l-sm pr-9"
+                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 rounded-l-lg pr-9"
               />
               {query && (
                 <button type="button" onClick={clearSearch}
@@ -282,7 +282,7 @@ function BlogHeroInner() {
               )}
             </div>
             <button type="submit"
-              className="bg-[#c1a478] hover:bg-[#a8895f] text-white px-5 py-3 flex items-center gap-2 font-bold text-sm tracking-wider transition-colors rounded-r-sm">
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-5 py-3 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 rounded-r-lg shadow-md hover:shadow-lg cursor-pointer">
               {searching
                 ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 : <Search size={17} />
@@ -304,7 +304,7 @@ function BlogHeroInner() {
         >
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-[#c1a478] font-bold">Blog</span>
+          <span className="text-blue-400 font-bold">Blog</span>
         </motion.nav>
       </div>
     </section>
@@ -315,7 +315,7 @@ export default function BlogHero() {
   return (
     <Suspense fallback={
       <section className="relative h-[340px] sm:h-[380px] md:h-[420px] bg-gray-900 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#c1a478] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
       </section>
     }>
       <BlogHeroInner />

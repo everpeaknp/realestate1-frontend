@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Play, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { API_URL } from '@/lib/api';
 import LazyImage from '@/components/shared/LazyImage';
@@ -60,7 +60,7 @@ export default function Testimonials() {
         {/* Section Header */}
         <div className="mb-12 sm:mb-14 md:mb-16 text-center">
           <motion.span 
-            className="text-[#c1a478] font-bold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4 block"
+            className="text-blue-600 font-bold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4 block"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -83,7 +83,7 @@ export default function Testimonials() {
           {testimonials.map((item, index) => (
             <motion.div
               key={item.id}
-              className="bg-white p-6 sm:p-8 border border-gray-100 flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="bg-white p-6 sm:p-8 border border-blue-100 rounded-lg flex flex-col shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -95,14 +95,14 @@ export default function Testimonials() {
                   <LazyImage 
                     src={item.image} 
                     alt={item.name} 
-                    className="w-full h-full object-cover rounded-sm"
+                    className="w-full h-full object-cover rounded-lg"
                   />
                 </div>
                 
                 {/* Content */}
                 <div className="flex-1 text-center sm:text-left">
                   <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-2 sm:mb-3">{item.title}</h3>
-                  <p className="text-[#5d6d87] text-sm sm:text-[15px] leading-relaxed">
+                  <p className="text-slate-600 text-sm sm:text-[15px] leading-relaxed">
                     {item.text}
                   </p>
                 </div>
@@ -112,12 +112,12 @@ export default function Testimonials() {
               <div className="mt-auto text-center sm:text-left">
                 <div className="flex items-center justify-center sm:justify-start gap-1 mb-3">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} className="sm:w-4 sm:h-4 text-[#f39c12] fill-current" />
+                    <Star key={i} size={14} className="sm:w-4 sm:h-4 text-amber-400 fill-current" />
                   ))}
                 </div>
                 <div>
                   <p className="font-bold text-[#1a1a1a] text-base sm:text-lg">{item.name}</p>
-                  <p className="text-xs sm:text-sm text-[#5d6d87]">{item.role}</p>
+                  <p className="text-xs sm:text-sm text-slate-600">{item.role}</p>
                 </div>
               </div>
             </motion.div>

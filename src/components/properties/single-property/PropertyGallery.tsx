@@ -56,7 +56,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="relative aspect-[4/3] overflow-hidden rounded cursor-pointer group"
+            className="relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer group"
             onClick={() => openLightbox(index)}
           >
             <LazyImage
@@ -64,7 +64,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               alt={`Property image ${index + 1}`}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
         ))}
       </div>

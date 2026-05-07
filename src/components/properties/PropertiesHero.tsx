@@ -271,7 +271,7 @@ function PropertiesHeroInner() {
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => results.length > 0 && setOpen(true)}
                 placeholder="Search by location, type, price..."
-                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-3 text-sm font-medium outline-none rounded-l-sm pr-9"
+                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 rounded-l-lg pr-9"
               />
               {query && (
                 <button
@@ -285,7 +285,7 @@ function PropertiesHeroInner() {
             </div>
             <button
               type="submit"
-              className="bg-[#c1a478] hover:bg-[#a8895f] text-white px-5 py-3 flex items-center gap-2 font-bold text-sm tracking-wider transition-colors rounded-r-sm"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-5 py-3 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 rounded-r-lg shadow-md hover:shadow-lg cursor-pointer"
             >
               {searching
                 ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -310,7 +310,7 @@ function PropertiesHeroInner() {
                     key={p.key}
                     href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
                     onClick={() => setOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-[#FFFAF3] transition-colors border-b border-gray-50 group"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors duration-200 border-b border-gray-50 group cursor-pointer"
                   >
                     {/* Thumbnail */}
                     <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
@@ -322,7 +322,7 @@ function PropertiesHeroInner() {
                     </div>
                     {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#c1a478] transition-colors">
+                      <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-blue-600 transition-colors duration-200">
                         {p.title}
                       </p>
                       <p className="text-xs text-gray-400 truncate">{p.location}</p>
@@ -330,7 +330,7 @@ function PropertiesHeroInner() {
                     {/* Price + source badge */}
                     <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
                       {p.price && (
-                        <span className="text-xs font-bold text-[#c1a478]">{p.price}</span>
+                        <span className="text-xs font-bold text-blue-600">{p.price}</span>
                       )}
                       {p.source === 'eagle' && (
                         <span className="text-[10px] text-gray-400 font-medium">Eagle</span>
@@ -342,7 +342,7 @@ function PropertiesHeroInner() {
                 <Link
                   href={`/properties?search=${encodeURIComponent(query)}`}
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-2.5 text-xs text-[#c1a478] font-semibold hover:bg-gray-50 text-center"
+                  className="block px-4 py-2.5 text-xs text-blue-600 font-semibold hover:bg-blue-50 text-center transition-colors duration-200 cursor-pointer"
                 >
                   View all results for &quot;{query}&quot; →
                 </Link>
@@ -360,7 +360,7 @@ function PropertiesHeroInner() {
         >
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-[#c1a478]">Properties</span>
+          <span className="text-blue-600">Properties</span>
         </motion.nav>
       </div>
     </section>
@@ -371,7 +371,7 @@ export default function PropertiesHero() {
   return (
     <Suspense fallback={
       <section className="relative h-[340px] sm:h-[380px] md:h-[420px] bg-gray-800 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#c1a478] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
       </section>
     }>
       <PropertiesHeroInner />

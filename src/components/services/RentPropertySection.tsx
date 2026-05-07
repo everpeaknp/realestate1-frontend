@@ -70,7 +70,7 @@ export default function RentPropertySection({
               <div className="flex flex-col gap-3 sm:gap-4 mb-8 sm:mb-10">
                 {features.map((feature) => (
                   <div key={feature.id} className="flex items-start gap-3">
-                    <CheckCircle2 size={20} className="text-[#c1a478] flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 size={20} className="text-blue-600 flex-shrink-0 mt-0.5" />
                     <span className="text-[#5d6d87] font-medium font-sans text-sm sm:text-base">{feature.text}</span>
                   </div>
                 ))}
@@ -80,7 +80,7 @@ export default function RentPropertySection({
               <div className="flex flex-col gap-6 sm:gap-8">
                 <a 
                   href="/contact"
-                  className="w-full py-3 sm:py-4 bg-[#c1a478] text-white font-bold uppercase tracking-widest text-xs sm:text-sm hover:bg-slate-600 transition-all shadow-md text-center rounded-sm min-h-[44px] flex items-center justify-center transform hover:-translate-y-0.5"
+                  className="w-full py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold uppercase tracking-widest text-xs sm:text-sm transition-all duration-200 shadow-md hover:shadow-lg text-center rounded-lg min-h-[44px] flex items-center justify-center transform hover:-translate-y-0.5 cursor-pointer"
                 >
                   {buttonText}
                 </a>
@@ -90,8 +90,8 @@ export default function RentPropertySection({
                     href={`tel:${phone}`}
                     className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer min-h-[44px]"
                   >
-                    <Phone size={18} className="text-[#c1a478] flex-shrink-0" fill="currentColor" stroke="none" />
-                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors text-sm sm:text-base">
+                    <Phone size={18} className="text-blue-600 flex-shrink-0" fill="currentColor" stroke="none" />
+                    <span className="font-bold text-[#1a1a1a] group-hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base">
                       {phone}
                     </span>
                   </a>
@@ -99,8 +99,8 @@ export default function RentPropertySection({
                     href={`mailto:${email}`}
                     className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer min-h-[44px]"
                   >
-                    <Mail size={18} className="text-[#c1a478] flex-shrink-0" />
-                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#c1a478] transition-colors text-sm sm:text-base break-all">
+                    <Mail size={18} className="text-blue-600 flex-shrink-0" />
+                    <span className="font-bold text-[#1a1a1a] group-hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base break-all">
                       {email}
                     </span>
                   </a>

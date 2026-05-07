@@ -124,7 +124,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="bg-[#5d6d87] pt-0 pb-12 sm:py-16 md:py-20 w-full overflow-hidden">
+    <section className="bg-gradient-to-br from-blue-600 to-blue-700 pt-0 pb-12 sm:py-16 md:py-20 w-full overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-20">
           {/* Text Content */}
@@ -138,7 +138,7 @@ export default function NewsletterSection() {
             <h2 className="text-2xl sm:text-3xl md:text-[38px] font-bold mb-3 sm:mb-4">
               {settings.title}
             </h2>
-            <p className="text-white/80 text-sm sm:text-base md:text-lg">
+            <p className="text-white/90 text-sm sm:text-base md:text-lg">
               {settings.description}
             </p>
           </motion.div>
@@ -146,14 +146,14 @@ export default function NewsletterSection() {
           {/* Form */}
           {submitted ? (
             <motion.div
-              className="w-full max-w-2xl flex items-center justify-center bg-white/10 px-6 sm:px-8 py-5 sm:py-6 rounded-sm"
+              className="w-full max-w-2xl flex items-center justify-center bg-white/10 px-6 sm:px-8 py-5 sm:py-6 rounded-lg backdrop-blur-sm"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
             >
               <div className="text-center text-white">
                 <svg
-                  className="w-7 h-7 sm:w-8 sm:h-8 mx-auto mb-2 sm:mb-3 text-[#c1a478]"
+                  className="w-7 h-7 sm:w-8 sm:h-8 mx-auto mb-2 sm:mb-3 text-blue-200"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -166,14 +166,14 @@ export default function NewsletterSection() {
                   />
                 </svg>
                 <p className="font-bold text-base sm:text-lg">You are subscribed!</p>
-                <p className="text-white/70 text-xs sm:text-sm mt-1">
+                <p className="text-white/80 text-xs sm:text-sm mt-1">
                   Thank you for joining our newsletter.
                 </p>
               </div>
             </motion.div>
           ) : (
             <motion.form
-              className="w-full max-w-2xl flex flex-col sm:flex-row gap-0 shadow-2xl rounded-sm overflow-hidden"
+              className="w-full max-w-2xl flex flex-col sm:flex-row gap-0 shadow-2xl rounded-lg overflow-hidden"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -190,10 +190,10 @@ export default function NewsletterSection() {
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? 'email-error' : undefined}
                   className={`
-                    flex-1 bg-[#e0e5eb] px-4 sm:px-6 py-4 sm:py-5 
-                    text-sm sm:text-base text-[#1a1a1a] 
-                    placeholder:text-[#5d6d87]/60 outline-none 
-                    focus:bg-white transition-colors min-h-[48px]
+                    flex-1 bg-white px-4 sm:px-6 py-4 sm:py-5 
+                    text-sm sm:text-base text-slate-800 
+                    placeholder:text-slate-400 outline-none 
+                    focus:ring-2 focus:ring-blue-400 transition-all duration-200 min-h-[48px]
                     ${errors.email ? 'border-2 border-red-500' : ''}
                   `}
                   disabled={submitting}
@@ -217,7 +217,7 @@ export default function NewsletterSection() {
                 {(errors.email || error || rateLimitError) && (
                   <p
                     id="email-error"
-                    className="text-red-300 text-xs px-2 pt-1 bg-[#e0e5eb]"
+                    className="text-red-300 text-xs px-2 pt-1 bg-white"
                     role="alert"
                   >
                     {errors.email?.message || error || rateLimitError}
@@ -228,7 +228,7 @@ export default function NewsletterSection() {
               <button
                 type="submit"
                 disabled={submitting || !isValid}
-                className="bg-[#c1a478] hover:bg-[#b09367] text-white px-6 sm:px-10 py-4 sm:py-5 font-bold text-xs tracking-[0.2em] transition-all uppercase whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed min-h-[48px]"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 sm:px-10 py-4 sm:py-5 font-bold text-xs tracking-[0.2em] transition-all duration-200 uppercase whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed min-h-[48px] cursor-pointer shadow-md hover:shadow-lg"
                 aria-label="Subscribe to newsletter"
               >
                 {submitting ? 'Subscribing...' : 'Subscribe'}

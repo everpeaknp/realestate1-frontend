@@ -97,7 +97,7 @@ export default function ProjectGallery() {
           {allImages.map((image, index) => (
             <motion.div
               key={index}
-              className="relative group overflow-hidden rounded-sm break-inside-avoid shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer"
+              className="relative group overflow-hidden rounded-lg break-inside-avoid shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -111,11 +111,11 @@ export default function ProjectGallery() {
               />
               
               {/* Overlay */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 sm:p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 sm:p-6">
                 <p className="text-white font-bold text-base sm:text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   {image.title}
                 </p>
-                <div className="w-10 sm:w-12 h-1 bg-[#c1a478] mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100" />
+                <div className="w-10 sm:w-12 h-1 bg-gradient-to-r from-blue-600 to-blue-700 mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100" />
               </div>
             </motion.div>
           ))}

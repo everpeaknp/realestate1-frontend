@@ -75,6 +75,7 @@ export const API_ENDPOINTS = {
   services: {
     list: `${API_URL}/api/services/`,
     detail: (slug: string) => `${API_URL}/api/services/${slug}/`,
+    hero: `${API_URL}/api/services/hero/`,
   },
   
   // About

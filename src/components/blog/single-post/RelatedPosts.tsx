@@ -15,7 +15,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
   }
 
   return (
-    <section className="bg-[#FFFAF3] py-16">
+    <section className="bg-blue-50 py-16">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a1a] text-center mb-12 font-sans">
           Related Posts
@@ -38,7 +38,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                 >
                   {/* Image Container */}
-                  <div className="aspect-[4/3] overflow-hidden rounded-sm mb-4 shadow-sm bg-gray-200">
+                  <div className="aspect-[4/3] overflow-hidden rounded-lg mb-4 shadow-sm bg-gray-200">
                     <LazyImage
                       src={postImage}
                       alt={post.title}
@@ -49,7 +49,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
 
                   {/* Content */}
                   <div className="text-center px-1">
-                    <h3 className="text-lg font-bold text-[#1a1a1a] mb-2 group-hover:text-[#c1a478] transition-colors leading-tight font-sans">
+                    <h3 className="text-lg font-bold text-[#1a1a1a] mb-2 group-hover:text-blue-600 transition-colors leading-tight font-sans">
                       {post.title}
                     </h3>
                     <div className="text-[#5d6d87] text-[13px] font-bold tracking-tight uppercase">

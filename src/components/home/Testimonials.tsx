@@ -20,7 +20,7 @@ function StarRating() {
   return (
     <div className="flex items-center justify-center gap-1 mb-2">
       {[...Array(5)].map((_, i) => (
-        <Star key={i} size={18} className="text-[#F0AD4E]" fill="#F0AD4E" stroke="none" />
+        <Star key={i} size={18} className="text-amber-400 fill-current" />
       ))}
     </div>
   );
@@ -106,7 +106,7 @@ export default function Testimonials() {
   });
 
   return (
-    <section className="bg-[#EADEC9] py-12 sm:py-16 md:py-20 lg:py-24 pb-16 sm:pb-20 md:pb-24 lg:pb-32 overflow-hidden">
+    <section className="bg-blue-50 py-12 sm:py-16 md:py-20 lg:py-24 pb-16 sm:pb-20 md:pb-24 lg:pb-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 text-center">
         {/* Section Header */}
         <div className="mb-12 sm:mb-16 md:mb-20">
@@ -120,7 +120,7 @@ export default function Testimonials() {
             Testimonials
           </motion.h2>
           <motion.p 
-            className="text-[#7C7A70] max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
+            className="text-slate-600 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -136,7 +136,7 @@ export default function Testimonials() {
           
           {/* Video Testimonial Column (5/12) */}
           <motion.div 
-            className="lg:col-span-5 relative group cursor-pointer overflow-hidden rounded-sm min-h-[400px] sm:min-h-[500px] lg:h-[578px] shadow-lg"
+            className="lg:col-span-5 relative group cursor-pointer overflow-hidden rounded-lg min-h-[400px] sm:min-h-[500px] lg:h-[578px] shadow-lg hover:shadow-xl transition-shadow duration-300"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -166,8 +166,8 @@ export default function Testimonials() {
                       {videoTestimonial.title}
                     </h3>
                     
-                    <div className="mb-6 sm:mb-8 w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto">
-                      <Play size={20} className="sm:w-6 sm:h-6 text-[#34465d] ml-1" fill="currentColor" />
+                    <div className="mb-6 sm:mb-8 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto">
+                      <Play size={20} className="sm:w-6 sm:h-6 text-white ml-1" fill="currentColor" />
                     </div>
 
                     <div>
@@ -186,13 +186,13 @@ export default function Testimonials() {
             {/* Standard Testimonial Column 1 */}
             {textTestimonials[0] && (
               <motion.div 
-                className="bg-white p-6 sm:p-8 flex flex-col shadow-lg rounded-sm min-h-[450px] sm:min-h-[500px] lg:h-[578px]"
+                className="bg-white p-6 sm:p-8 flex flex-col shadow-lg rounded-lg min-h-[450px] sm:min-h-[500px] lg:h-[578px] border border-blue-100 hover:shadow-xl transition-shadow duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <div className="h-[180px] sm:h-[201px] overflow-hidden mb-6 sm:mb-8 flex-shrink-0 rounded-sm">
+                <div className="h-[180px] sm:h-[201px] overflow-hidden mb-6 sm:mb-8 flex-shrink-0 rounded-lg">
                   <LazyImage 
                     src={textTestimonials[0].image} 
                     alt="Property"
@@ -201,14 +201,14 @@ export default function Testimonials() {
                 </div>
                 <div className="flex-1 flex flex-col">
                   <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[0].title}</h3>
-                  <p className="text-[#7C7A70] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
+                  <p className="text-slate-600 text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
                     {textTestimonials[0].text}
                   </p>
                   
-                  <div className="pt-4 sm:pt-6 border-t border-gray-100 mt-auto flex-shrink-0">
+                  <div className="pt-4 sm:pt-6 border-t border-blue-100 mt-auto flex-shrink-0">
                     <StarRating />
                     <p className="font-bold text-[#1a1a1a] text-sm sm:text-base">{textTestimonials[0].name}</p>
-                    <p className="text-xs text-[#7C7A70] uppercase tracking-widest">{textTestimonials[0].role}</p>
+                    <p className="text-xs text-slate-600 uppercase tracking-widest">{textTestimonials[0].role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -217,13 +217,13 @@ export default function Testimonials() {
             {/* Standard Testimonial Column 2 */}
             {textTestimonials[1] && (
               <motion.div 
-                className="bg-white p-6 sm:p-8 flex flex-col shadow-lg rounded-sm min-h-[450px] sm:min-h-[500px] lg:h-[578px]"
+                className="bg-white p-6 sm:p-8 flex flex-col shadow-lg rounded-lg min-h-[450px] sm:min-h-[500px] lg:h-[578px] border border-blue-100 hover:shadow-xl transition-shadow duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <div className="h-[180px] sm:h-[201px] overflow-hidden mb-6 sm:mb-8 flex-shrink-0 rounded-sm">
+                <div className="h-[180px] sm:h-[201px] overflow-hidden mb-6 sm:mb-8 flex-shrink-0 rounded-lg">
                   <LazyImage 
                     src={textTestimonials[1].image} 
                     alt="Luxury Home"
@@ -232,14 +232,14 @@ export default function Testimonials() {
                 </div>
                 <div className="flex-1 flex flex-col">
                   <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[1].title}</h3>
-                  <p className="text-[#7C7A70] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
+                  <p className="text-slate-600 text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
                     {textTestimonials[1].text}
                   </p>
                   
-                  <div className="pt-4 sm:pt-6 border-t border-gray-100 mt-auto flex-shrink-0">
+                  <div className="pt-4 sm:pt-6 border-t border-blue-100 mt-auto flex-shrink-0">
                     <StarRating />
                     <p className="font-bold text-[#1a1a1a] text-sm sm:text-base">{textTestimonials[1].name}</p>
-                    <p className="text-xs text-[#7C7A70] uppercase tracking-widest">{textTestimonials[1].role}</p>
+                    <p className="text-xs text-slate-600 uppercase tracking-widest">{textTestimonials[1].role}</p>
                   </div>
                 </div>
               </motion.div>

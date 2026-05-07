@@ -44,7 +44,7 @@ export default function GoalsSection({ goals: propGoals }: GoalsSectionProps) {
           {goals.map((goal, index) => (
             <motion.div
               key={goal.id}
-              className="w-full min-h-[280px] sm:min-h-[300px] lg:h-[330px] flex flex-col justify-center p-6 sm:p-8 lg:p-10 border border-[#E8E8E8] bg-white hover:border-[#c1a478] hover:shadow-xl transition-all duration-500 rounded-sm"
+              className="w-full min-h-[280px] sm:min-h-[300px] lg:h-[330px] flex flex-col justify-center p-6 sm:p-8 lg:p-10 border border-blue-100 bg-white hover:border-blue-600 hover:shadow-xl transition-all duration-300 rounded-xl cursor-pointer hover:-translate-y-1"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
