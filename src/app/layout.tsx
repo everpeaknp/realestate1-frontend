@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Chatbot } from "@/components/chatbot";
+import { TawkToScript } from "@/components/chatbot";
 import { CMSProvider } from "@/contexts/CMSContext";
 import { DynamicMetadata } from "@/components/shared/DynamicMetadata";
 
@@ -35,7 +35,7 @@ export default function RootLayout({
         <CMSProvider>
           <DynamicMetadata />
           {children}
-          <Chatbot />
+          <TawkToScript />
         </CMSProvider>
       </body>
     </html>

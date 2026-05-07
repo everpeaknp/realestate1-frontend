@@ -64,22 +64,40 @@ export function CMSProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const fetchCMSData = async () => {
+      console.log('=== CMSContext: Starting to fetch CMS data ===');
       try {
+        console.log('Fetching header and footer settings...');
         const [headerData, footerData] = await Promise.all([
           cmsAPI.getHeaderSettings(),
           cmsAPI.getFooterSettings()
         ]);
         
+        console.log('Header Data received:', headerData);
+        console.log('Footer Data received:', footerData);
+        
         // API returns array, get first active item
         const activeHeader = headerData.find((h: HeaderSettings) => h.is_active);
         const activeFooter = footerData.find((f: FooterSettings) => f.is_active);
         
-        setHeaderSettings(activeHeader || headerData[0] || null);
-        setFooterSettings(activeFooter || footerData[0] || null);
+        const selectedHeader = activeHeader || headerData[0] || null;
+        const selectedFooter = activeFooter || footerData[0] || null;
+        
+        console.log('Selected Header Settings:', selectedHeader);
+        console.log('Selected Footer Settings:', selectedFooter);
+        
+        setHeaderSettings(selectedHeader);
+        setFooterSettings(selectedFooter);
+        
+        console.log('✅ CMS data successfully loaded');
       } catch (error) {
-        console.error('Error fetching CMS data:', error);
+        console.error('❌ Error fetching CMS data:', error);
+        if (error instanceof Error) {
+          console.error('Error message:', error.message);
+          console.error('Error stack:', error.stack);
+        }
       } finally {
         setLoading(false);
+        console.log('=== CMSContext: Fetch complete ===');
       }
     };
 
