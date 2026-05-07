@@ -92,7 +92,7 @@ export default function HomeWorthHero() {
         >
           <a href="/" className="hover:text-white transition-colors">Home</a>
           <ChevronRight size={16} />
-          <span className="text-blue-400 font-bold">Home Worth</span>
+          <span className="text-white font-bold">Home Worth</span>
         </motion.nav>
       </div>
     </section>

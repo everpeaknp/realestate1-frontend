@@ -20,6 +20,11 @@ export default function VideoTestimonials() {
   const [testimonials, setTestimonials] = useState<VideoTestimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [playingVideo, setPlayingVideo] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchVideoTestimonials = async () => {
@@ -57,8 +62,8 @@ export default function VideoTestimonials() {
     setPlayingVideo(testimonialId);
   };
 
-  // Don't render the section if there are no video testimonials
-  if (loading || testimonials.length === 0) {
+  // Don't render the section if there are no video testimonials or not mounted
+  if (!mounted || loading || testimonials.length === 0) {
     return null;
   }
 
@@ -105,7 +110,7 @@ export default function VideoTestimonials() {
                     </h3>
 
                     {/* Play Button */}
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center mb-6 sm:mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mb-6 sm:mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110" style={{ background: '#091E34' }}>
                       <Play size={20} className="sm:w-6 sm:h-6 text-white fill-current ml-1" />
                     </div>
 

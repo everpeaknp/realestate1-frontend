@@ -188,12 +188,12 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
     <aside className="flex flex-col gap-8 w-full">
       {/* Agent Card */}
       <motion.div
-        className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 flex items-center gap-6 shadow-sm"
+        className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-lg border border-gray-100 flex items-center gap-6 shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
       >
-        <div className="w-24 h-24 overflow-hidden rounded-lg bg-transparent ring-2 ring-blue-100">
+        <div className="w-24 h-24 overflow-hidden rounded-lg bg-transparent ring-2 ring-gray-100">
           <LazyImage
             src={displayAgent.avatar || defaultAgent.avatar}
             alt={displayAgent.name}
@@ -210,7 +210,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
 
       {/* Contact Form Card */}
       <motion.div
-        className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-lg border border-blue-100 shadow-sm"
+        className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-lg border border-gray-100 shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -222,12 +222,13 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
 
         {submitted ? (
           <div className="text-center py-6">
-            <div className="text-blue-600 text-4xl mb-3">✓</div>
+            <div style={{ color: '#091E34' }} className="text-4xl mb-3">✓</div>
             <p className="text-slate-800 font-bold text-lg mb-1">Message Sent!</p>
             <p className="text-slate-600 text-sm">We'll get back to you shortly.</p>
             <button
               onClick={() => setSubmitted(false)}
-              className="mt-4 text-blue-600 text-sm underline hover:text-blue-700 transition-colors duration-200 cursor-pointer"
+              style={{ color: '#091E34' }}
+              className="mt-4 text-sm underline hover:opacity-80 transition-colors duration-200 cursor-pointer"
             >
               Send another message
             </button>
@@ -301,7 +302,8 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
             <button
               type="submit"
               disabled={submitting || !isValid}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg mt-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              style={{ background: '#091E34' }}
+              className="w-full hover:opacity-90 text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg mt-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               aria-label="Submit property inquiry"
             >
               {submitting ? 'Sending...' : 'Submit'}
@@ -312,7 +314,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
 
       {/* Contact Info Card */}
       <motion.div
-        className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 flex flex-col gap-3 items-center shadow-sm"
+        className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-lg border border-gray-100 flex flex-col gap-3 items-center shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -320,7 +322,8 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
       >
         <a
           href={`tel:${displayAgent.phone}`}
-          className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
+          style={{ color: '#091E34' }}
+          className="flex items-center gap-3 hover:opacity-80 transition-colors duration-200 cursor-pointer"
         >
           <Phone size={18} />
           <span className="font-bold text-slate-800 tracking-tight">
@@ -329,7 +332,8 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
         </a>
         <a
           href={`mailto:${displayAgent.email}`}
-          className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
+          style={{ color: '#091E34' }}
+          className="flex items-center gap-3 hover:opacity-80 transition-colors duration-200 cursor-pointer"
         >
           <Mail size={18} />
           <span className="font-bold text-slate-800 tracking-tight">

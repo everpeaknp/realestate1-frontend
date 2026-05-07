@@ -40,12 +40,12 @@ export default function PropertySidebar() {
     <aside className="flex flex-col gap-8 w-full">
       {/* Agent Card */}
       <motion.div 
-        className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+        className="bg-white p-6 rounded-lg border border-gray-100 flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow duration-200"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
       >
-        <div className="w-24 h-24 overflow-hidden rounded-lg flex items-center justify-center border-2 border-blue-200">
+        <div className="w-24 h-24 overflow-hidden rounded-lg flex items-center justify-center border-2 border-gray-200">
           <LazyImage 
             src={agentAvatar}
             alt={agentName}
@@ -60,7 +60,7 @@ export default function PropertySidebar() {
 
       {/* Contact Form Card */}
       <motion.div 
-        className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-lg border border-blue-100 shadow-sm"
+        className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -75,7 +75,8 @@ export default function PropertySidebar() {
             <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Your Name</label>
             <input 
               type="text" 
-              className="w-full p-3 bg-white border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
+              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
             />
           </div>
           
@@ -83,7 +84,8 @@ export default function PropertySidebar() {
             <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Email Address</label>
             <input 
               type="email" 
-              className="w-full p-3 bg-white border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
+              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
             />
           </div>
 
@@ -91,7 +93,8 @@ export default function PropertySidebar() {
             <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Phone Number</label>
             <input 
               type="tel" 
-              className="w-full p-3 bg-white border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
+              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
+              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
             />
           </div>
 
@@ -99,11 +102,12 @@ export default function PropertySidebar() {
             <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Message</label>
             <textarea 
               rows={4}
-              className="w-full p-3 bg-white border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 resize-none text-sm"
+              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200 resize-none text-sm"
+              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
             />
           </div>
 
-          <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer mt-2">
+          <button className="w-full text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer mt-2 hover:opacity-90" style={{ background: '#091E34' }}>
             Submit
           </button>
         </form>
@@ -111,7 +115,7 @@ export default function PropertySidebar() {
 
       {/* Contact Info Card */}
       <motion.div 
-        className="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100 flex flex-col gap-3 items-center shadow-sm"
+        className="bg-white p-6 rounded-lg border border-gray-100 flex flex-col gap-3 items-center shadow-sm"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -119,14 +123,16 @@ export default function PropertySidebar() {
       >
         <a
           href={`tel:${agentPhone}`}
-          className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
+          className="flex items-center gap-3 transition-colors cursor-pointer hover:opacity-80"
+          style={{ color: '#091E34' }}
         >
           <Phone size={18} />
           <span className="font-bold text-[#1a1a1a] tracking-tight">{agentPhone}</span>
         </a>
         <a
           href={`mailto:${agentEmail}`}
-          className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
+          className="flex items-center gap-3 transition-colors cursor-pointer hover:opacity-80"
+          style={{ color: '#091E34' }}
         >
           <Mail size={18} />
           <span className="font-bold text-[#1a1a1a] tracking-tight">{agentEmail}</span>

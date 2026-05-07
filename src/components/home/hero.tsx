@@ -252,9 +252,10 @@ export default function Hero({ settings }: HeroProps) {
 
   const hasResults = results.properties.length > 0 || results.blogs.length > 0;
 
-  const dropdown = mounted && open && hasResults ? createPortal(
-    <AnimatePresence>
+  const dropdown = mounted && open && hasResults && typeof document !== 'undefined' ? createPortal(
+    <AnimatePresence mode="wait">
       <motion.div
+        key="search-dropdown"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -8 }}
@@ -409,7 +410,8 @@ export default function Hero({ settings }: HeroProps) {
               )}
             </div>
             <button type="submit"
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 cursor-pointer">
+              className="text-white px-6 py-4 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 cursor-pointer hover:opacity-90"
+              style={{ backgroundColor: '#091E34' }}>
               {loading
                 ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 : <Search size={18} />
@@ -430,7 +432,8 @@ export default function Hero({ settings }: HeroProps) {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <Link href={primaryButtonLink} className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 sm:px-10 py-3 sm:py-4 font-bold text-xs sm:text-sm tracking-widest transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer">
+            <button className="w-full sm:w-auto text-white px-8 sm:px-10 py-3 sm:py-4 font-bold text-xs sm:text-sm tracking-widest transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer hover:opacity-90"
+              style={{ backgroundColor: '#091E34' }}>
               {primaryButtonText}
             </button>
           </Link>

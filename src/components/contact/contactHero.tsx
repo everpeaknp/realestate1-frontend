@@ -109,7 +109,7 @@ export default function ContactHero() {
             Home
           </Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-blue-400 font-bold">Contact</span>
+          <span className="text-white font-bold">Contact</span>
         </motion.nav>
       </div>
     </section>

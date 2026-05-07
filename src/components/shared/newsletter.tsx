@@ -124,7 +124,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="bg-gradient-to-br from-blue-600 to-blue-700 pt-0 pb-12 sm:py-16 md:py-20 w-full overflow-hidden">
+    <section style={{ background: '#1D1E3D' }} className="pt-0 pb-12 sm:py-16 md:py-20 w-full overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-20">
           {/* Text Content */}
@@ -228,7 +228,7 @@ export default function NewsletterSection() {
               <button
                 type="submit"
                 disabled={submitting || !isValid}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 sm:px-10 py-4 sm:py-5 font-bold text-xs tracking-[0.2em] transition-all duration-200 uppercase whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed min-h-[48px] cursor-pointer shadow-md hover:shadow-lg"
+                className="bg-white hover:bg-gray-100 text-[#1D1E3D] px-6 sm:px-10 py-4 sm:py-5 font-bold text-xs tracking-[0.2em] transition-all duration-200 uppercase whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed min-h-[48px] cursor-pointer shadow-md hover:shadow-lg"
                 aria-label="Subscribe to newsletter"
               >
                 {submitting ? 'Subscribing...' : 'Subscribe'}

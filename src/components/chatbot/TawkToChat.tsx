@@ -39,8 +39,14 @@ export function TawkToChat() {
     return () => {
       // Remove the script when component unmounts
       const scriptToRemove = document.querySelector(`script[src="${tawkToUrl}"]`);
-      if (scriptToRemove && scriptToRemove.parentNode) {
-        scriptToRemove.parentNode.removeChild(scriptToRemove);
+      if (scriptToRemove) {
+        try {
+          // Use remove() instead of parentNode.removeChild() to avoid null reference
+          scriptToRemove.remove();
+        } catch (error) {
+          // Silently fail if element is already removed
+          console.debug('TawkTo script already removed');
+        }
       }
       
       // Clean up Tawk API

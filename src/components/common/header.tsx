@@ -62,7 +62,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full border-b border-blue-100 bg-white shadow-sm sticky top-0 z-50 transition-shadow duration-300">
+      <header className="w-full border-b border-gray-100 bg-white shadow-sm sticky top-0 z-50 transition-shadow duration-300">
         <div className="mx-auto flex h-20 md:h-24 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Logo Section */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group">
@@ -82,25 +82,25 @@ export default function Header() {
                 {/* Logo Shape */}
                 <div className="absolute inset-0 flex">
                   <div 
-                    className="w-1/2 h-full bg-gradient-to-br from-blue-600 to-blue-700" 
-                    style={{ clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
+                    style={{ background: 'linear-gradient(to bottom right, #091E34, #0a2240)', clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
+                    className="w-1/2 h-full" 
                   />
                   <div 
-                    className="w-1/2 h-full bg-gradient-to-br from-blue-400 to-blue-500" 
-                    style={{ clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
+                    style={{ background: 'linear-gradient(to bottom right, #0d2d4d, #0f3558)', clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
+                    className="w-1/2 h-full" 
                   />
                 </div>
                 {/* The white house silhouette in the center bottom */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 sm:w-4 h-4 sm:h-5 bg-white flex flex-col items-center justify-center rounded-t-sm shadow-md">
-                   <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 bg-blue-500 mb-0.5"></div>
+                   <div style={{ backgroundColor: '#091E34' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1 mb-0.5"></div>
                    <div className="flex gap-0.5">
-                     <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 bg-blue-100"></div>
-                     <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 bg-blue-100"></div>
+                     <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
+                     <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
                    </div>
                 </div>
               </div>
             )}
-            <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-slate-800 transition-colors duration-200 group-hover:text-blue-600">
+            <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-slate-800 transition-colors duration-200 group-hover:text-[#091E34]">
               {logoText}
             </span>
           </Link>
@@ -115,15 +115,16 @@ export default function Header() {
                     href={link.href}
                     className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-all duration-200 cursor-pointer relative ${
                       active 
-                        ? 'text-blue-600' 
-                        : 'text-slate-700 hover:text-blue-600'
+                        ? 'text-[#091E34]' 
+                        : 'text-slate-700 hover:text-[#091E34]'
                     }`}
                   >
                     {link.name}
                     {active && (
                       <motion.div
                         layoutId="activeNav"
-                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600 rounded-full"
+                        style={{ backgroundColor: '#091E34' }}
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -134,9 +135,9 @@ export default function Header() {
           </nav>
 
           {/* Contact Section - Hidden on mobile */}
-          <div className="hidden md:flex items-center gap-2 text-blue-600 group cursor-pointer">
-            <Phone size={18} fill="currentColor" stroke="none" className="opacity-80 transition-transform duration-200 group-hover:scale-110" />
-            <span className="text-base lg:text-lg font-bold text-slate-700 tracking-normal transition-colors duration-200 group-hover:text-blue-600">
+          <div className="hidden md:flex items-center gap-2 group cursor-pointer">
+            <Phone size={18} fill="currentColor" stroke="none" style={{ color: '#091E34' }} className="opacity-80 transition-transform duration-200 group-hover:scale-110" />
+            <span className="text-base lg:text-lg font-bold text-slate-700 tracking-normal transition-colors duration-200 group-hover:text-[#091E34]">
               {phoneNumber}
             </span>
           </div>
@@ -144,7 +145,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-700 hover:text-blue-600 transition-colors duration-200 cursor-pointer"
+            className="lg:hidden p-2 text-slate-700 transition-colors duration-200 cursor-pointer hover:text-[#091E34]"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -188,9 +189,10 @@ export default function Header() {
                         href={link.href}
                         className={`block px-4 py-4 text-sm font-bold tracking-wider transition-all duration-200 border-l-4 rounded-r-md cursor-pointer ${
                           active
-                            ? 'text-blue-600 bg-blue-50 border-blue-600'
-                            : 'text-slate-700 hover:text-blue-600 hover:bg-blue-50/50 border-transparent'
+                            ? 'bg-[rgba(9,30,52,0.05)] border-[#091E34]'
+                            : 'text-slate-700 hover:bg-[rgba(9,30,52,0.03)] border-transparent hover:text-[#091E34]'
                         }`}
+                        style={active ? { color: '#091E34' } : {}}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {link.name}
@@ -201,16 +203,17 @@ export default function Header() {
               </nav>
 
               {/* Mobile Contact Info */}
-              <div className="p-6 border-t border-blue-100 space-y-4">
-                <div className="flex items-center gap-3 text-blue-600 group cursor-pointer">
-                  <Phone size={20} fill="currentColor" stroke="none" className="transition-transform duration-200 group-hover:scale-110" />
-                  <a href={`tel:${phoneNumber}`} className="text-base font-bold text-slate-700 hover:text-blue-600 transition-colors duration-200">
+              <div className="p-6 border-t border-gray-100 space-y-4">
+                <div className="flex items-center gap-3 group cursor-pointer">
+                  <Phone size={20} fill="currentColor" stroke="none" style={{ color: '#091E34' }} className="transition-transform duration-200 group-hover:scale-110" />
+                  <a href={`tel:${phoneNumber}`} className="text-base font-bold text-slate-700 transition-colors duration-200 hover:text-[#091E34]">
                     {phoneNumber}
                   </a>
                 </div>
                 <Link href="/contact">
                   <button 
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
+                    style={{ background: '#091E34' }}
+                    className="w-full hover:opacity-90 text-white px-6 py-3 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     CONTACT ME

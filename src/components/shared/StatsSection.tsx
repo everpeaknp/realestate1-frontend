@@ -83,7 +83,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
     };
   });
   return (
-    <section className="bg-gradient-to-br from-blue-600 to-blue-700 w-full py-0 text-white overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20">
+    <section className="w-full py-0 text-white overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20" style={{ backgroundColor: '#091E34' }}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mx-auto relative max-w-7xl">
         {statsData.map((stat, index) => (
           <div key={stat.label || index} className="relative min-h-[181px]">
@@ -111,10 +111,11 @@ export default function StatsSection({ stats }: StatsSectionProps) {
             >
               {/* Front Face: Conceptually "Part of the Circle" animation wise */}
               <div 
-                className="absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 gap-4 sm:gap-6 text-center bg-gradient-to-br from-blue-600 to-blue-700 [backface-visibility:hidden]"
+                className="absolute inset-0 flex flex-col items-center justify-center p-6 sm:p-8 gap-4 sm:gap-6 text-center [backface-visibility:hidden]"
                 style={{ 
                   transform: "translateZ(90.5px)", // 90.5px is half the height (181px)
-                  WebkitBackfaceVisibility: "hidden" 
+                  WebkitBackfaceVisibility: "hidden",
+                  backgroundColor: '#091E34'
                 }}
               >
                 {/* Brand Elements in original layout */}
@@ -128,10 +129,11 @@ export default function StatsSection({ stats }: StatsSectionProps) {
 
               {/* Bottom Face (Rotating Up to Front) */}
               <div 
-                className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 to-blue-700 px-6 sm:px-10 flex flex-col items-center justify-center text-center [backface-visibility:hidden]"
+                className="absolute inset-0 w-full h-full px-6 sm:px-10 flex flex-col items-center justify-center text-center [backface-visibility:hidden]"
                 style={{ 
                   transform: "rotateX(-90deg) translateZ(90.5px)", 
-                  WebkitBackfaceVisibility: "hidden" 
+                  WebkitBackfaceVisibility: "hidden",
+                  backgroundColor: '#091E34'
                 }}
               >
                 <p className="text-xs sm:text-sm md:text-[15px] leading-relaxed text-blue-50 italic font-medium max-w-[240px]">

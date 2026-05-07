@@ -44,11 +44,13 @@ export default function GoalsSection({ goals: propGoals }: GoalsSectionProps) {
           {goals.map((goal, index) => (
             <motion.div
               key={goal.id}
-              className="w-full min-h-[280px] sm:min-h-[300px] lg:h-[330px] flex flex-col justify-center p-6 sm:p-8 lg:p-10 border border-blue-100 bg-white hover:border-blue-600 hover:shadow-xl transition-all duration-300 rounded-xl cursor-pointer hover:-translate-y-1"
+              className="w-full min-h-[280px] sm:min-h-[300px] lg:h-[330px] flex flex-col justify-center p-6 sm:p-8 lg:p-10 border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 rounded-xl cursor-pointer hover:-translate-y-1"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#091E34'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = ''}
             >
               <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-6 font-sans">
                 {goal.title}

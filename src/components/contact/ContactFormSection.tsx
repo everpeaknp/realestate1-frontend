@@ -162,13 +162,13 @@ export default function ContactFormSection({
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col lg:flex-row shadow-2xl rounded-lg overflow-hidden border border-blue-100">
+        <div className="flex flex-col lg:flex-row shadow-2xl rounded-lg overflow-hidden border border-gray-100">
           {/* Left Column - Agent Info & Image */}
-          <div className="w-full lg:w-[40%] bg-gradient-to-br from-blue-50 to-white p-8 sm:p-10 lg:p-12 pb-0 flex flex-col items-center border-r border-blue-100">
+          <div className="w-full lg:w-[40%] bg-gradient-to-br from-gray-50 to-white p-8 sm:p-10 lg:p-12 pb-0 flex flex-col items-center border-r border-gray-100">
             <div className="text-center mb-8 w-full">
               <h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-2 px-4 break-words">
                 {settings.agent_name}{' '}
-                <span className="text-blue-600 mx-2">|</span> {settings.agent_title}
+                <span style={{ color: '#091E34' }} className="mx-2">|</span> {settings.agent_title}
               </h2>
 
               {/* Social Icons */}
@@ -178,7 +178,8 @@ export default function ContactFormSection({
                     key={idx}
                     href={href}
                     aria-label={`Social media link ${idx + 1}`}
-                    className="w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center text-white hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                    style={{ background: '#091E34' }}
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-white hover:opacity-90 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
                   >
                     <Icon size={18} className="sm:w-5 sm:h-5" />
                   </a>
@@ -197,12 +198,13 @@ export default function ContactFormSection({
           </div>
 
           {/* Right Column - Contact Form */}
-          <div className="w-full lg:w-[60%] bg-white p-8 sm:p-10 lg:p-12 xl:p-16 pb-0 border-t lg:border-t-0 border-blue-100 flex flex-col">
+          <div className="w-full lg:w-[60%] bg-white p-8 sm:p-10 lg:p-12 xl:p-16 pb-0 border-t lg:border-t-0 border-gray-100 flex flex-col">
             {submitted ? (
               <div className="flex flex-col items-center justify-center h-full text-center py-12 sm:py-16 lg:py-20">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
                   <svg
-                    className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600"
+                    className="w-7 h-7 sm:w-8 sm:h-8"
+                    style={{ color: '#091E34' }}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -223,7 +225,8 @@ export default function ContactFormSection({
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="w-full sm:w-auto py-3 px-8 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold text-sm tracking-[0.2em] uppercase transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
+                  style={{ background: '#091E34' }}
+                  className="w-full sm:w-auto py-3 px-8 hover:opacity-90 text-white font-bold text-sm tracking-[0.2em] uppercase transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
                 >
                   Send Another Message
                 </button>
@@ -344,7 +347,8 @@ export default function ContactFormSection({
                 <button
                   type="submit"
                   disabled={submitting || !isValid}
-                  className="w-full py-4 sm:py-5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold text-sm sm:text-base tracking-[0.2em] uppercase transition-all duration-200 shadow-md hover:shadow-lg rounded-lg transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none min-h-[52px] sm:min-h-[56px] cursor-pointer"
+                  style={{ background: '#091E34' }}
+                  className="w-full py-4 sm:py-5 hover:opacity-90 text-white font-bold text-sm sm:text-base tracking-[0.2em] uppercase transition-all duration-200 shadow-md hover:shadow-lg rounded-lg transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none min-h-[52px] sm:min-h-[56px] cursor-pointer"
                   aria-label="Submit contact form"
                 >
                   {submitting ? 'Sending...' : 'Submit'}

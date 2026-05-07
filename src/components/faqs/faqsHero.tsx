@@ -89,7 +89,7 @@ export default function FaqsHero() {
             Home
           </Link>
           <ChevronRight size={16} />
-          <span className="text-blue-400 font-bold">FAQs</span>
+          <span className="text-white font-bold">FAQs</span>
         </motion.nav>
       </div>
     </section>

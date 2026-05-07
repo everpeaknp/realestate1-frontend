@@ -271,7 +271,8 @@ function PropertiesHeroInner() {
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => results.length > 0 && setOpen(true)}
                 placeholder="Search by location, type, price..."
-                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 rounded-l-lg pr-9"
+                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-3 text-sm font-medium outline-none focus:ring-2 transition-all duration-200 rounded-l-lg pr-9"
+                style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
               />
               {query && (
                 <button
@@ -285,7 +286,8 @@ function PropertiesHeroInner() {
             </div>
             <button
               type="submit"
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-5 py-3 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 rounded-r-lg shadow-md hover:shadow-lg cursor-pointer"
+              className="text-white px-5 py-3 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 rounded-r-lg shadow-md hover:shadow-lg cursor-pointer hover:opacity-90"
+              style={{ background: '#091E34' }}
             >
               {searching
                 ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -310,7 +312,9 @@ function PropertiesHeroInner() {
                     key={p.key}
                     href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
                     onClick={() => setOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors duration-200 border-b border-gray-50 group cursor-pointer"
+                    className="flex items-center gap-3 px-4 py-3 transition-colors duration-200 border-b border-gray-50 group cursor-pointer"
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.05)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                   >
                     {/* Thumbnail */}
                     <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
@@ -322,7 +326,7 @@ function PropertiesHeroInner() {
                     </div>
                     {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-blue-600 transition-colors duration-200">
+                      <p className="text-sm font-semibold text-gray-800 truncate transition-colors duration-200 group-hover:text-[#091E34]">
                         {p.title}
                       </p>
                       <p className="text-xs text-gray-400 truncate">{p.location}</p>
@@ -330,7 +334,7 @@ function PropertiesHeroInner() {
                     {/* Price + source badge */}
                     <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
                       {p.price && (
-                        <span className="text-xs font-bold text-blue-600">{p.price}</span>
+                        <span className="text-xs font-bold" style={{ color: '#091E34' }}>{p.price}</span>
                       )}
                       {p.source === 'eagle' && (
                         <span className="text-[10px] text-gray-400 font-medium">Eagle</span>
@@ -342,7 +346,10 @@ function PropertiesHeroInner() {
                 <Link
                   href={`/properties?search=${encodeURIComponent(query)}`}
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-2.5 text-xs text-blue-600 font-semibold hover:bg-blue-50 text-center transition-colors duration-200 cursor-pointer"
+                  className="block px-4 py-2.5 text-xs font-semibold text-center transition-colors duration-200 cursor-pointer"
+                  style={{ color: '#091E34' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
                   View all results for &quot;{query}&quot; →
                 </Link>
@@ -360,7 +367,7 @@ function PropertiesHeroInner() {
         >
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-blue-600">Properties</span>
+          <span className="text-white font-bold">Properties</span>
         </motion.nav>
       </div>
     </section>
@@ -371,7 +378,7 @@ export default function PropertiesHero() {
   return (
     <Suspense fallback={
       <section className="relative h-[340px] sm:h-[380px] md:h-[420px] bg-gray-800 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#091E34' }} />
       </section>
     }>
       <PropertiesHeroInner />

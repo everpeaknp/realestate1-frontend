@@ -20,7 +20,7 @@ export default function PropertyFloorPlan({ property }: PropertyFloorPlanProps) 
   return (
     <div className="bg-white">
       <div className="flex items-center gap-3 mb-6 sm:mb-8">
-        <FileText size={24} className="text-blue-600" />
+        <FileText size={24} style={{ color: '#091E34' }} />
         <h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">Floor Plans</h2>
       </div>
 
@@ -32,7 +32,7 @@ export default function PropertyFloorPlan({ property }: PropertyFloorPlanProps) 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="bg-blue-50 border border-blue-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200"
+            className="bg-gray-50 border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200"
           >
             <div className="p-6">
               <LazyImage
@@ -46,7 +46,8 @@ export default function PropertyFloorPlan({ property }: PropertyFloorPlanProps) 
                 href={plan.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 font-semibold transition-colors cursor-pointer hover:opacity-80"
+                style={{ color: '#091E34' }}
               >
                 <FileText size={18} />
                 View Full Size

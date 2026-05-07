@@ -107,7 +107,7 @@ export default function ServicesHero() {
             Home
           </Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-blue-400 font-bold">Services</span>
+          <span className="text-white font-bold">Services</span>
         </motion.nav>
       </div>
     </section>

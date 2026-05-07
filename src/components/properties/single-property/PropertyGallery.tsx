@@ -64,7 +64,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               alt={`Property image ${index + 1}`}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to top, rgba(9, 30, 52, 0.3), transparent)' }} />
           </motion.div>
         ))}
       </div>

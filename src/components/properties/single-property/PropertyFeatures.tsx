@@ -28,9 +28,9 @@ export default function PropertyFeatures({ property }: PropertyFeaturesProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3 }}
-            className="flex items-center gap-4 p-4 bg-blue-50 border border-blue-100 rounded-lg hover:shadow-md transition-all duration-200 cursor-pointer hover:-translate-y-0.5"
+            className="flex items-center gap-4 p-4 bg-gray-50 border border-gray-100 rounded-lg hover:shadow-md transition-all duration-200 cursor-pointer hover:-translate-y-0.5"
           >
-            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#091E34' }}>
               <Maximize size={24} className="text-white" />
             </div>
             <div>

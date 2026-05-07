@@ -115,7 +115,8 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <div className="mt-1 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full p-1 flex-shrink-0 shadow-sm shadow-blue-600/30">
+                  <div className="mt-1 rounded-full p-1 flex-shrink-0 shadow-sm"
+                    style={{ background: '#091E34', boxShadow: '0 1px 2px 0 rgba(9, 30, 52, 0.3)' }}>
                     <Check size={14} className="text-white" strokeWidth={3} />
                   </div>
                   <span className="text-slate-600 text-sm sm:text-[16px] font-medium leading-normal group-hover:text-slate-800 transition-colors duration-200">
@@ -126,24 +127,37 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
             </ul>
 
             <div className="flex flex-col gap-6 sm:gap-10 w-full">
-              <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 sm:px-14 py-3 sm:py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px] cursor-pointer">
+              <button className="text-white px-8 sm:px-14 py-3 sm:py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px] cursor-pointer hover:opacity-90"
+                style={{ background: '#091E34' }}>
                 Contact Me
               </button>
 
               <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-8">
                 <a href={`tel:${phone}`} className="flex items-center gap-2 group cursor-pointer min-h-[44px]">
-                  <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
-                    <Phone size={18} className="text-blue-600 flex-shrink-0" fill="currentColor" stroke="none" />
+                  <div className="p-2 rounded-lg transition-colors duration-200"
+                    style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.15)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.1)'}>
+                    <Phone size={18} className="flex-shrink-0" style={{ color: '#091E34' }} fill="currentColor" stroke="none" />
                   </div>
-                  <span className="text-base sm:text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200">
+                  <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200"
+                    style={{ color: '#1e293b' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#091E34'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = '#1e293b'}>
                     {phone}
                   </span>
                 </a>
                 <a href={`mailto:${email}`} className="flex items-center gap-2 group cursor-pointer min-h-[44px]">
-                  <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
-                    <Mail size={18} className="text-blue-600 flex-shrink-0" />
+                  <div className="p-2 rounded-lg transition-colors duration-200"
+                    style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.15)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.1)'}>
+                    <Mail size={18} className="flex-shrink-0" style={{ color: '#091E34' }} />
                   </div>
-                  <span className="text-base sm:text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200 break-all">
+                  <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 break-all"
+                    style={{ color: '#1e293b' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#091E34'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = '#1e293b'}>
                     {email}
                   </span>
                 </a>

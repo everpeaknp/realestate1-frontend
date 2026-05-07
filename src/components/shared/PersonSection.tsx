@@ -83,7 +83,7 @@ export default function PersonSection({ settings }: PersonSectionProps) {
 
             <div className="mb-8 sm:mb-12">
               <Link href={data.button_link} className="block w-full sm:w-auto">
-                <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 sm:px-12 py-3 sm:py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full sm:w-auto min-h-[44px] cursor-pointer">
+                <button style={{ background: '#091E34' }} className="hover:opacity-90 text-white px-8 sm:px-12 py-3 sm:py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full sm:w-auto min-h-[44px] cursor-pointer">
                   {data.button_text}
                 </button>
               </Link>
@@ -91,18 +91,18 @@ export default function PersonSection({ settings }: PersonSectionProps) {
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
               <a href={`tel:${data.phone}`} className="flex items-center gap-2 group cursor-pointer min-h-[44px]">
-                <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
-                  <Phone size={18} className="text-blue-600 flex-shrink-0" fill="currentColor" stroke="none" />
+                <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(9,30,52,0.15)]">
+                  <Phone size={18} style={{ color: '#091E34' }} className="flex-shrink-0" fill="currentColor" stroke="none" />
                 </div>
-                <span className="text-base sm:text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200">
+                <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#091E34]">
                   {data.phone}
                 </span>
               </a>
               <a href={`mailto:${data.email}`} className="flex items-center gap-2 group cursor-pointer min-h-[44px]">
-                <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
-                  <Mail size={18} className="text-blue-600 flex-shrink-0" />
+                <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(9,30,52,0.15)]">
+                  <Mail size={18} style={{ color: '#091E34' }} className="flex-shrink-0" />
                 </div>
-                <span className="text-base sm:text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200 break-all">
+                <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#091E34]">
                   {data.email}
                 </span>
               </a>

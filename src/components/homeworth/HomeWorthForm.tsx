@@ -213,7 +213,7 @@ export default function HomeWorthForm() {
   }
 
   return (
-    <section id="valuation-form" className="bg-gradient-to-b from-blue-50 to-white py-20">
+    <section id="valuation-form" className="bg-gradient-to-b from-gray-50 to-white py-20">
       <div className="mx-auto max-w-4xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -236,7 +236,7 @@ export default function HomeWorthForm() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white rounded-xl shadow-xl p-8 md:p-12 border border-blue-100"
+          className="bg-white rounded-xl shadow-xl p-8 md:p-12 border border-gray-100"
           noValidate
         >
           {/* Error Messages */}
@@ -368,7 +368,8 @@ export default function HomeWorthForm() {
           <button
             type="submit"
             disabled={isSubmitting || !isValid}
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-12 py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+            style={{ background: '#091E34' }}
+            className="w-full hover:opacity-90 text-white px-12 py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
             aria-label="Submit valuation request"
           >
             {isSubmitting ? 'SUBMITTING...' : formSettings.submit_button_text}

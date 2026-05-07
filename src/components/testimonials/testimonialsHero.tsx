@@ -94,7 +94,7 @@ export default function TestimonialsHero() {
             Home
           </Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-blue-400 font-bold">{title}</span>
+          <span className="text-white font-bold">{title}</span>
         </motion.nav>
       </div>
     </section>

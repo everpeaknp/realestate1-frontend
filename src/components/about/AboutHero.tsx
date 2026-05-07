@@ -99,7 +99,7 @@ export default function AboutHero() {
             Home
           </Link>
           <ChevronRight size={16} className="flex-shrink-0" />
-          <span className="text-blue-600 font-bold">About</span>
+          <span className="text-white font-bold">About</span>
         </motion.nav>
       </div>
     </section>

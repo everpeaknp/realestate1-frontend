@@ -95,7 +95,7 @@ export default function Footer() {
   ].filter(social => social.show || !footerSettings);
 
   return (
-    <footer className="bg-gradient-to-br from-slate-50 to-white pt-12 sm:pt-16 md:pt-20 pb-6 sm:pb-8 md:pb-10 border-t border-blue-100">
+    <footer className="bg-gradient-to-br from-slate-50 to-white pt-12 sm:pt-16 md:pt-20 pb-6 sm:pb-8 md:pb-10 border-t border-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         
         {/* Top Section: Logo, Contact, Socials */}
@@ -121,24 +121,30 @@ export default function Footer() {
               <div className="relative h-8 sm:h-10 w-10 sm:w-12 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
                 <div className="absolute inset-0 flex">
                   <div 
-                    className="w-1/2 h-full bg-gradient-to-br from-blue-600 to-blue-700" 
-                    style={{ clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
+                    className="w-1/2 h-full" 
+                    style={{ 
+                      background: 'linear-gradient(to bottom right, #091E34, #0a2240)',
+                      clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' 
+                    }}
                   />
                   <div 
-                    className="w-1/2 h-full bg-gradient-to-br from-blue-400 to-blue-500" 
-                    style={{ clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
+                    className="w-1/2 h-full" 
+                    style={{ 
+                      background: 'linear-gradient(to bottom right, #0d2d4d, #0f3558)',
+                      clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' 
+                    }}
                   />
                 </div>
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 sm:w-4 h-4 sm:h-5 bg-white flex flex-col items-center justify-center rounded-t-sm shadow-md">
-                   <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 bg-blue-500 mb-0.5"></div>
+                   <div style={{ backgroundColor: '#091E34' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1 mb-0.5"></div>
                    <div className="flex gap-0.5">
-                     <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 bg-blue-100"></div>
-                     <div className="w-0.5 sm:w-1 h-0.5 sm:h-1 bg-blue-100"></div>
+                     <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
+                     <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
                    </div>
                 </div>
               </div>
             )}
-            <span className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-slate-800 transition-colors duration-200 group-hover:text-blue-600">
+            <span className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-slate-800 transition-colors duration-200 group-hover:text-[#091E34]">
               {logoText}
             </span>
           </motion.div>
@@ -153,21 +159,21 @@ export default function Footer() {
           >
             <a 
               href={`tel:${phoneNumber.replace(/\s/g, '')}`}
-              className="flex items-center gap-2 sm:gap-3 text-blue-600 hover:text-blue-700 transition-colors duration-200 group cursor-pointer"
+              className="flex items-center gap-2 sm:gap-3 transition-colors duration-200 group cursor-pointer"
             >
-              <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
-                <Phone size={16} fill="currentColor" stroke="none" className="sm:w-[18px] sm:h-[18px]" />
+              <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(9,30,52,0.15)]">
+                <Phone size={16} fill="currentColor" stroke="none" style={{ color: '#091E34' }} className="sm:w-[18px] sm:h-[18px]" />
               </div>
-              <span className="text-base sm:text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200">{phoneNumber}</span>
+              <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#091E34]">{phoneNumber}</span>
             </a>
             <a 
               href={`mailto:${email}`}
-              className="flex items-center gap-2 sm:gap-3 text-blue-600 hover:text-blue-700 transition-colors duration-200 group cursor-pointer"
+              className="flex items-center gap-2 sm:gap-3 transition-colors duration-200 group cursor-pointer"
             >
-              <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors duration-200">
-                <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(9,30,52,0.15)]">
+                <Mail size={16} style={{ color: '#091E34' }} className="sm:w-[18px] sm:h-[18px]" />
               </div>
-              <span className="text-base sm:text-lg font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-200">{email}</span>
+              <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#091E34]">{email}</span>
             </a>
           </motion.div>
 
@@ -186,7 +192,8 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-blue-700 text-white flex items-center justify-center rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer"
+                  style={{ background: '#091E34' }}
+                  className="w-9 h-9 sm:w-10 sm:h-10 text-white flex items-center justify-center rounded-lg hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer"
                   whileHover={{ y: -3, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   title={social.label}
@@ -200,7 +207,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section: Links and Copyright */}
-        <div className="pt-6 sm:pt-8 md:pt-10 border-t border-blue-100 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4">
+        <div className="pt-6 sm:pt-8 md:pt-10 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4">
           
           {/* Footer Links */}
           <motion.div 
@@ -218,16 +225,16 @@ export default function Footer() {
                   href={link.href} 
                   className={`group flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer ${
                     active 
-                      ? 'text-blue-600' 
-                      : 'text-slate-600 hover:text-blue-600'
+                      ? 'text-[#091E34]' 
+                      : 'text-slate-600 hover:text-[#091E34]'
                   }`}
                 >
                   <ChevronRight 
                     size={12} 
                     className={`sm:w-[14px] sm:h-[14px] transition-all duration-200 ${
                       active 
-                        ? 'text-blue-600' 
-                        : 'text-slate-300 group-hover:text-blue-600 group-hover:translate-x-0.5'
+                        ? 'text-[#091E34]' 
+                        : 'text-slate-300 group-hover:text-[#091E34] group-hover:translate-x-0.5'
                     }`}
                   />
                   <span className="whitespace-nowrap">{link.name}</span>

@@ -60,7 +60,7 @@ export default function PropertyDescription({ property }: PropertyDescriptionPro
       {/* Property Type & Status */}
       <div className="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-12">
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white rounded-lg flex-shrink-0">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-white rounded-lg flex-shrink-0" style={{ background: '#091E34' }}>
             <Building2 size={20} className="sm:w-6 sm:h-6" />
           </div>
           <div>
@@ -74,7 +74,7 @@ export default function PropertyDescription({ property }: PropertyDescriptionPro
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white rounded-lg flex-shrink-0">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-white rounded-lg flex-shrink-0" style={{ background: '#091E34' }}>
             <Bookmark size={20} className="sm:w-6 sm:h-6" />
           </div>
           <div>
@@ -102,7 +102,7 @@ export default function PropertyDescription({ property }: PropertyDescriptionPro
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
           >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 border border-blue-100 flex items-center justify-center text-blue-600 rounded-lg flex-shrink-0 hover:bg-blue-50 transition-colors">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 border border-gray-100 flex items-center justify-center rounded-lg flex-shrink-0 transition-colors" style={{ color: '#091E34' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.05)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
               {detail.icon}
             </div>
             <div className="flex flex-col min-w-0">

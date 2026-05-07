@@ -92,12 +92,23 @@ export default function PopularNeighborhoods({ neighborhoods = defaultNeighborho
               />
               
               {/* Overlay Overlay */}
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-blue-600/40 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-black/30 transition-colors duration-300" 
+                style={{ 
+                  background: 'linear-gradient(to bottom, rgba(9, 30, 52, 0.3), rgba(9, 30, 52, 0.5))'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(to bottom, rgba(9, 30, 52, 0.4), rgba(9, 30, 52, 0.6))';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(to bottom, rgba(9, 30, 52, 0.3), rgba(9, 30, 52, 0.5))';
+                }}
+              />
               
               {/* Label */}
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <div className="bg-blue-600 p-1.5 rounded-full mb-3 shadow-lg transform group-hover:scale-110 transition-transform">
-                  <MapPin size={16} fill="white" className="text-blue-600 sm:w-[18px] sm:h-[18px]" />
+                <div className="p-1.5 rounded-full mb-3 shadow-lg transform group-hover:scale-110 transition-transform"
+                  style={{ backgroundColor: '#091E34' }}>
+                  <MapPin size={16} fill="white" className="text-white sm:w-[18px] sm:h-[18px]" />
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-white tracking-wide shadow-black drop-shadow-md">
                   {item.name}

@@ -54,15 +54,17 @@ export default function FAQSection() {
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="w-full flex items-center justify-between p-6 text-left transition-colors hover:bg-gray-50/50"
                 >
-                  <span className={`text-[17px] font-bold leading-tight transition-colors ${
-                    openIndex === index ? 'text-blue-600' : 'text-[#1a1a1a]'
-                  }`}>
+                  <span 
+                    className="text-[17px] font-bold leading-tight transition-colors"
+                    style={{ color: openIndex === index ? '#091E34' : '#1a1a1a' }}
+                  >
                     {faq.question}
                   </span>
                   <motion.div
                     animate={{ rotate: openIndex === index ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-blue-600 flex-shrink-0 ml-4"
+                    style={{ color: '#091E34' }}
+                    className="flex-shrink-0 ml-4"
                   >
                     <ChevronDown size={24} />
                   </motion.div>

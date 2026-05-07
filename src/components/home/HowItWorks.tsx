@@ -75,7 +75,8 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
             <div key={step.number || index} className="flex-1 w-full max-w-md lg:max-w-none flex items-center relative gap-8 lg:gap-0">
               {/* Card */}
               <motion.div
-                className="w-full bg-gradient-to-br from-blue-600 to-blue-700 p-6 sm:p-8 py-10 sm:py-12 flex flex-col items-center justify-center gap-4 sm:gap-6 relative overflow-hidden group shadow-xl rounded-lg"
+                className="w-full p-6 sm:p-8 py-10 sm:py-12 flex flex-col items-center justify-center gap-4 sm:gap-6 relative overflow-hidden group shadow-xl rounded-lg"
+                style={{ background: '#091E34' }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -83,12 +84,13 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
                 whileHover={{ y: -5 }}
               >
                 {/* Step Ribbon */}
-                <div className="absolute top-4 left-[-35px] z-10 w-[140px] h-8 bg-blue-100 flex items-center justify-center -rotate-45 shadow-sm">
-                  <span className="text-blue-700 text-[10px] font-bold tracking-widest pl-2">STEP {step.number}</span>
+                <div className="absolute top-4 left-[-35px] z-10 w-[140px] h-8 flex items-center justify-center -rotate-45 shadow-sm"
+                  style={{ backgroundColor: 'rgba(9, 30, 52, 0.2)' }}>
+                  <span className="text-white text-[10px] font-bold tracking-widest pl-2">STEP {step.number}</span>
                 </div>
 
                 {/* Icon */}
-                <div className="text-blue-100 mb-2 transform group-hover:scale-110 transition-transform duration-300">
+                <div className="text-white/90 mb-2 transform group-hover:scale-110 transition-transform duration-300">
                   <step.IconComponent size={40} strokeWidth={1.5} className="sm:w-12 sm:h-12" />
                 </div>
 
@@ -102,7 +104,7 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
               {index < stepsData.length - 1 && (
                 <div className="hidden lg:flex flex-1 items-center justify-center px-4">
                   <div className="w-full h-px border-b border-dashed border-slate-400/60 relative flex items-center justify-end">
-                    <ChevronRight size={16} className="text-blue-600 absolute -right-1" />
+                    <ChevronRight size={16} className="absolute -right-1" style={{ color: '#091E34' }} />
                   </div>
                 </div>
               )}

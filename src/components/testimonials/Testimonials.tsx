@@ -60,7 +60,8 @@ export default function Testimonials() {
         {/* Section Header */}
         <div className="mb-12 sm:mb-14 md:mb-16 text-center">
           <motion.span 
-            className="text-blue-600 font-bold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4 block"
+            className="font-bold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4 block"
+            style={{ color: '#091E34' }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -83,7 +84,7 @@ export default function Testimonials() {
           {testimonials.map((item, index) => (
             <motion.div
               key={item.id}
-              className="bg-white p-6 sm:p-8 border border-blue-100 rounded-lg flex flex-col shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              className="bg-white p-6 sm:p-8 border border-gray-100 rounded-lg flex flex-col shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

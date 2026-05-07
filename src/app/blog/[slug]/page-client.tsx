@@ -13,6 +13,16 @@ import BlogGallery from '@/components/blog/single-post/BlogGallery';
 import RelatedPosts from '@/components/blog/single-post/RelatedPosts';
 import CommentForm from '@/components/blog/single-post/CommentForm';
 import { getBlogPost, getRelatedPosts, formatDate, BlogPost } from '@/lib/blogApi';
+import { API_ENDPOINTS, apiRequest } from '@/lib/api';
+
+interface Agent {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  avatar?: string;
+  bio?: string;
+}
 
 export default function SingleBlogPostPageClient() {
   const params = useParams();
@@ -20,6 +30,7 @@ export default function SingleBlogPostPageClient() {
   
   const [post, setPost] = useState<BlogPost | null>(null);
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+  const [agent, setAgent] = useState<Agent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,6 +49,21 @@ export default function SingleBlogPostPageClient() {
         const related = await getRelatedPosts(postData.slug, postData.category, 4);
         console.log('✅ Client-side: Related posts loaded:', related.length);
         setRelatedPosts(related);
+        
+        // Load agent data from API
+        try {
+          const agentsResponse = await apiRequest<{ results: Agent[] }>(API_ENDPOINTS.agents.list);
+          if (agentsResponse.results && agentsResponse.results.length > 0) {
+            // Use the first active agent
+            const firstAgent = agentsResponse.results[0];
+            setAgent(firstAgent);
+            console.log('✅ Client-side: Agent loaded:', firstAgent.name);
+            console.log('✅ Client-side: Agent avatar:', firstAgent.avatar);
+          }
+        } catch (agentError) {
+          console.warn('⚠️ Could not load agent data:', agentError);
+          // Continue without agent data - PropertySidebar will use defaults
+        }
       } catch (err) {
         console.error('❌ Client-side: Error loading post:', err);
         setError(err instanceof Error ? err.message : 'Failed to load blog post');
@@ -57,7 +83,7 @@ export default function SingleBlogPostPageClient() {
         <Header />
         <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#c1a478] mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#091E34] mx-auto mb-4"></div>
             <p className="text-[#5d6d87]">Loading blog post...</p>
           </div>
         </div>
@@ -72,9 +98,9 @@ export default function SingleBlogPostPageClient() {
         <Header />
         <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="text-center max-w-md">
-            <h1 className="text-4xl font-bold text-[#1a1a1a] mb-4">Post Not Found</h1>
+            <h1 className="text-4xl font-bold text-[#091E34] mb-4">Post Not Found</h1>
             <p className="text-[#5d6d87] mb-6">{error || 'The blog post you are looking for does not exist.'}</p>
-            <a href="/blog" className="inline-block bg-[#c1a478] text-white px-6 py-3 rounded-sm hover:bg-[#b39568] transition-colors">
+            <a href="/blog" className="inline-block bg-[#091E34] text-white px-6 py-3 rounded-sm hover:opacity-90 transition-colors cursor-pointer">
               Back to Blog
             </a>
           </div>
@@ -106,7 +132,7 @@ export default function SingleBlogPostPageClient() {
             
             {/* Comments Section */}
             <div className="border-t border-gray-100 pt-12">
-              <h3 className="text-2xl font-bold text-[#1a1a1a] mb-8 font-sans">
+              <h3 className="text-2xl font-bold text-[#091E34] mb-8 font-sans">
                 Comments ({post.comments_count})
               </h3>
               
@@ -116,11 +142,11 @@ export default function SingleBlogPostPageClient() {
                   {post.comments.map((comment) => (
                     <div key={comment.id} className="bg-gray-50 p-6 rounded-sm">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-[#c1a478] flex items-center justify-center text-white font-bold">
+                        <div className="w-10 h-10 rounded-full bg-[#091E34] flex items-center justify-center text-white font-bold">
                           {comment.author_name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-bold text-[#1a1a1a]">{comment.author_name}</p>
+                          <p className="font-bold text-[#091E34]">{comment.author_name}</p>
                           <p className="text-sm text-[#5d6d87]">{formatDate(comment.created_at)}</p>
                         </div>
                       </div>
@@ -135,7 +161,7 @@ export default function SingleBlogPostPageClient() {
             </div>
           </div>
           <div className="lg:col-span-4 sticky top-24">
-            <PropertySidebar />
+            <PropertySidebar agent={agent || undefined} />
           </div>
         </div>
         
