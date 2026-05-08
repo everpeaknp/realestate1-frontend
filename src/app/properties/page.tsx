@@ -8,6 +8,9 @@ import Header from '@/components/common/header';
 import Footer from '@/components/common/Footer';
 import PropertyCardSkeleton from '@/components/shared/PropertyCardSkeleton';
 
+// Enable static generation with revalidation every 5 minutes
+export const revalidate = 300;
+
 export default function PropertiesPage() {
   return (
     <>

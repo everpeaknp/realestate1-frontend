@@ -6,6 +6,9 @@ import Instagram from '@/components/shared/instagram';
 import PropertySidebar from '@/components/shared/PropertySidebar';
 import BlogList from '@/components/blog/BlogList';
 
+// Enable static generation with revalidation every 5 minutes
+export const revalidate = 300;
+
 export const metadata = {
   title: 'Blog | Real Estate Tips & Insights | Lily White Realestate',
   description: "Discover expert real estate advice, market insights, and home buying tips from Boston's trusted realtor.",
