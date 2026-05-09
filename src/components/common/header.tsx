@@ -110,26 +110,25 @@ export default function Header() {
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
-                <motion.div key={link.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    href={link.href}
-                    className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-all duration-200 cursor-pointer relative ${
-                      active 
-                        ? 'text-[#091E34]' 
-                        : 'text-slate-700 hover:text-[#091E34]'
-                    }`}
-                  >
-                    {link.name}
-                    {active && (
-                      <motion.div
-                        layoutId="activeNav"
-                        style={{ backgroundColor: '#091E34' }}
-                        className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                </motion.div>
+                <Link
+                  key={link.id}
+                  href={link.href}
+                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-all duration-200 cursor-pointer relative hover:scale-105 active:scale-95 ${
+                    active 
+                      ? 'text-[#091E34]' 
+                      : 'text-slate-700 hover:text-[#091E34]'
+                  }`}
+                >
+                  {link.name}
+                  {active && (
+                    <motion.div
+                      layoutId="activeNav"
+                      style={{ backgroundColor: '#091E34' }}
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </Link>
               );
             })}
           </nav>
@@ -176,28 +175,22 @@ export default function Header() {
               className="fixed top-20 md:top-24 right-0 bottom-0 w-full sm:w-80 bg-white shadow-2xl z-50 lg:hidden overflow-y-auto"
             >
               <nav className="flex flex-col p-6 space-y-1">
-                {navLinks.map((link, index) => {
+                {navLinks.map((link) => {
                   const active = isActive(link.href);
                   return (
-                    <motion.div
+                    <Link
                       key={link.id}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
+                      href={link.href}
+                      className={`block px-4 py-4 text-sm font-bold tracking-wider transition-all duration-200 border-l-4 rounded-r-md cursor-pointer ${
+                        active
+                          ? 'bg-[rgba(9,30,52,0.05)] border-[#091E34]'
+                          : 'text-slate-700 hover:bg-[rgba(9,30,52,0.03)] border-transparent hover:text-[#091E34]'
+                      }`}
+                      style={active ? { color: '#091E34' } : {}}
+                      onClick={() => setMobileMenuOpen(false)}
                     >
-                      <Link
-                        href={link.href}
-                        className={`block px-4 py-4 text-sm font-bold tracking-wider transition-all duration-200 border-l-4 rounded-r-md cursor-pointer ${
-                          active
-                            ? 'bg-[rgba(9,30,52,0.05)] border-[#091E34]'
-                            : 'text-slate-700 hover:bg-[rgba(9,30,52,0.03)] border-transparent hover:text-[#091E34]'
-                        }`}
-                        style={active ? { color: '#091E34' } : {}}
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {link.name}
-                      </Link>
-                    </motion.div>
+                      {link.name}
+                    </Link>
                   );
                 })}
               </nav>
