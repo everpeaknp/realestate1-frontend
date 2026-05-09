@@ -111,10 +111,14 @@ export default function Header() {
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
-                <button
+                <a
                   key={link.id}
-                  onClick={() => router.push(link.href)}
-                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-colors duration-200 cursor-pointer relative bg-transparent border-0 ${
+                  href={link.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = link.href;
+                  }}
+                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-colors duration-200 cursor-pointer relative no-underline ${
                     active 
                       ? 'text-[#091E34]' 
                       : 'text-slate-700 hover:text-[#091E34]'
@@ -129,7 +133,7 @@ export default function Header() {
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
-                </button>
+                </a>
               );
             })}
           </nav>
@@ -179,13 +183,15 @@ export default function Header() {
                 {navLinks.map((link) => {
                   const active = isActive(link.href);
                   return (
-                    <button
+                    <a
                       key={link.id}
-                      onClick={() => {
+                      href={link.href}
+                      onClick={(e) => {
+                        e.preventDefault();
                         setMobileMenuOpen(false);
-                        router.push(link.href);
+                        window.location.href = link.href;
                       }}
-                      className={`block px-4 py-4 text-sm font-bold tracking-wider transition-colors duration-200 border-l-4 rounded-r-md cursor-pointer text-left w-full bg-transparent ${
+                      className={`block px-4 py-4 text-sm font-bold tracking-wider transition-colors duration-200 border-l-4 rounded-r-md cursor-pointer no-underline ${
                         active
                           ? 'bg-[rgba(9,30,52,0.05)] border-[#091E34]'
                           : 'text-slate-700 hover:bg-[rgba(9,30,52,0.03)] border-transparent hover:text-[#091E34]'
@@ -193,7 +199,7 @@ export default function Header() {
                       style={active ? { color: '#091E34' } : {}}
                     >
                       {link.name}
-                    </button>
+                    </a>
                   );
                 })}
               </nav>
