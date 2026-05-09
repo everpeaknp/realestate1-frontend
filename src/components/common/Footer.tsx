@@ -220,10 +220,16 @@ export default function Footer() {
             {footerLinks.map((link) => {
               const active = isActive(link.href);
               return (
-                <Link 
+                <a
                   key={link.id}
-                  href={link.href} 
-                  className={`group flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer ${
+                  href={link.href}
+                  onClick={(e) => {
+                    if (link.href !== '#') {
+                      e.preventDefault();
+                      window.location.href = link.href;
+                    }
+                  }}
+                  className={`group flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer no-underline ${
                     active 
                       ? 'text-[#091E34]' 
                       : 'text-slate-600 hover:text-[#091E34]'
@@ -238,7 +244,7 @@ export default function Footer() {
                     }`}
                   />
                   <span className="whitespace-nowrap">{link.name}</span>
-                </Link>
+                </a>
               );
             })}
           </motion.div>
