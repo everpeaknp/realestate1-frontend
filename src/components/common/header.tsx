@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
 import { useState, useEffect } from 'react';
 import LazyImage from '@/components/shared/LazyImage';
@@ -12,6 +12,7 @@ import LazyImage from '@/components/shared/LazyImage';
 export default function Header() {
   const { headerSettings } = useCMS();
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Close mobile menu when route changes
@@ -110,11 +111,10 @@ export default function Header() {
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
-                <Link
+                <button
                   key={link.id}
-                  href={link.href}
-                  prefetch={false}
-                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-colors duration-200 cursor-pointer relative ${
+                  onClick={() => router.push(link.href)}
+                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-colors duration-200 cursor-pointer relative bg-transparent border-0 ${
                     active 
                       ? 'text-[#091E34]' 
                       : 'text-slate-700 hover:text-[#091E34]'
@@ -129,7 +129,7 @@ export default function Header() {
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
-                </Link>
+                </button>
               );
             })}
           </nav>
@@ -179,20 +179,21 @@ export default function Header() {
                 {navLinks.map((link) => {
                   const active = isActive(link.href);
                   return (
-                    <Link
+                    <button
                       key={link.id}
-                      href={link.href}
-                      prefetch={false}
-                      className={`block px-4 py-4 text-sm font-bold tracking-wider transition-colors duration-200 border-l-4 rounded-r-md cursor-pointer ${
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        router.push(link.href);
+                      }}
+                      className={`block px-4 py-4 text-sm font-bold tracking-wider transition-colors duration-200 border-l-4 rounded-r-md cursor-pointer text-left w-full bg-transparent ${
                         active
                           ? 'bg-[rgba(9,30,52,0.05)] border-[#091E34]'
                           : 'text-slate-700 hover:bg-[rgba(9,30,52,0.03)] border-transparent hover:text-[#091E34]'
                       }`}
                       style={active ? { color: '#091E34' } : {}}
-                      onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}
-                    </Link>
+                    </button>
                   );
                 })}
               </nav>
