@@ -113,7 +113,8 @@ export default function Header() {
                 <Link
                   key={link.id}
                   href={link.href}
-                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-all duration-200 cursor-pointer relative hover:scale-105 active:scale-95 ${
+                  prefetch={false}
+                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-colors duration-200 cursor-pointer relative ${
                     active 
                       ? 'text-[#091E34]' 
                       : 'text-slate-700 hover:text-[#091E34]'
@@ -181,7 +182,8 @@ export default function Header() {
                     <Link
                       key={link.id}
                       href={link.href}
-                      className={`block px-4 py-4 text-sm font-bold tracking-wider transition-all duration-200 border-l-4 rounded-r-md cursor-pointer ${
+                      prefetch={false}
+                      className={`block px-4 py-4 text-sm font-bold tracking-wider transition-colors duration-200 border-l-4 rounded-r-md cursor-pointer ${
                         active
                           ? 'bg-[rgba(9,30,52,0.05)] border-[#091E34]'
                           : 'text-slate-700 hover:bg-[rgba(9,30,52,0.03)] border-transparent hover:text-[#091E34]'
