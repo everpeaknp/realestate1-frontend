@@ -55,17 +55,20 @@ export default function LazyImage({
   };
 
   const handleError = () => {
-    const errorDetails = {
-      originalSrc: src,
-      currentSrc,
-      fallbackSrc,
-      hasError,
-      timestamp: new Date().toISOString(),
-      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'SSR',
-    };
-    
-    console.error('❌ Image failed to load:', currentSrc);
-    console.error('📊 Error details:', errorDetails);
+    // Only log on client side to avoid hydration issues
+    if (typeof window !== 'undefined') {
+      const errorDetails = {
+        originalSrc: src,
+        currentSrc,
+        fallbackSrc,
+        hasError,
+        timestamp: new Date().toISOString(),
+        userAgent: window.navigator.userAgent,
+      };
+      
+      console.error('❌ Image failed to load:', currentSrc);
+      console.error('📊 Error details:', errorDetails);
+    }
     
     // Only switch to fallback if original image fails AND fallback is provided
     if (currentSrc === (src || fallbackSrc) && !hasError && fallbackSrc) {

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { TawkToScript } from "@/components/chatbot";
 import { CMSProvider } from "@/contexts/CMSContext";
 import { DynamicMetadata } from "@/components/shared/DynamicMetadata";
+import { Chatbot } from "@/components/chatbot";
 
 
 const geistSans = Geist({
@@ -35,7 +35,7 @@ export default function RootLayout({
         <CMSProvider>
           <DynamicMetadata />
           {children}
-          <TawkToScript />
+          <Chatbot />
         </CMSProvider>
       </body>
     </html>

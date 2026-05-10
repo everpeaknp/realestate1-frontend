@@ -23,7 +23,8 @@ export async function GET(request: NextRequest) {
 
     let properties;
 
-    if (search) {
+    // Only use searchProperties if search term is non-empty
+    if (search && search.trim() !== '') {
       properties = await searchProperties(search, limit);
     } else {
       properties = await fetchProperties({

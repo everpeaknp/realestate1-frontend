@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
 import { useState, useEffect } from 'react';
 import LazyImage from '@/components/shared/LazyImage';
@@ -12,7 +12,6 @@ import LazyImage from '@/components/shared/LazyImage';
 export default function Header() {
   const { headerSettings } = useCMS();
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Close mobile menu when route changes
@@ -127,9 +126,10 @@ export default function Header() {
                   {link.name}
                   {active && (
                     <motion.div
-                      layoutId="activeNav"
                       style={{ backgroundColor: '#091E34' }}
                       className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}

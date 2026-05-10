@@ -60,7 +60,7 @@ export async function getBlogPosts(search?: string): Promise<BlogPost[]> {
   
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     const response = await fetch(endpoint, {
       next: { revalidate: 60 }, // Revalidate every 60 seconds
@@ -140,7 +140,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     const response = await fetch(endpoint, {
       next: { revalidate: 60 },
@@ -207,7 +207,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
 export async function getBlogCategories(): Promise<string[]> {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
 
     const response = await fetch(`${API_URL}/api/blog/posts/categories/`, {
       next: { revalidate: 3600 }, // Revalidate every hour

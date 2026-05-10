@@ -30,6 +30,7 @@ export const API_ENDPOINTS = {
     history: `${API_URL}/api/chatbot/history/`,
     clearSession: `${API_URL}/api/chatbot/clear_session/`,
     health: `${API_URL}/api/chatbot/health/`,
+    config: `${API_URL}/api/chatbot/config/`,
   },
   
   // Leads
@@ -145,7 +146,7 @@ export async function apiRequest<T>(
   options?: RequestInit
 ): Promise<T> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for chatbot
+  const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout for chatbot
 
   try {
     // Prepare headers
@@ -204,7 +205,7 @@ export async function apiRequest<T>(
     console.error('API Request failed:', error);
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
-        console.error('Request timed out after 30 seconds');
+        console.error('Request timed out after 60 seconds');
         throw new Error('Request timed out. The server might be slow to respond.');
       }
       console.error('Error name:', error.name);
@@ -346,5 +347,11 @@ export const homeAPI = {
   async getStats() {
     const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.home.stats);
     return response.results;
+  },
+};
+
+export const chatbotAPI = {
+  async getConfig() {
+    return await apiRequest<{ is_enabled: boolean; updated_at: string }>(API_ENDPOINTS.chatbot.config);
   },
 };

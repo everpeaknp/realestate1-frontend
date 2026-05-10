@@ -19,7 +19,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import DOMPurify from 'dompurify';
 import styles from './Chatbot.module.css';
-import { API_ENDPOINTS, apiRequest } from '@/lib/api';
+import TawkChat from './TawkChat';
+import { API_ENDPOINTS, apiRequest, chatbotAPI } from '@/lib/api';
 import { useChatbotStore, type ChatMessage, type UserInfo } from '@/store/chatbotStore';
  
 // ------------------------------------------------------------------ //
@@ -204,7 +205,22 @@ export default function ChatbotSecure() {
 
   const [input, setInput]               = useState('');
   const [lastMsgTime, setLastMsgTime]   = useState(0);
+  const [config, setConfig]             = useState<any>(null);
   const chatAreaRef                     = useRef<HTMLDivElement>(null);
+
+  // Fetch chatbot configuration
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const data = await chatbotAPI.getConfig();
+        setConfig(data);
+      } catch (err) {
+        console.error('[Chatbot] Failed to fetch config:', err);
+        setConfig({ is_enabled: true, tawk_enabled: false }); // Fallback
+      }
+    };
+    fetchConfig();
+  }, []);
 
   // Auto-scroll
   useEffect(() => {
@@ -346,163 +362,150 @@ export default function ChatbotSecure() {
     clearSession();
   };
 
-  // ---------------------------------------------------------------- //
-  // Render
-  // ---------------------------------------------------------------- //
+  // Return nothing while loading config (prevents flash)
+  if (!config) return null;
 
   return (
-    <div className={styles.wrapper}>
-      {/* FAB */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            className={styles.fab}
-            onClick={handleOpen}
-            aria-label="Open chat"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
-            <MessageSquare size={24} />
-            <span className={styles.pulse} />
-          </motion.button>
-        )}
-      </AnimatePresence>
+    <>
+      {/* Tawk.to Live Chat Integration */}
+      {config.tawk_enabled && config.tawk_property_id && config.tawk_widget_id && (
+        <TawkChat propertyId={config.tawk_property_id} widgetId={config.tawk_widget_id} />
+      )}
 
-      {/* Chat window + cat mascot wrapper */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            style={{ position: 'absolute', bottom: 0, right: 0, zIndex: 2001 }}
-            initial={{ opacity: 0, scale: 0.85, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.85, y: 20 }}
-            transition={{ type: 'spring', stiffness: 280, damping: 24 }}
-          >
-            {/* Cat face peeking over top of chatbox - right side */}
-            <motion.div
-              style={{
-                position: 'absolute',
-                top: -80,
-                right: 0,
-                display: 'flex',
-                justifyContent: 'center',
-                pointerEvents: 'none',
-                zIndex: 1,
-                overflow: 'visible',
-                width: 350,
-                height: 200,
-              }}
-              initial={{ y: 150, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 150, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 25, delay: 0.3 }}
-            >
-           
-            </motion.div>
+      {/* Built-in AI Chatbot UI */}
+      {config.is_enabled && (
+        <div className={styles.wrapper}>
+          {/* FAB */}
+          <AnimatePresence>
+            {!isOpen && (
+              <motion.button
+                className={styles.fab}
+                onClick={handleOpen}
+                aria-label="Open chat"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <MessageSquare size={24} />
+                <span className={styles.pulse} />
+              </motion.button>
+            )}
+          </AnimatePresence>
 
-            {/* Chat container */}
-            <div className={styles.container} style={{ position: 'relative', zIndex: 5 }}>
-              {/* Header */}
-              <div className={styles.header}>
-                <div className={styles.headerInfo}>
-                  <h3>Lily White Real Estate</h3>
-                  <p>Investment Property Specialist | Online</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  {!showIntro && sessionId && (
+          {/* Chat window wrapper */}
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                style={{ position: 'absolute', bottom: 0, right: 0, zIndex: 2001 }}
+                initial={{ opacity: 0, scale: 0.85, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.85, y: 20 }}
+                transition={{ type: 'spring', stiffness: 280, damping: 24 }}
+              >
+                {/* Chat container */}
+                <div className={styles.container} style={{ position: 'relative', zIndex: 5 }}>
+                  {/* Header */}
+                  <div className={styles.header}>
+                    <div className={styles.headerInfo}>
+                      <h3>Lily White Real Estate</h3>
+                      <p>Investment Property Specialist | Online</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {!showIntro && sessionId && (
+                        <>
+                          <button onClick={() => syncWithBackend(sessionId)}
+                            className="p-1 hover:bg-white/10 rounded transition-colors" title="Sync">
+                            <RefreshCw size={16} />
+                          </button>
+                          <button onClick={handleClear}
+                            className="p-1 hover:bg-white/10 rounded transition-colors" title="Clear chat">
+                            <Trash2 size={16} />
+                          </button>
+                        </>
+                      )}
+                      <button onClick={close} aria-label="Close chat">
+                        <X size={20} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Body */}
+                  {showIntro ? (
+                    <IntroForm onStart={handleStart} />
+                  ) : (
                     <>
-                      <button onClick={() => syncWithBackend(sessionId)}
-                        className="p-1 hover:bg-white/10 rounded transition-colors" title="Sync">
-                        <RefreshCw size={16} />
-                      </button>
-                      <button onClick={handleClear}
-                        className="p-1 hover:bg-white/10 rounded transition-colors" title="Clear chat">
-                        <Trash2 size={16} />
-                      </button>
+                      {/* Messages */}
+                      <div className={styles.chatArea} ref={chatAreaRef}>
+                        <AnimatePresence initial={false}>
+                          {messages.map((m) => (
+                            <motion.div
+                              key={m.id}
+                              className={`${styles.message} ${m.role === 'bot' ? styles.bot : styles.user}`}
+                              initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                            >
+                              <div className="flex flex-col">
+                                <div>
+                                  {m.role === 'bot' ? parseMessage(m.message) : m.message}
+                                </div>
+                                <div className="text-[10px] opacity-60 mt-1">
+                                  {new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+
+                        {/* Typing indicator */}
+                        <AnimatePresence>
+                          {isLoading && (
+                            <motion.div
+                              className={`${styles.message} ${styles.bot} ${styles.loading}`}
+                              initial={{ opacity: 0, y: 8 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 8 }}
+                            >
+                              <span /><span /><span />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        {error && (
+                          <div className="text-center text-red-500 text-xs py-2">{error}</div>
+                        )}
+                      </div>
+
+                      {/* Input */}
+                      <form className={styles.inputArea} onSubmit={handleSend}>
+                        <input
+                          type="text"
+                          placeholder="Type your message..."
+                          value={input}
+                          onChange={(e) => setInput(e.target.value)}
+                          disabled={isLoading}
+                          maxLength={MAX_MESSAGE_LENGTH}
+                          autoFocus
+                          aria-label="Message input"
+                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] text-gray-400">{input.length}/{MAX_MESSAGE_LENGTH}</span>
+                          <button type="submit" disabled={isLoading || !input.trim()} aria-label="Send">
+                            <Send size={18} />
+                          </button>
+                        </div>
+                      </form>
                     </>
                   )}
-                  <button onClick={close} aria-label="Close chat">
-                    <X size={20} />
-                  </button>
-                </div>
-              </div>
-
-            {/* Body */}
-            {showIntro ? (
-              <IntroForm onStart={handleStart} />
-            ) : (
-              <>
-                {/* Messages */}
-                <div className={styles.chatArea} ref={chatAreaRef}>
-                  <AnimatePresence initial={false}>
-                    {messages.map((m) => (
-                      <motion.div
-                        key={m.id}
-                        className={`${styles.message} ${m.role === 'bot' ? styles.bot : styles.user}`}
-                        initial={{ opacity: 0, y: 12, scale: 0.96 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      >
-                        <div className="flex flex-col">
-                          <div>
-                            {m.role === 'bot' ? parseMessage(m.message) : m.message}
-                          </div>
-                          <div className="text-[10px] opacity-60 mt-1">
-                            {new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-
-                  {/* Typing indicator */}
-                  <AnimatePresence>
-                    {isLoading && (
-                      <motion.div
-                        className={`${styles.message} ${styles.bot} ${styles.loading}`}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                      >
-                        <span /><span /><span />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {error && (
-                    <div className="text-center text-red-500 text-xs py-2">{error}</div>
-                  )}
-                </div>
-
-                {/* Input */}
-                <form className={styles.inputArea} onSubmit={handleSend}>
-                  <input
-                    type="text"
-                    placeholder="Type your message..."
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    disabled={isLoading}
-                    maxLength={MAX_MESSAGE_LENGTH}
-                    autoFocus
-                    aria-label="Message input"
-                  />
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-gray-400">{input.length}/{MAX_MESSAGE_LENGTH}</span>
-                    <button type="submit" disabled={isLoading || !input.trim()} aria-label="Send">
-                      <Send size={18} />
-                    </button>
-                  </div>
-                </form>
-              </>
+                </div>{/* end .container */}
+              </motion.div>
             )}
-            </div>{/* end .container */}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+          </AnimatePresence>
+        </div>
+      )}
+    </>
   );
 }

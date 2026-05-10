@@ -250,6 +250,9 @@ export async function fetchProperties(options?: {
 }): Promise<EagleProperty[]> {
   const { limit = 50, status, propertyType } = options || {};
 
+  // When filtering by status/type, fetch more properties to ensure we get enough matches
+  const fetchLimit = (status || propertyType) ? Math.max(limit * 5, 100) : limit;
+
   const query = `
     query GetProperties($limit: Int) {
       properties(first: $limit) {
@@ -264,7 +267,7 @@ export async function fetchProperties(options?: {
     }
   `;
 
-  const data = await executeGraphQL<PropertiesResponse>(query, { limit });
+  const data = await executeGraphQL<PropertiesResponse>(query, { limit: fetchLimit });
   let nodes = data.properties.nodes || [];
 
   if (status) {
@@ -274,7 +277,8 @@ export async function fetchProperties(options?: {
     nodes = nodes.filter((p) => p.propertyType === propertyType);
   }
 
-  return nodes;
+  // Return only the requested limit after filtering
+  return nodes.slice(0, limit);
 }
 
 /**
