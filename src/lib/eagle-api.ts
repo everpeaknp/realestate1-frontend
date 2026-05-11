@@ -247,11 +247,12 @@ export async function fetchProperties(options?: {
   limit?: number;
   status?: string;
   propertyType?: string;
+  agentName?: string;
 }): Promise<EagleProperty[]> {
-  const { limit = 50, status, propertyType } = options || {};
+  const { limit = 50, status, propertyType, agentName } = options || {};
 
-  // When filtering by status/type, fetch more properties to ensure we get enough matches
-  const fetchLimit = (status || propertyType) ? Math.max(limit * 5, 100) : limit;
+  // When filtering by status/type/agent, fetch more properties to ensure we get enough matches
+  const fetchLimit = (status || propertyType || agentName) ? Math.max(limit * 5, 100) : limit;
 
   const query = `
     query GetProperties($limit: Int) {
@@ -275,6 +276,24 @@ export async function fetchProperties(options?: {
   }
   if (propertyType) {
     nodes = nodes.filter((p) => p.propertyType === propertyType);
+  }
+  if (agentName) {
+    const nameParts = agentName.toLowerCase().split(' ');
+    nodes = nodes.filter((p) => 
+      p.agents?.some((agent) => {
+        const agentNameLower = agent.name?.toLowerCase() || '';
+        const agentEmail = agent.email?.toLowerCase() || '';
+        const agentPhone = agent.phone || agent.mobile || '';
+        
+        // Match by name parts, email, or phone
+        const nameMatch = nameParts.some(part => agentNameLower.includes(part));
+        const emailMatch = agentEmail.includes('bijen@lilywhiterealestate.com.au');
+        const phoneMatch = agentPhone.includes('600414701721') || agentPhone.includes('+600414701721');
+        
+        return nameMatch || emailMatch || phoneMatch;
+      })
+    );
+    console.log(`[Eagle API] Filtered by agent "${agentName}": ${nodes.length} properties`);
   }
 
   // Return only the requested limit after filtering

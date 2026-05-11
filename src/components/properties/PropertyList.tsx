@@ -9,7 +9,6 @@ import { EagleProperty } from '@/lib/eagle-api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
 import LazyImage from '@/components/shared/LazyImage';
 import PropertyCardSkeleton from '@/components/shared/PropertyCardSkeleton';
-import PropertyFilter from './PropertyFilter';
 
 const PAGE_SIZE = 12;
 
@@ -71,16 +70,10 @@ export default function PropertyList() {
   // Apply client-side filters - recalculate when URL params change
   const filteredProperties = useMemo(() => {
     const filtered = allProperties.filter((property) => {
-      // Property Type filter (FOR_SALE, FOR_RENT, SOLD)
+      // Property Type filter (HOUSE, APARTMENT, UNIT, TOWNHOUSE, VILLA, LAND)
       if (propertyType) {
-        const propStatus = property.status?.toUpperCase() || '';
-        if (propertyType === 'FOR_SALE' && propStatus !== 'CURRENT' && propStatus !== 'ACTIVE') {
-          return false;
-        }
-        if (propertyType === 'FOR_RENT' && propStatus !== 'LEASED') {
-          return false;
-        }
-        if (propertyType === 'SOLD' && propStatus !== 'SOLD') {
+        const propType = property.propertyType?.toUpperCase() || '';
+        if (propType !== propertyType.toUpperCase()) {
           return false;
         }
       }
@@ -110,16 +103,10 @@ export default function PropertyList() {
         }
       }
 
-      // Status filter (AVAILABLE, PENDING, SOLD)
+      // Status filter (CURRENT, ACTIVE, SOLD, LEASED, PENDING)
       if (status) {
         const propStatus = property.status?.toUpperCase() || '';
-        if (status === 'AVAILABLE' && propStatus !== 'CURRENT' && propStatus !== 'ACTIVE') {
-          return false;
-        }
-        if (status === 'PENDING' && propStatus !== 'PENDING') {
-          return false;
-        }
-        if (status === 'SOLD' && propStatus !== 'SOLD') {
+        if (propStatus !== status.toUpperCase()) {
           return false;
         }
       }
@@ -185,15 +172,6 @@ export default function PropertyList() {
           >
             {activeSearch ? `Results for "${activeSearch}"` : 'Available Properties'}
           </motion.h2>
-          <motion.p
-            className="text-[#7C7A70] text-sm sm:text-base md:text-lg max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Browse through our carefully curated selection of properties
-          </motion.p>
           {!loading && (activeSearch || hasActiveFilters) && (
             <div className="mt-3 text-sm text-[#5d6d87]">
               <p className="mb-2">
@@ -211,9 +189,6 @@ export default function PropertyList() {
             </div>
           )}
         </div>
-
-        {/* Property Filter Component */}
-        <PropertyFilter />
 
         {/* Loading */}
         {loading && (

@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { API_ENDPOINTS, API_URL, apiRequest } from '@/lib/api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
 import LazyImage from '@/components/shared/LazyImage';
+import PropertyFilter from './PropertyFilter';
 
 interface PropertiesHeroSettings {
   id: number;
@@ -220,7 +221,7 @@ function PropertiesHeroInner() {
     'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1920';
 
   return (
-    <section className="relative h-[340px] sm:h-[380px] md:h-[420px] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-0 sm:min-h-[520px] md:min-h-[580px] lg:min-h-[600px] flex items-center justify-center overflow-hidden py-8 sm:py-10 md:py-12">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <LazyImage
@@ -236,7 +237,7 @@ function PropertiesHeroInner() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4 sm:px-6 w-full max-w-2xl mx-auto">
+      <div className="relative z-10 text-center px-3 sm:px-6 w-full max-w-2xl lg:max-w-4xl mx-auto">
         <motion.h1
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-4 tracking-tight"
           initial={{ opacity: 0, y: 20 }}
@@ -254,8 +255,7 @@ function PropertiesHeroInner() {
         >
           {subtitle}
         </motion.p>
-
-        {/* Search Bar */}
+        {/* Search Bar — Premium Glassmorphic Pill */}
         <motion.div
           ref={wrapperRef}
           className="relative mb-4"
@@ -263,96 +263,107 @@ function PropertiesHeroInner() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35 }}
         >
-          <form onSubmit={handleSubmit} className="flex items-stretch w-full shadow-2xl">
-            <div className="relative flex-1">
+          <form onSubmit={handleSubmit} className="relative group">
+            {/* Outer glow on focus */}
+            <div className="absolute -inset-0.5 bg-white/20 rounded-full opacity-0 group-focus-within:opacity-100 blur-sm transition-opacity duration-300" />
+
+            <div className="relative flex items-center bg-white/95 backdrop-blur-xl rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/60 overflow-hidden transition-all duration-300 group-focus-within:shadow-[0_8px_40px_rgba(9,30,52,0.18)]">
+              {/* Search Icon */}
+              <div className="pl-4 sm:pl-5 flex-shrink-0 text-gray-400 group-focus-within:text-[#091E34] transition-colors duration-200">
+                <Search size={18} strokeWidth={2.5} />
+              </div>
+
+              {/* Input */}
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => results.length > 0 && setOpen(true)}
-                placeholder="Search by location, type, price..."
-                className="w-full bg-white text-gray-800 placeholder-gray-400 px-5 py-3 text-sm font-medium outline-none focus:ring-2 transition-all duration-200 rounded-l-lg pr-9"
-                style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
+                placeholder="Search suburb, address, or keyword..."
+                className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 px-3 py-3.5 sm:py-4 text-sm sm:text-base font-medium outline-none min-w-0"
               />
+
+              {/* Clear button */}
               {query && (
                 <button
                   type="button"
                   onClick={clearSearch}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-200 mr-1 cursor-pointer"
                 >
-                  <X size={14} />
+                  <X size={14} strokeWidth={2.5} />
                 </button>
               )}
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 mr-1.5 sm:mr-2 flex items-center justify-center rounded-full text-white transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
+                style={{ background: 'linear-gradient(135deg, #091E34, #14324E)' }}
+              >
+                {searching
+                  ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  : <Search size={16} strokeWidth={2.5} />
+                }
+              </button>
             </div>
-            <button
-              type="submit"
-              className="text-white px-5 py-3 flex items-center gap-2 font-bold text-sm tracking-wider transition-all duration-200 rounded-r-lg shadow-md hover:shadow-lg cursor-pointer hover:opacity-90"
-              style={{ background: '#091E34' }}
-            >
-              {searching
-                ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                : <Search size={17} />
-              }
-              <span className="hidden sm:inline">Search</span>
-            </button>
           </form>
 
-          {/* Dropdown */}
+          {/* Dropdown Results */}
           <AnimatePresence>
             {open && results.length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.15 }}
-                className="absolute top-full left-0 right-0 bg-white rounded-sm shadow-2xl z-50 overflow-hidden text-left mt-1"
+                initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_12px_48px_rgba(0,0,0,0.15)] z-50 overflow-hidden text-left mt-2 border border-gray-100/80"
               >
-                {results.map((p) => (
-                  <Link
-                    key={p.key}
-                    href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 transition-colors duration-200 border-b border-gray-50 group cursor-pointer"
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.05)'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                  >
-                    {/* Thumbnail */}
-                    <div className="w-12 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-100">
-                      <LazyImage
-                        src={getImage(p.image)}
-                        alt={p.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-800 truncate transition-colors duration-200 group-hover:text-[#091E34]">
-                        {p.title}
-                      </p>
-                      <p className="text-xs text-gray-400 truncate">{p.location}</p>
-                    </div>
-                    {/* Price + source badge */}
-                    <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
-                      {p.price && (
-                        <span className="text-xs font-bold" style={{ color: '#091E34' }}>{p.price}</span>
-                      )}
-                      {p.source === 'eagle' && (
-                        <span className="text-[10px] text-gray-400 font-medium">Eagle</span>
-                      )}
-                    </div>
-                  </Link>
-                ))}
+                <div className="py-1.5">
+                  {results.map((p, i) => (
+                    <Link
+                      key={p.key}
+                      href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group cursor-pointer hover:bg-[#091E34]/[0.04]"
+                    >
+                      {/* Thumbnail */}
+                      <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 ring-1 ring-gray-200/60">
+                        <LazyImage
+                          src={getImage(p.image)}
+                          alt={p.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#091E34] transition-colors duration-150">
+                          {p.title}
+                        </p>
+                        <p className="text-[11px] text-gray-400 truncate mt-0.5">{p.location}</p>
+                      </div>
+                      {/* Price + source */}
+                      <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                        {p.price && (
+                          <span className="text-xs font-bold text-[#091E34]">{p.price}</span>
+                        )}
+                        {p.source === 'eagle' && (
+                          <span className="text-[9px] text-gray-400 font-medium uppercase tracking-wider">Eagle</span>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
                 {/* View all */}
-                <Link
-                  href={`/properties?search=${encodeURIComponent(query)}`}
-                  onClick={() => setOpen(false)}
-                  className="block px-4 py-2.5 text-xs font-semibold text-center transition-colors duration-200 cursor-pointer"
-                  style={{ color: '#091E34' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.05)'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                >
-                  View all results for &quot;{query}&quot; →
-                </Link>
+                <div className="border-t border-gray-100">
+                  <Link
+                    href={`/properties?search=${encodeURIComponent(query)}`}
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-center gap-1.5 px-4 py-3 text-xs font-bold text-[#091E34] uppercase tracking-wider hover:bg-[#091E34]/[0.04] transition-colors duration-150 cursor-pointer"
+                  >
+                    View all results
+                    <span className="text-[#091E34]/60">→</span>
+                  </Link>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -360,7 +371,7 @@ function PropertiesHeroInner() {
 
         {/* Breadcrumb */}
         <motion.nav
-          className="flex items-center justify-center gap-2 text-white/80 text-xs sm:text-sm font-medium"
+          className="flex items-center justify-center gap-2 text-white/80 text-xs sm:text-sm font-medium mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
@@ -369,6 +380,15 @@ function PropertiesHeroInner() {
           <ChevronRight size={16} className="flex-shrink-0" />
           <span className="text-white font-bold">Properties</span>
         </motion.nav>
+
+        {/* Property Filter - Inside Hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <PropertyFilter />
+        </motion.div>
       </div>
     </section>
   );
@@ -377,7 +397,7 @@ function PropertiesHeroInner() {
 export default function PropertiesHero() {
   return (
     <Suspense fallback={
-      <section className="relative h-[340px] sm:h-[380px] md:h-[420px] bg-gray-800 flex items-center justify-center">
+      <section className="relative h-[340px] sm:h-[520px] md:h-[580px] lg:h-[600px] bg-gray-800 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#091E34' }} />
       </section>
     }>

@@ -260,6 +260,25 @@ export const contactAPI = {
 };
 
 /**
+ * Properties API functions
+ */
+export const propertiesAPI = {
+  async getHeroSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.properties.heroSettings);
+    return response.results[0] || null;
+  },
+  
+  async getList(params?: string) {
+    const url = params ? `${API_ENDPOINTS.properties.list}?${params}` : API_ENDPOINTS.properties.list;
+    return await apiRequest<any>(url);
+  },
+  
+  async getDetail(slug: string) {
+    return await apiRequest<any>(API_ENDPOINTS.properties.detail(slug));
+  }
+};
+
+/**
  * CMS API functions
  */
 export const cmsAPI = {
@@ -291,6 +310,11 @@ export const cmsAPI = {
   async getPropertySidebarSettings() {
     const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.propertySidebarSettings);
     return response.results;
+  },
+  
+  async getPropertiesHeroSettings() {
+    const response = await apiRequest<{ results: any[] }>(API_ENDPOINTS.cms.propertiesHeroSettings);
+    return response.results[0] || null;
   },
 };
 
