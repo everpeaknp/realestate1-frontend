@@ -45,7 +45,7 @@ export default function SinglePropertyHero({ property }: SinglePropertyHeroProps
           >
             {/* Status Badge */}
             <div className="inline-block mb-4">
-              <span className="text-white px-4 py-1.5 text-xs font-bold tracking-wider uppercase rounded-lg" style={{ background: '#091E34' }}>
+              <span className="text-white px-4 py-1.5 text-xs font-bold tracking-wider uppercase rounded-lg" style={{ background: '#000000' }}>
                 {property.status || 'Available'}
               </span>
             </div>
@@ -57,14 +57,14 @@ export default function SinglePropertyHero({ property }: SinglePropertyHeroProps
 
             {/* Location */}
             <div className="flex items-center gap-2 mb-6">
-              <MapPin size={20} style={{ color: '#091E34' }} />
+              <MapPin size={20} style={{ color: '#000000' }} />
               <span className="text-lg text-gray-200">
                 {property.formattedAddress}
               </span>
             </div>
 
             {/* Price */}
-            <div className="text-4xl md:text-5xl font-bold" style={{ color: '#091E34' }}>
+            <div className="text-4xl md:text-5xl font-bold" style={{ color: '#000000' }}>
               {formatPrice()}
             </div>
           </motion.div>

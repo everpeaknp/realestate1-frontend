@@ -1,6 +1,5 @@
 import BlogHero from '@/components/blog/BlogHero';
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
+
 import Newsletter from '@/components/shared/newsletter';
 import Instagram from '@/components/shared/instagram';
 import PropertySidebar from '@/components/shared/PropertySidebar';
@@ -65,7 +64,7 @@ export default async function BlogPage() {
   
   return (
     <>
-      <Header />
+      
       <BlogHero />
       <main className="bg-white">
         <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:items-start">
@@ -79,7 +78,7 @@ export default async function BlogPage() {
         <Newsletter />
         <Instagram />
       </main>
-      <Footer />
+      
     </>
   );
 }

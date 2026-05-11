@@ -76,7 +76,7 @@ export default function PropertySidebar() {
             <input 
               type="text" 
               className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
-              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
+              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
             />
           </div>
           
@@ -85,7 +85,7 @@ export default function PropertySidebar() {
             <input 
               type="email" 
               className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
-              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
+              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
             />
           </div>
 
@@ -94,7 +94,7 @@ export default function PropertySidebar() {
             <input 
               type="tel" 
               className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
-              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
+              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
             />
           </div>
 
@@ -103,11 +103,11 @@ export default function PropertySidebar() {
             <textarea 
               rows={4}
               className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200 resize-none text-sm"
-              style={{ '--tw-ring-color': '#091E34' } as React.CSSProperties}
+              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
             />
           </div>
 
-          <button className="w-full text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer mt-2 hover:opacity-90" style={{ background: '#091E34' }}>
+          <button className="w-full text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer mt-2 hover:opacity-90" style={{ background: '#000000' }}>
             Submit
           </button>
         </form>
@@ -124,7 +124,7 @@ export default function PropertySidebar() {
         <a
           href={`tel:${agentPhone}`}
           className="flex items-center gap-3 transition-colors cursor-pointer hover:opacity-80"
-          style={{ color: '#091E34' }}
+          style={{ color: '#000000' }}
         >
           <Phone size={18} />
           <span className="font-bold text-[#1a1a1a] tracking-tight">{agentPhone}</span>
@@ -132,7 +132,7 @@ export default function PropertySidebar() {
         <a
           href={`mailto:${agentEmail}`}
           className="flex items-center gap-3 transition-colors cursor-pointer hover:opacity-80"
-          style={{ color: '#091E34' }}
+          style={{ color: '#000000' }}
         >
           <Mail size={18} />
           <span className="font-bold text-[#1a1a1a] tracking-tight">{agentEmail}</span>

@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
+
 import AboutHero from '@/components/about/AboutHero';
 import ServicesProvideSection from '@/components/about/ServicesProvideSection';
 import GoalsSection from '@/components/about/GoalsSection';
@@ -59,7 +58,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <Header />
+      
       <main>
         <AboutHero />
         <PersonSection />
@@ -80,7 +79,7 @@ export default function AboutPage() {
         <Newsletter />
         <Instagram />
       </main>
-      <Footer />
+      
     </>
   );
 }

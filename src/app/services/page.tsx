@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
+
 import ServicesHero from '@/components/services/ServicesHero';
 import BuyPropertySection from '@/components/services/BuyPropertySection';
 import SellPropertySection from '@/components/services/SellPropertySection';
@@ -69,7 +68,7 @@ export default function ServicesPage() {
 
   return (
     <>
-      <Header />
+      
       <ServicesHero />
       {loading ? (
         <div className="flex justify-center items-center py-20">
@@ -111,7 +110,7 @@ export default function ServicesPage() {
       <ContactSection />
       <Newsletter />
       <Instagram />
-      <Footer />
+      
     </>
   );
 }

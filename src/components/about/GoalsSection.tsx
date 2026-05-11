@@ -49,7 +49,7 @@ export default function GoalsSection({ goals: propGoals }: GoalsSectionProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#091E34'}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = '#000000'}
               onMouseLeave={(e) => e.currentTarget.style.borderColor = ''}
             >
               <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-6 font-sans">

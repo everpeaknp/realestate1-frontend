@@ -115,7 +115,7 @@ export default function ProjectGallery() {
                 <p className="text-white font-bold text-base sm:text-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   {image.title}
                 </p>
-                <div className="w-10 sm:w-12 h-1 mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100" style={{ background: '#091E34' }} />
+                <div className="w-10 sm:w-12 h-1 mt-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100" style={{ background: '#000000' }} />
               </div>
             </motion.div>
           ))}

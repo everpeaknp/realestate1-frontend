@@ -100,12 +100,12 @@ export default function CommentForm({ postId }: CommentFormProps) {
     <section className="bg-white py-12 sm:py-16 md:py-20 border-t border-gray-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="mb-8 sm:mb-10 md:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#091E34] mb-3 sm:mb-4 font-sans">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#000000] mb-3 sm:mb-4 font-sans">
             Leave a Reply
           </h2>
           <p className="text-[#5d6d87] text-sm sm:text-[15px] font-medium">
             Your email address will not be published. Required fields are marked{' '}
-            <span className="text-[#091E34]">*</span>
+            <span className="text-[#000000]">*</span>
           </p>
         </div>
 
@@ -201,7 +201,7 @@ export default function CommentForm({ postId }: CommentFormProps) {
           <motion.button
             type="submit"
             disabled={isSubmitting || !isValid}
-            className="bg-[#091E34] hover:bg-[#0a2240] text-white px-8 py-4 sm:px-10 sm:py-5 font-bold text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-all duration-300 rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 inline-block disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-h-[48px] w-full sm:w-auto cursor-pointer"
+            className="bg-[#000000] hover:bg-[#0a2240] text-white px-8 py-4 sm:px-10 sm:py-5 font-bold text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-all duration-300 rounded-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5 inline-block disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none min-h-[48px] w-full sm:w-auto cursor-pointer"
             whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
             aria-label="Post comment"
           >

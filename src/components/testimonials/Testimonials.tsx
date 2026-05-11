@@ -61,7 +61,7 @@ export default function Testimonials() {
         <div className="mb-12 sm:mb-14 md:mb-16 text-center">
           <motion.span 
             className="font-bold text-xs sm:text-sm uppercase tracking-[0.2em] mb-3 sm:mb-4 block"
-            style={{ color: '#091E34' }}
+            style={{ color: '#000000' }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

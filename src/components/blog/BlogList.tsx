@@ -102,7 +102,7 @@ function BlogListInner() {
       {activeSearch && (
         <div className="flex items-center gap-2 text-sm text-slate-600 mb-8">
           <span>Showing results for <strong>&quot;{activeSearch}&quot;</strong> ({allPosts.length} found)</span>
-          <Link href="/blog" className="hover:underline ml-1 cursor-pointer hover:opacity-80" style={{ color: '#091E34' }}>Clear</Link>
+          <Link href="/blog" className="hover:underline ml-1 cursor-pointer hover:opacity-80" style={{ color: '#000000' }}>Clear</Link>
         </div>
       )}
 
@@ -115,7 +115,7 @@ function BlogListInner() {
             {activeSearch ? 'Try a different search term.' : 'Check back soon!'}
           </p>
           {activeSearch && (
-            <Link href="/blog" className="mt-4 inline-block font-semibold hover:underline cursor-pointer hover:opacity-80" style={{ color: '#091E34' }}>
+            <Link href="/blog" className="mt-4 inline-block font-semibold hover:underline cursor-pointer hover:opacity-80" style={{ color: '#000000' }}>
               View all posts
             </Link>
           )}
@@ -143,11 +143,11 @@ function BlogListInner() {
                   </div>
                   <div className="text-center px-2 sm:px-4">
                     {getCategoryName(post.category) && (
-                      <span className="text-[11px] font-bold uppercase tracking-widest mb-2 block" style={{ color: '#091E34' }}>
+                      <span className="text-[11px] font-bold uppercase tracking-widest mb-2 block" style={{ color: '#000000' }}>
                         {getCategoryName(post.category)}
                       </span>
                     )}
-                    <h3 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-3 group-hover:text-[#091E34] transition-colors leading-tight">
+                    <h3 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-3 group-hover:text-[#000000] transition-colors leading-tight">
                       {post.title}
                     </h3>
                     <div className="text-[#5d6d87] text-sm font-medium flex flex-wrap items-center justify-center gap-x-2">
@@ -167,7 +167,7 @@ function BlogListInner() {
               <button
                 onClick={() => goToPage(safePage - 1)}
                 disabled={safePage === 1}
-                className="flex items-center gap-1 text-gray-400 hover:text-[#091E34] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2 cursor-pointer"
+                className="flex items-center gap-1 text-gray-400 hover:text-[#000000] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2 cursor-pointer"
               >
                 <ChevronLeft size={14} /> Previous
               </button>
@@ -180,12 +180,12 @@ function BlogListInner() {
                     className={`w-9 h-9 flex items-center justify-center rounded-lg font-bold text-xs transition-all duration-200 cursor-pointer ${
                       page === safePage
                         ? 'text-white shadow-md'
-                        : 'text-[#1a1a1a] hover:text-[#091E34]'
+                        : 'text-[#1a1a1a] hover:text-[#000000]'
                     }`}
-                    style={page === safePage ? { background: '#091E34' } : {}}
+                    style={page === safePage ? { background: '#000000' } : {}}
                     onMouseEnter={(e) => {
                       if (page !== safePage) {
-                        e.currentTarget.style.backgroundColor = 'rgba(9, 30, 52, 0.05)';
+                        e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -202,7 +202,7 @@ function BlogListInner() {
               <button
                 onClick={() => goToPage(safePage + 1)}
                 disabled={safePage === totalPages}
-                className="flex items-center gap-1 text-[#1a1a1a] hover:text-[#091E34] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2 cursor-pointer"
+                className="flex items-center gap-1 text-[#1a1a1a] hover:text-[#000000] disabled:opacity-30 disabled:cursor-not-allowed transition-colors min-h-[44px] px-2 cursor-pointer"
               >
                 Next <ChevronRight size={14} />
               </button>

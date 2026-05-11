@@ -29,7 +29,7 @@ export default function ServicesProvideSection({
       <div className="relative z-10 text-center px-4 sm:px-6 py-8 sm:py-0 max-w-4xl mx-auto">
         <motion.span 
           className="block font-bold text-xs sm:text-sm md:text-base uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6"
-          style={{ color: '#091E34' }}
+          style={{ color: '#000000' }}
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

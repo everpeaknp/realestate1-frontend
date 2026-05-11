@@ -180,8 +180,8 @@ function BlogHeroInner() {
         className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_12px_48px_rgba(0,0,0,0.15)] overflow-hidden text-left max-h-[360px] overflow-y-auto border border-gray-100/80"
       >
         <div className="px-4 py-2.5 border-b border-gray-100 flex items-center gap-2">
-          <FileText size={12} className="text-[#091E34]" />
-          <span className="text-[10px] font-bold text-[#091E34] uppercase tracking-widest">Blog Posts</span>
+          <FileText size={12} className="text-[#000000]" />
+          <span className="text-[10px] font-bold text-[#000000] uppercase tracking-widest">Blog Posts</span>
         </div>
         <div className="py-1">
           {results.map((b) => (
@@ -189,7 +189,7 @@ function BlogHeroInner() {
               key={b.id}
               href={`/blog/${b.slug}`}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group cursor-pointer hover:bg-[#091E34]/[0.04]"
+              className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group cursor-pointer hover:bg-[#000000]/[0.04]"
             >
               <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 ring-1 ring-gray-200/60">
                 <LazyImage
@@ -200,11 +200,11 @@ function BlogHeroInner() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#091E34] transition-colors duration-150">{b.title}</p>
+                <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#000000] transition-colors duration-150">{b.title}</p>
                 <p className="text-[11px] text-gray-400 mt-0.5">{b.author_name}</p>
               </div>
               {b.category && (
-                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 text-[#091E34] bg-[#091E34]/[0.06] uppercase tracking-wider">{b.category}</span>
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 text-[#000000] bg-[#000000]/[0.06] uppercase tracking-wider">{b.category}</span>
               )}
             </Link>
           ))}
@@ -213,10 +213,10 @@ function BlogHeroInner() {
           <Link
             href={`/blog?search=${encodeURIComponent(query)}`}
             onClick={() => setOpen(false)}
-            className="flex items-center justify-center gap-1.5 px-4 py-3 text-xs font-bold text-[#091E34] uppercase tracking-wider hover:bg-[#091E34]/[0.04] transition-colors duration-150 cursor-pointer"
+            className="flex items-center justify-center gap-1.5 px-4 py-3 text-xs font-bold text-[#000000] uppercase tracking-wider hover:bg-[#000000]/[0.04] transition-colors duration-150 cursor-pointer"
           >
             View all results
-            <span className="text-[#091E34]/60">→</span>
+            <span className="text-[#000000]/60">→</span>
           </Link>
         </div>
       </motion.div>
@@ -271,7 +271,7 @@ function BlogHeroInner() {
           transition={{ duration: 0.8, delay: 0.25 }}
         >
           <div className="relative group">
-            <div className="relative flex items-center bg-white rounded-full p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white transition-all duration-300 group-focus-within:shadow-[0_20px_60px_rgba(9,30,52,0.15)]">
+            <div className="relative flex items-center bg-white rounded-full p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white transition-all duration-300 group-focus-within:shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
               <input
                 ref={formRef as any}
                 type="text"
@@ -326,7 +326,7 @@ export default function BlogHero() {
   return (
     <Suspense fallback={
       <section className="relative h-[340px] sm:h-[380px] md:h-[420px] bg-gray-900 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#091E34', borderTopColor: 'transparent' }} />
+        <div className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#000000', borderTopColor: 'transparent' }} />
       </section>
     }>
       <BlogHeroInner />

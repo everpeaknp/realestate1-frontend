@@ -11,8 +11,7 @@ import PropertySidebar from '@/components/properties/single-property/PropertySid
 import ContactSection from '@/components/shared/ContactSection';
 import Newsletter from '@/components/shared/newsletter';
 import SocialShare from '@/components/shared/SocialShare';
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
+
 import { EagleProperty } from '@/lib/eagle-api';
 import { extractEagleId } from '@/lib/eagle-slug';
 
@@ -55,14 +54,14 @@ export default function SinglePropertyPage() {
   if (loading) {
     return (
       <>
-        <Header />
+        
         <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="text-center">
             <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-[#c1a478] border-r-transparent mb-4"></div>
             <p className="text-gray-600">Loading property details...</p>
           </div>
         </div>
-        <Footer />
+        
       </>
     );
   }
@@ -70,7 +69,7 @@ export default function SinglePropertyPage() {
   if (error || !property) {
     return (
       <>
-        <Header />
+        
         <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="text-center max-w-md px-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Property Not Found</h2>
@@ -83,14 +82,14 @@ export default function SinglePropertyPage() {
             </a>
           </div>
         </div>
-        <Footer />
+        
       </>
     );
   }
 
   return (
     <>
-      <Header />
+      
       <SinglePropertyHero property={property} />
       <main className="bg-white">
         <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -114,7 +113,7 @@ export default function SinglePropertyPage() {
         <ContactSection />
         <Newsletter />
       </main>
-      <Footer />
+      
     </>
   );
 }

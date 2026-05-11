@@ -49,7 +49,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
 
                   {/* Content */}
                   <div className="text-center px-1">
-                    <h3 className="text-lg font-bold text-[#1a1a1a] mb-2 group-hover:text-[#091E34] transition-colors leading-tight font-sans">
+                    <h3 className="text-lg font-bold text-[#1a1a1a] mb-2 group-hover:text-[#000000] transition-colors leading-tight font-sans">
                       {post.title}
                     </h3>
                     <div className="text-[#5d6d87] text-[13px] font-bold tracking-tight uppercase">

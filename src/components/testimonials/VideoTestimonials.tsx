@@ -110,7 +110,7 @@ export default function VideoTestimonials() {
                     </h3>
 
                     {/* Play Button */}
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mb-6 sm:mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110" style={{ background: '#091E34' }}>
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mb-6 sm:mb-8 shadow-lg transition-transform duration-500 group-hover:scale-110" style={{ background: '#000000' }}>
                       <Play size={20} className="sm:w-6 sm:h-6 text-white fill-current ml-1" />
                     </div>
 

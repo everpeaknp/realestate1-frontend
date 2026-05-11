@@ -32,9 +32,9 @@ export default function AboutProperty() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(9, 30, 52, 0.2)' }}
+            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.2)' }}
           >
-            <span className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2" style={{ color: '#091E34' }}>12+</span>
+            <span className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2" style={{ color: '#000000' }}>12+</span>
             <span className="text-[#34465d] text-xs sm:text-sm font-medium tracking-wide">Years of Experience</span>
           </motion.div>
 
@@ -44,9 +44,9 @@ export default function AboutProperty() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(9, 30, 52, 0.2)' }}
+            whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.2)' }}
           >
-            <span className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2" style={{ color: '#091E34' }}>1,500+</span>
+            <span className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2" style={{ color: '#000000' }}>1,500+</span>
             <span className="text-[#34465d] text-xs sm:text-sm font-medium tracking-wide">Satisfied Clients</span>
           </motion.div>
         </div>

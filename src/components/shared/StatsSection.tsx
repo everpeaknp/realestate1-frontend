@@ -83,7 +83,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
     };
   });
   return (
-    <section className="w-full py-0 text-white overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20" style={{ backgroundColor: '#091E34' }}>
+    <section className="w-full py-0 text-white overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20" style={{ backgroundColor: '#000000' }}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mx-auto relative max-w-7xl">
         {statsData.map((stat, index) => (
           <div key={stat.label || index} className="relative min-h-[181px]">
@@ -115,7 +115,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
                 style={{ 
                   transform: "translateZ(90.5px)", // 90.5px is half the height (181px)
                   WebkitBackfaceVisibility: "hidden",
-                  backgroundColor: '#091E34'
+                  backgroundColor: '#000000'
                 }}
               >
                 {/* Brand Elements in original layout */}
@@ -133,7 +133,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
                 style={{ 
                   transform: "rotateX(-90deg) translateZ(90.5px)", 
                   WebkitBackfaceVisibility: "hidden",
-                  backgroundColor: '#091E34'
+                  backgroundColor: '#000000'
                 }}
               >
                 <p className="text-xs sm:text-sm md:text-[15px] leading-relaxed text-blue-50 italic font-medium max-w-[240px]">

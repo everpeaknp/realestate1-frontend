@@ -4,8 +4,7 @@ import AboutProperty from '@/components/properties/AboutProperty';
 import PropertyList from '@/components/properties/PropertyList';
 import ContactSection from '@/components/shared/ContactSection';
 import Newsletter from '@/components/shared/newsletter';
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
+
 import PropertyCardSkeleton from '@/components/shared/PropertyCardSkeleton';
 
 // Enable static generation with revalidation every 5 minutes
@@ -14,8 +13,9 @@ export const revalidate = 300;
 export default function PropertiesPage() {
   return (
     <>
-      <Header />
-      <PropertiesHero />
+      <Suspense fallback={<div className="h-20 bg-brand-surface animate-pulse" />}>
+        <PropertiesHero />
+      </Suspense>
 
       <Suspense fallback={
         <div className="container mx-auto px-4 py-16">
@@ -27,11 +27,11 @@ export default function PropertiesPage() {
         </div>
       }>
         <PropertyList />
-              <AboutProperty />
+        <AboutProperty />
       </Suspense>
       <ContactSection />
       <Newsletter />
-      <Footer />
+      
     </>
   );
 }

@@ -77,8 +77,8 @@ export default function PropertyFilter({ onFilterChange }: PropertyFilterProps) 
   const hasActiveFilters = !!(propertyType || minPrice || maxPrice || beds || status);
   const activeFilterCount = [propertyType, minPrice, maxPrice, beds, status].filter(Boolean).length;
 
-  const selectClass = "w-full px-2.5 py-2.5 sm:px-3 sm:py-3 bg-white border-2 border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 font-medium focus:outline-none focus:border-[#091E34] focus:ring-2 focus:ring-[#091E34]/20 transition-all duration-200 cursor-pointer hover:border-[#091E34]/40 appearance-none";
-  const labelClass = "block text-[9px] sm:text-[10px] md:text-xs font-bold text-[#091E34] mb-1.5 sm:mb-2 uppercase tracking-widest whitespace-nowrap";
+  const selectClass = "w-full px-2.5 py-2.5 sm:px-3 sm:py-3 bg-white border-2 border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 font-medium focus:outline-none focus:border-[#000000] focus:ring-2 focus:ring-[#000000]/20 transition-all duration-200 cursor-pointer hover:border-[#000000]/40 appearance-none";
+  const labelClass = "block text-[9px] sm:text-[10px] md:text-xs font-bold text-[#000000] mb-1.5 sm:mb-2 uppercase tracking-widest whitespace-nowrap";
 
   if (loading) return null;
 
@@ -203,7 +203,7 @@ export default function PropertyFilter({ onFilterChange }: PropertyFilterProps) 
       <div className="w-full col-span-2 lg:col-span-1 flex items-end">
         <button
           onClick={clearAllFilters}
-          className="w-full px-2.5 py-2.5 sm:px-3 sm:py-3 bg-white border-2 border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 font-medium focus:outline-none focus:border-[#091E34] focus:ring-2 focus:ring-[#091E34]/20 transition-all duration-200 cursor-pointer hover:border-[#091E34]/40 hover:bg-[#091E34] hover:text-white whitespace-nowrap"
+          className="w-full px-2.5 py-2.5 sm:px-3 sm:py-3 bg-white border-2 border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 font-medium focus:outline-none focus:border-[#000000] focus:ring-2 focus:ring-[#000000]/20 transition-all duration-200 cursor-pointer hover:border-[#000000]/40 hover:bg-[#000000] hover:text-white whitespace-nowrap"
         >
           Clear All
         </button>
@@ -232,18 +232,18 @@ export default function PropertyFilter({ onFilterChange }: PropertyFilterProps) 
           onClick={() => setMobileOpen(!mobileOpen)}
           className="w-full flex items-center justify-between px-4 py-3 md:hidden cursor-pointer active:bg-gray-50 transition-colors"
         >
-          <span className="flex items-center gap-2 text-sm font-bold text-[#091E34] uppercase tracking-wider">
+          <span className="flex items-center gap-2 text-sm font-bold text-[#000000] uppercase tracking-wider">
             <SlidersHorizontal size={16} />
             {settings?.filter_title || 'Filters'}
             {activeFilterCount > 0 && (
-              <span className="inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-[#091E34] rounded-full">
+              <span className="inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-[#000000] rounded-full">
                 {activeFilterCount}
               </span>
             )}
           </span>
           <ChevronDown
             size={18}
-            className={`text-[#091E34] transition-transform duration-300 ${mobileOpen ? 'rotate-180' : ''}`}
+            className={`text-[#000000] transition-transform duration-300 ${mobileOpen ? 'rotate-180' : ''}`}
           />
         </button>
 
@@ -300,7 +300,7 @@ export default function PropertyFilter({ onFilterChange }: PropertyFilterProps) 
 
 function Badge({ label, onClear }: { label: string, onClear: () => void }) {
   return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-[#091E34]/80 text-white rounded-full text-[10px] sm:text-xs font-semibold backdrop-blur-md border border-white/20 shadow-lg">
+    <span className="inline-flex items-center gap-1 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-[#000000]/80 text-white rounded-full text-[10px] sm:text-xs font-semibold backdrop-blur-md border border-white/20 shadow-lg">
       {label}
       <button onClick={onClear} className="ml-0.5 hover:text-white/60 transition-colors cursor-pointer">
         <X size={10} />

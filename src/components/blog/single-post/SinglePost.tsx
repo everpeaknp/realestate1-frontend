@@ -30,8 +30,8 @@ export default function SinglePost({ slug }: SinglePostProps) {
         <article>
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-4">
-              <FileText className="w-8 h-8" style={{ color: '#091E34' }} />
-              <span className="px-3 py-1 rounded-full text-sm font-medium" style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)', color: '#091E34' }}>
+              <FileText className="w-8 h-8" style={{ color: '#000000' }} />
+              <span className="px-3 py-1 rounded-full text-sm font-medium" style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', color: '#000000' }}>
                 Real Estate Tips
               </span>
             </div>

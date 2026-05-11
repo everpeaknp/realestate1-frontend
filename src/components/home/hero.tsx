@@ -268,8 +268,8 @@ export default function Hero({ settings }: HeroProps) {
         {results.properties.length > 0 && (
           <div>
             <div className="px-4 py-2.5 border-b border-gray-100 flex items-center gap-2">
-              <Home size={12} className="text-[#091E34]" />
-              <span className="text-[10px] font-bold text-[#091E34] uppercase tracking-widest">Properties</span>
+              <Home size={12} className="text-[#000000]" />
+              <span className="text-[10px] font-bold text-[#000000] uppercase tracking-widest">Properties</span>
             </div>
             <div className="py-1">
               {results.properties.map((p) => (
@@ -277,7 +277,7 @@ export default function Hero({ settings }: HeroProps) {
                   key={p.key}
                   href={p.slug ? `/properties/${p.slug}` : `/properties?search=${encodeURIComponent(p.location)}`}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group cursor-pointer hover:bg-[#091E34]/[0.04]"
+                  className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group cursor-pointer hover:bg-[#000000]/[0.04]"
                 >
                   <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 ring-1 ring-gray-200/60">
                     <LazyImage
@@ -288,12 +288,12 @@ export default function Hero({ settings }: HeroProps) {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#091E34] transition-colors duration-150">{p.title}</p>
+                    <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#000000] transition-colors duration-150">{p.title}</p>
                     <p className="text-[11px] text-gray-400 truncate mt-0.5">{p.location}</p>
                   </div>
                   <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
                     {p.price && (
-                      <span className="text-xs font-bold text-[#091E34]">{p.price}</span>
+                      <span className="text-xs font-bold text-[#000000]">{p.price}</span>
                     )}
                     {p.source === 'eagle' && (
                       <span className="text-[9px] text-gray-400 font-medium uppercase tracking-wider">Eagle</span>
@@ -304,8 +304,8 @@ export default function Hero({ settings }: HeroProps) {
             </div>
             <div className="border-t border-gray-100">
               <Link href={`/properties?search=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold text-[#091E34] uppercase tracking-wider hover:bg-[#091E34]/[0.04] transition-colors duration-150 cursor-pointer">
-                View all properties <span className="text-[#091E34]/60">→</span>
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold text-[#000000] uppercase tracking-wider hover:bg-[#000000]/[0.04] transition-colors duration-150 cursor-pointer">
+                View all properties <span className="text-[#000000]/60">→</span>
               </Link>
             </div>
           </div>
@@ -315,8 +315,8 @@ export default function Hero({ settings }: HeroProps) {
         {results.blogs.length > 0 && (
           <div>
             <div className="px-4 py-2.5 border-b border-gray-100 flex items-center gap-2">
-              <FileText size={12} className="text-[#091E34]" />
-              <span className="text-[10px] font-bold text-[#091E34] uppercase tracking-widest">Blog Posts</span>
+              <FileText size={12} className="text-[#000000]" />
+              <span className="text-[10px] font-bold text-[#000000] uppercase tracking-widest">Blog Posts</span>
             </div>
             <div className="py-1">
               {results.blogs.map((b) => (
@@ -324,7 +324,7 @@ export default function Hero({ settings }: HeroProps) {
                   key={b.id}
                   href={`/blog/${b.slug}`}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group cursor-pointer hover:bg-[#091E34]/[0.04]"
+                  className="flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group cursor-pointer hover:bg-[#000000]/[0.04]"
                 >
                   <div className="w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 ring-1 ring-gray-200/60">
                     <LazyImage
@@ -335,7 +335,7 @@ export default function Hero({ settings }: HeroProps) {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#091E34] transition-colors duration-150">{b.title}</p>
+                    <p className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#000000] transition-colors duration-150">{b.title}</p>
                     <p className="text-[11px] text-gray-400 mt-0.5">{b.author_name}</p>
                   </div>
                 </Link>
@@ -343,8 +343,8 @@ export default function Hero({ settings }: HeroProps) {
             </div>
             <div className="border-t border-gray-100">
               <Link href={`/blog?search=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold text-[#091E34] uppercase tracking-wider hover:bg-[#091E34]/[0.04] transition-colors duration-150 cursor-pointer">
-                View all blog posts <span className="text-[#091E34]/60">→</span>
+                className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold text-[#000000] uppercase tracking-wider hover:bg-[#000000]/[0.04] transition-colors duration-150 cursor-pointer">
+                View all blog posts <span className="text-[#000000]/60">→</span>
               </Link>
             </div>
           </div>
@@ -401,7 +401,7 @@ export default function Hero({ settings }: HeroProps) {
           transition={{ duration: 0.8, delay: 0.35 }}
         >
           <div className="relative group">
-            <div className="relative flex items-center bg-white rounded-full p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white transition-all duration-300 group-focus-within:shadow-[0_20px_60px_rgba(9,30,52,0.15)]">
+            <div className="relative flex items-center bg-white rounded-full p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white transition-all duration-300 group-focus-within:shadow-[0_20px_60px_rgba(0,0,0,0.15)]">
               <input
                 ref={formRef as any}
                 type="text"
@@ -445,7 +445,7 @@ export default function Hero({ settings }: HeroProps) {
         >
           <Link href={primaryButtonLink} className="w-full sm:w-auto">
             <button className="w-full sm:w-auto text-white px-8 sm:px-10 py-3 sm:py-4 font-bold text-xs sm:text-sm tracking-widest transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer hover:opacity-90"
-              style={{ backgroundColor: '#091E34' }}>
+              style={{ backgroundColor: '#000000' }}>
               {primaryButtonText}
             </button>
           </Link>

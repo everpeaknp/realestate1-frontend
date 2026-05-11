@@ -167,7 +167,7 @@ export default function Testimonials() {
                     </h3>
                     
                     <div className="mb-6 sm:mb-8 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto"
-                      style={{ background: '#091E34' }}>
+                      style={{ background: '#000000' }}>
                       <Play size={20} className="sm:w-6 sm:h-6 text-white ml-1" fill="currentColor" />
                     </div>
 

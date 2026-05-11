@@ -20,7 +20,7 @@ export default function PropertyFloorPlan({ property }: PropertyFloorPlanProps) 
   return (
     <div className="bg-white">
       <div className="flex items-center gap-3 mb-6 sm:mb-8">
-        <FileText size={24} style={{ color: '#091E34' }} />
+        <FileText size={24} style={{ color: '#000000' }} />
         <h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a]">Floor Plans</h2>
       </div>
 
@@ -47,7 +47,7 @@ export default function PropertyFloorPlan({ property }: PropertyFloorPlanProps) 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-semibold transition-colors cursor-pointer hover:opacity-80"
-                style={{ color: '#091E34' }}
+                style={{ color: '#000000' }}
               >
                 <FileText size={18} />
                 View Full Size

@@ -14,6 +14,18 @@ export default function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const [scrolled, setScrolled] = useState(false);
+  const isHome = pathname === '/';
+
+  // Handle scroll for transparent -> solid transition
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Close mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -60,9 +72,16 @@ export default function Header() {
     return `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
   };
 
+  // Dynamic Styles
+  const isTransparent = isHome && !scrolled && !mobileMenuOpen;
+  const headerBaseClass = "w-full fixed top-0 z-[100] transition-all duration-500 ease-in-out";
+  const headerThemeClass = isTransparent 
+    ? "bg-transparent border-transparent text-white" 
+    : "bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm text-black";
+
   return (
     <>
-      <header className="w-full border-b border-gray-100 bg-white shadow-sm sticky top-0 z-[100] transition-shadow duration-300">
+      <header className={`${headerBaseClass} ${headerThemeClass}`}>
         <div className="mx-auto flex h-20 md:h-24 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Logo Section */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group">
@@ -77,30 +96,30 @@ export default function Header() {
                 />
               </div>
             ) : (
-              // Default logo shape with blue theme
+              // Default logo shape
               <div className="relative h-8 sm:h-10 w-10 sm:w-12 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
                 {/* Logo Shape */}
                 <div className="absolute inset-0 flex">
                   <div 
-                    style={{ background: 'linear-gradient(to bottom right, #091E34, #0a2240)', clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
-                    className="w-1/2 h-full" 
+                    style={{ background: isTransparent ? 'linear-gradient(to bottom right, #ffffff, #f0f0f0)' : 'linear-gradient(to bottom right, #000000, #1a1a1a)', clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
+                    className="w-1/2 h-full transition-all duration-500" 
                   />
                   <div 
-                    style={{ background: 'linear-gradient(to bottom right, #0d2d4d, #0f3558)', clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
-                    className="w-1/2 h-full" 
+                    style={{ background: isTransparent ? 'linear-gradient(to bottom right, #e0e0e0, #d0d0d0)' : 'linear-gradient(to bottom right, #262626, #404040)', clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
+                    className="w-1/2 h-full transition-all duration-500" 
                   />
                 </div>
-                {/* The white house silhouette in the center bottom */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 sm:w-4 h-4 sm:h-5 bg-white flex flex-col items-center justify-center rounded-t-sm shadow-md">
-                   <div style={{ backgroundColor: '#091E34' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1 mb-0.5"></div>
+                {/* The house silhouette */}
+                <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 sm:w-4 h-4 sm:h-5 flex flex-col items-center justify-center rounded-t-sm shadow-md transition-all duration-500 ${isTransparent ? 'bg-black' : 'bg-white'}`}>
+                   <div className={`w-0.5 sm:w-1 h-0.5 sm:h-1 mb-0.5 transition-colors duration-500 ${isTransparent ? 'bg-white' : 'bg-black'}`}></div>
                    <div className="flex gap-0.5">
-                     <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
-                     <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
+                     <div className={`w-0.5 sm:w-1 h-0.5 sm:h-1 transition-colors duration-500 ${isTransparent ? 'bg-white/30' : 'bg-black/30'}`}></div>
+                     <div className={`w-0.5 sm:w-1 h-0.5 sm:h-1 transition-colors duration-500 ${isTransparent ? 'bg-white/30' : 'bg-black/30'}`}></div>
                    </div>
                 </div>
               </div>
             )}
-            <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-slate-800 transition-colors duration-200 group-hover:text-[#091E34]">
+            <span className={`text-lg sm:text-xl md:text-2xl font-bold tracking-tight transition-colors duration-500 ${isTransparent ? 'text-white' : 'text-black'}`}>
               {logoText}
             </span>
           </Link>
@@ -117,16 +136,16 @@ export default function Header() {
                     e.preventDefault();
                     window.location.href = link.href;
                   }}
-                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-colors duration-200 cursor-pointer relative no-underline ${
+                  className={`flex items-center gap-1 text-[11px] font-bold tracking-[0.12em] transition-colors duration-500 cursor-pointer relative no-underline ${
                     active 
-                      ? 'text-[#091E34]' 
-                      : 'text-slate-700 hover:text-[#091E34]'
+                      ? (isTransparent ? 'text-white' : 'text-black')
+                      : (isTransparent ? 'text-white/70 hover:text-white' : 'text-gray-600 hover:text-black')
                   }`}
                 >
                   {link.name}
                   {active && (
                     <motion.div
-                      style={{ backgroundColor: '#091E34' }}
+                      style={{ backgroundColor: isTransparent ? '#FFFFFF' : '#000000' }}
                       className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full"
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: 1 }}
@@ -140,8 +159,8 @@ export default function Header() {
 
           {/* Contact Section - Hidden on mobile */}
           <div className="hidden md:flex items-center gap-2 group cursor-pointer">
-            <Phone size={18} fill="currentColor" stroke="none" style={{ color: '#091E34' }} className="opacity-80 transition-transform duration-200 group-hover:scale-110" />
-            <span className="text-base lg:text-lg font-bold text-slate-700 tracking-normal transition-colors duration-200 group-hover:text-[#091E34]">
+            <Phone size={18} fill="currentColor" stroke="none" className={`transition-all duration-500 ${isTransparent ? 'text-white' : 'text-black'}`} />
+            <span className={`text-base lg:text-lg font-bold tracking-normal transition-colors duration-500 ${isTransparent ? 'text-white/90 group-hover:text-white' : 'text-gray-700 group-hover:text-black'}`}>
               {phoneNumber}
             </span>
           </div>
@@ -149,7 +168,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-700 transition-colors duration-200 cursor-pointer hover:text-[#091E34]"
+            className={`lg:hidden p-2 transition-colors duration-500 cursor-pointer ${isTransparent ? 'text-white' : 'text-black'}`}
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -193,10 +212,10 @@ export default function Header() {
                       }}
                       className={`block px-4 py-4 text-sm font-bold tracking-wider transition-colors duration-200 border-l-4 rounded-r-md cursor-pointer no-underline ${
                         active
-                          ? 'bg-[rgba(9,30,52,0.05)] border-[#091E34]'
-                          : 'text-slate-700 hover:bg-[rgba(9,30,52,0.03)] border-transparent hover:text-[#091E34]'
+                          ? 'bg-[rgba(0,0,0,0.05)] border-[#000000]'
+                          : 'text-slate-700 hover:bg-[rgba(0,0,0,0.03)] border-transparent hover:text-[#000000]'
                       }`}
-                      style={active ? { color: '#091E34' } : {}}
+                      style={active ? { color: '#000000' } : {}}
                     >
                       {link.name}
                     </a>
@@ -207,14 +226,14 @@ export default function Header() {
               {/* Mobile Contact Info */}
               <div className="p-6 border-t border-gray-100 space-y-4">
                 <div className="flex items-center gap-3 group cursor-pointer">
-                  <Phone size={20} fill="currentColor" stroke="none" style={{ color: '#091E34' }} className="transition-transform duration-200 group-hover:scale-110" />
-                  <a href={`tel:${phoneNumber}`} className="text-base font-bold text-slate-700 transition-colors duration-200 hover:text-[#091E34]">
+                  <Phone size={20} fill="currentColor" stroke="none" style={{ color: '#000000' }} className="transition-transform duration-200 group-hover:scale-110" />
+                  <a href={`tel:${phoneNumber}`} className="text-base font-bold text-slate-700 transition-colors duration-200 hover:text-[#000000]">
                     {phoneNumber}
                   </a>
                 </div>
                 <Link href="/contact">
                   <button 
-                    style={{ background: '#091E34' }}
+                    style={{ background: '#000000' }}
                     className="w-full hover:opacity-90 text-white px-6 py-3 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer"
                     onClick={() => setMobileMenuOpen(false)}
                   >

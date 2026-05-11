@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Find your dream home with Lily White Realestate",
 };
 
+import MainWrapper from "@/components/layout/MainWrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,10 +32,12 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full">
         <CMSProvider>
           <DynamicMetadata />
-          {children}
+          <MainWrapper>
+            {children}
+          </MainWrapper>
           <Chatbot />
         </CMSProvider>
       </body>

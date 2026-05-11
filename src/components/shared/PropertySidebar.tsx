@@ -222,12 +222,12 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
 
         {submitted ? (
           <div className="text-center py-6">
-            <div style={{ color: '#091E34' }} className="text-4xl mb-3">✓</div>
+            <div style={{ color: '#000000' }} className="text-4xl mb-3">✓</div>
             <p className="text-slate-800 font-bold text-lg mb-1">Message Sent!</p>
             <p className="text-slate-600 text-sm">We'll get back to you shortly.</p>
             <button
               onClick={() => setSubmitted(false)}
-              style={{ color: '#091E34' }}
+              style={{ color: '#000000' }}
               className="mt-4 text-sm underline hover:opacity-80 transition-colors duration-200 cursor-pointer"
             >
               Send another message
@@ -302,7 +302,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
             <button
               type="submit"
               disabled={submitting || !isValid}
-              style={{ background: '#091E34' }}
+              style={{ background: '#000000' }}
               className="w-full hover:opacity-90 text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg mt-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               aria-label="Submit property inquiry"
             >
@@ -322,7 +322,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
       >
         <a
           href={`tel:${displayAgent.phone}`}
-          style={{ color: '#091E34' }}
+          style={{ color: '#000000' }}
           className="flex items-center gap-3 hover:opacity-80 transition-colors duration-200 cursor-pointer"
         >
           <Phone size={18} />
@@ -332,7 +332,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
         </a>
         <a
           href={`mailto:${displayAgent.email}`}
-          style={{ color: '#091E34' }}
+          style={{ color: '#000000' }}
           className="flex items-center gap-3 hover:opacity-80 transition-colors duration-200 cursor-pointer"
         >
           <Mail size={18} />

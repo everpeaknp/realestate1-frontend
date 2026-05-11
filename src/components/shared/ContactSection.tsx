@@ -135,7 +135,7 @@ function ContactSection({ settings }: ContactSectionProps) {
                       <span key={i}>
                         {part.trim()}
                         {i < data.card_description.split('|').length - 1 && (
-                          <span style={{ color: '#091E34' }} className="mx-2">|</span>
+                          <span style={{ color: '#000000' }} className="mx-2">|</span>
                         )}
                       </span>
                     ))}
@@ -144,18 +144,18 @@ function ContactSection({ settings }: ContactSectionProps) {
 
                 <div className="space-y-3 mb-6">
                   <a href={`tel:${data.phone}`} className="flex items-center gap-3 group cursor-pointer min-h-[44px] transition-all duration-200 hover:translate-x-1">
-                    <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(9,30,52,0.15)]">
-                      <Phone size={16} style={{ color: '#091E34' }} className="flex-shrink-0" fill="currentColor" stroke="none" />
+                    <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(0,0,0,0.15)]">
+                      <Phone size={16} style={{ color: '#000000' }} className="flex-shrink-0" fill="currentColor" stroke="none" />
                     </div>
-                    <span className="text-sm sm:text-[14px] font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#091E34]">
+                    <span className="text-sm sm:text-[14px] font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#000000]">
                       {data.phone}
                     </span>
                   </a>
                   <a href={`mailto:${data.email}`} className="flex items-center gap-3 group cursor-pointer min-h-[44px] transition-all duration-200 hover:translate-x-1">
-                    <div style={{ backgroundColor: 'rgba(9, 30, 52, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(9,30,52,0.15)]">
-                      <Mail size={16} style={{ color: '#091E34' }} className="flex-shrink-0" />
+                    <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(0,0,0,0.15)]">
+                      <Mail size={16} style={{ color: '#000000' }} className="flex-shrink-0" />
                     </div>
-                    <span className="text-sm sm:text-[14px] font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#091E34] break-all">
+                    <span className="text-sm sm:text-[14px] font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#000000] break-all">
                       {data.email}
                     </span>
                   </a>
@@ -163,7 +163,7 @@ function ContactSection({ settings }: ContactSectionProps) {
               </div>
 
               <Link href={data.button_link} className="w-full">
-                <button style={{ background: '#091E34' }} className="hover:opacity-90 text-white px-6 sm:px-10 py-3 font-bold text-xs tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px] cursor-pointer">
+                <button style={{ background: '#000000' }} className="hover:opacity-90 text-white px-6 sm:px-10 py-3 font-bold text-xs tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px] cursor-pointer">
                   {data.button_text}
                 </button>
               </Link>

@@ -83,7 +83,7 @@ export default function SingleBlogPostPageClient() {
         <Header />
         <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#091E34] mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#000000] mx-auto mb-4"></div>
             <p className="text-[#5d6d87]">Loading blog post...</p>
           </div>
         </div>
@@ -98,9 +98,9 @@ export default function SingleBlogPostPageClient() {
         <Header />
         <div className="min-h-screen flex items-center justify-center bg-white">
           <div className="text-center max-w-md">
-            <h1 className="text-4xl font-bold text-[#091E34] mb-4">Post Not Found</h1>
+            <h1 className="text-4xl font-bold text-[#000000] mb-4">Post Not Found</h1>
             <p className="text-[#5d6d87] mb-6">{error || 'The blog post you are looking for does not exist.'}</p>
-            <a href="/blog" className="inline-block bg-[#091E34] text-white px-6 py-3 rounded-sm hover:opacity-90 transition-colors cursor-pointer">
+            <a href="/blog" className="inline-block bg-[#000000] text-white px-6 py-3 rounded-sm hover:opacity-90 transition-colors cursor-pointer">
               Back to Blog
             </a>
           </div>
@@ -132,7 +132,7 @@ export default function SingleBlogPostPageClient() {
             
             {/* Comments Section */}
             <div className="border-t border-gray-100 pt-12">
-              <h3 className="text-2xl font-bold text-[#091E34] mb-8 font-sans">
+              <h3 className="text-2xl font-bold text-[#000000] mb-8 font-sans">
                 Comments ({post.comments_count})
               </h3>
               
@@ -142,11 +142,11 @@ export default function SingleBlogPostPageClient() {
                   {post.comments.map((comment) => (
                     <div key={comment.id} className="bg-gray-50 p-6 rounded-sm">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-[#091E34] flex items-center justify-center text-white font-bold">
+                        <div className="w-10 h-10 rounded-full bg-[#000000] flex items-center justify-center text-white font-bold">
                           {comment.author_name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-bold text-[#091E34]">{comment.author_name}</p>
+                          <p className="font-bold text-[#000000]">{comment.author_name}</p>
                           <p className="text-sm text-[#5d6d87]">{formatDate(comment.created_at)}</p>
                         </div>
                       </div>

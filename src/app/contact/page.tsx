@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
+
 import ContactSection from '@/components/shared/ContactSection';
 import Newsletter from '@/components/shared/newsletter';
 import Instagram from '@/components/shared/instagram';
@@ -62,7 +61,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <Header />
+      
       <ContactHero />
       {!loading && (
         <>
@@ -79,7 +78,7 @@ export default function ContactPage() {
        
       <Newsletter />
       <Instagram />
-      <Footer />
+      
     </>
   );
 }

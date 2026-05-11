@@ -55,7 +55,7 @@ export default function SellPropertySection({
               <div className="flex flex-col gap-3 sm:gap-4 mb-8 sm:mb-10">
                 {features.map((feature) => (
                   <div key={feature.id} className="flex items-start gap-3">
-                    <CheckCircle2 size={20} className="flex-shrink-0 mt-0.5" style={{ color: '#091E34' }} />
+                    <CheckCircle2 size={20} className="flex-shrink-0 mt-0.5" style={{ color: '#000000' }} />
                     <span className="text-[#5d6d87] font-medium font-sans text-sm sm:text-base">{feature.text}</span>
                   </div>
                 ))}
@@ -66,7 +66,7 @@ export default function SellPropertySection({
                 <a 
                   href="/contact"
                   className="w-full py-3 sm:py-4 text-white font-bold uppercase tracking-widest text-xs sm:text-sm transition-all duration-200 shadow-md hover:shadow-lg text-center rounded-lg min-h-[44px] flex items-center justify-center transform hover:-translate-y-0.5 cursor-pointer hover:opacity-90"
-                  style={{ background: '#091E34' }}
+                  style={{ background: '#000000' }}
                 >
                   {buttonText}
                 </a>
@@ -76,8 +76,8 @@ export default function SellPropertySection({
                     href={`tel:${phone}`}
                     className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer min-h-[44px]"
                   >
-                    <Phone size={18} className="flex-shrink-0" style={{ color: '#091E34' }} fill="currentColor" stroke="none" />
-                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#091E34] transition-colors duration-200 text-sm sm:text-base">
+                    <Phone size={18} className="flex-shrink-0" style={{ color: '#000000' }} fill="currentColor" stroke="none" />
+                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#000000] transition-colors duration-200 text-sm sm:text-base">
                       {phone}
                     </span>
                   </a>
@@ -85,8 +85,8 @@ export default function SellPropertySection({
                     href={`mailto:${email}`}
                     className="flex items-center gap-3 text-[#5d6d87] group cursor-pointer min-h-[44px]"
                   >
-                    <Mail size={18} className="flex-shrink-0" style={{ color: '#091E34' }} />
-                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#091E34] transition-colors duration-200 text-sm sm:text-base break-all">
+                    <Mail size={18} className="flex-shrink-0" style={{ color: '#000000' }} />
+                    <span className="font-bold text-[#1a1a1a] group-hover:text-[#000000] transition-colors duration-200 text-sm sm:text-base break-all">
                       {email}
                     </span>
                   </a>

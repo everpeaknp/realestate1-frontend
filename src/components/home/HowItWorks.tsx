@@ -76,7 +76,7 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
               {/* Card */}
               <motion.div
                 className="w-full p-6 sm:p-8 py-10 sm:py-12 flex flex-col items-center justify-center gap-4 sm:gap-6 relative overflow-hidden group shadow-xl rounded-lg"
-                style={{ background: '#091E34' }}
+                style={{ background: '#000000' }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -85,7 +85,7 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
               >
                 {/* Step Ribbon */}
                 <div className="absolute top-4 left-[-35px] z-10 w-[140px] h-8 flex items-center justify-center -rotate-45 shadow-sm"
-                  style={{ backgroundColor: 'rgba(9, 30, 52, 0.2)' }}>
+                  style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
                   <span className="text-white text-[10px] font-bold tracking-widest pl-2">STEP {step.number}</span>
                 </div>
 
@@ -104,7 +104,7 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
               {index < stepsData.length - 1 && (
                 <div className="hidden lg:flex flex-1 items-center justify-center px-4">
                   <div className="w-full h-px border-b border-dashed border-slate-400/60 relative flex items-center justify-end">
-                    <ChevronRight size={16} className="absolute -right-1" style={{ color: '#091E34' }} />
+                    <ChevronRight size={16} className="absolute -right-1" style={{ color: '#000000' }} />
                   </div>
                 </div>
               )}

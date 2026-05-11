@@ -56,13 +56,13 @@ export default function ContactCards({
                   key={item.id}
                   className="group flex flex-col items-center p-8 sm:p-10 lg:p-12 border-2 border-gray-100 bg-white rounded-lg text-center"
                 >
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mb-6 sm:mb-8 rounded-lg" style={{ background: '#091E34' }}>
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mb-6 sm:mb-8 rounded-lg" style={{ background: '#000000' }}>
                     <IconComponent size={24} className="sm:w-7 sm:h-7 text-white" />
                   </div>
                   <h3 className="text-xs sm:text-sm font-bold tracking-[0.15em] sm:tracking-[0.2em] mb-2 sm:mb-3 uppercase text-slate-500">
                     {item.title}
                   </h3>
-                  <p className="text-lg sm:text-xl font-bold tracking-tight break-words" style={{ color: '#091E34' }}>
+                  <p className="text-lg sm:text-xl font-bold tracking-tight break-words" style={{ color: '#000000' }}>
                     {item.value}
                   </p>
                 </div>
@@ -117,7 +117,7 @@ export default function ContactCards({
                 key={item.id}
                 className="group flex flex-col items-center p-8 sm:p-10 lg:p-12 border-2 bg-white hover:shadow-xl transition-all duration-300 rounded-lg text-center cursor-pointer"
                 style={{
-                  borderColor: isHovered ? '#091E34' : '#f3f4f6'
+                  borderColor: isHovered ? '#000000' : '#f3f4f6'
                 }}
                 onMouseEnter={() => setHoveredCard(item.id)}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -127,7 +127,7 @@ export default function ContactCards({
                 transition={{ duration: 0.6, delay }}
               >
                 {/* Icon Container */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mb-6 sm:mb-8 rounded-lg transition-all duration-300 group-hover:shadow-lg group-hover:scale-110" style={{ background: '#091E34' }}>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mb-6 sm:mb-8 rounded-lg transition-all duration-300 group-hover:shadow-lg group-hover:scale-110" style={{ background: '#000000' }}>
                   <IconComponent size={24} className="sm:w-7 sm:h-7 text-white" />
                 </div>
 
@@ -135,7 +135,7 @@ export default function ContactCards({
                 <h3 
                   className="text-xs sm:text-sm font-bold tracking-[0.15em] sm:tracking-[0.2em] mb-2 sm:mb-3 uppercase transition-colors"
                   style={{
-                    color: isHovered ? '#091E34' : '#64748b'
+                    color: isHovered ? '#000000' : '#64748b'
                   }}
                 >
                   {item.title}
@@ -148,12 +148,12 @@ export default function ContactCards({
                     target={target}
                     rel={target === '_blank' ? 'noopener noreferrer' : undefined}
                     className="text-lg sm:text-xl font-bold tracking-tight transition-opacity break-words cursor-pointer hover:opacity-80"
-                    style={{ color: '#091E34' }}
+                    style={{ color: '#000000' }}
                   >
                     {item.value}
                   </a>
                 ) : (
-                  <p className="text-lg sm:text-xl font-bold tracking-tight break-words" style={{ color: '#091E34' }}>
+                  <p className="text-lg sm:text-xl font-bold tracking-tight break-words" style={{ color: '#000000' }}>
                     {item.value}
                   </p>
                 )}

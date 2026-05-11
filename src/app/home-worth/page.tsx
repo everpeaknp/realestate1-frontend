@@ -1,5 +1,5 @@
-import Header from '@/components/common/header';
-import Footer from '@/components/common/Footer';
+
+
 import MyHomeWorth from '@/components/homeworth/MyHomeWorth';
 
 export const metadata = {
@@ -10,11 +10,11 @@ export const metadata = {
 export default function HomeWorthPage() {
   return (
     <>
-      <Header />
+      
       <main>
         <MyHomeWorth />
       </main>
-      <Footer />
+      
     </>
   );
 }

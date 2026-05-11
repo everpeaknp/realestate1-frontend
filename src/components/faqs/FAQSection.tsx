@@ -114,7 +114,7 @@ export default function FAQSection() {
         {/* Loading State */}
         {loading && (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#091E34]"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#000000]"></div>
             <p className="mt-4 text-slate-600">Loading FAQs...</p>
           </div>
         )}
@@ -146,14 +146,14 @@ export default function FAQSection() {
                   >
                     <span 
                       className="text-[17px] font-bold leading-tight transition-colors"
-                      style={{ color: openIndex === index ? '#091E34' : '#1a1a1a' }}
+                      style={{ color: openIndex === index ? '#000000' : '#1a1a1a' }}
                     >
                       {faq.question}
                     </span>
                     <motion.div
                       animate={{ rotate: openIndex === index ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
-                      style={{ color: '#091E34' }}
+                      style={{ color: '#000000' }}
                       className="flex-shrink-0 ml-4"
                     >
                       <ChevronDown size={24} />
