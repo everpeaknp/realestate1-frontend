@@ -272,10 +272,10 @@ export async function fetchProperties(options?: {
   let nodes = data.properties.nodes || [];
 
   if (status) {
-    nodes = nodes.filter((p) => p.status === status);
+    nodes = nodes.filter((p) => p.status?.toUpperCase() === status.toUpperCase());
   }
   if (propertyType) {
-    nodes = nodes.filter((p) => p.propertyType === propertyType);
+    nodes = nodes.filter((p) => p.propertyType?.toUpperCase() === propertyType.toUpperCase());
   }
   if (agentName) {
     const nameParts = agentName.toLowerCase().split(' ');
@@ -367,9 +367,17 @@ export async function fetchPropertyById(id: string): Promise<EagleProperty | nul
  */
 export async function searchProperties(
   searchTerm: string,
-  limit = 20
+  limit = 20,
+  filters?: {
+    status?: string;
+    propertyType?: string;
+    agentName?: string;
+  }
 ): Promise<EagleProperty[]> {
-  const all = await fetchProperties({ limit: Math.max(limit * 5, 100) });
+  const all = await fetchProperties({ 
+    limit: Math.max(limit * 10, 200), // Increase pool for searching
+    ...filters 
+  });
   const lower = searchTerm.toLowerCase();
   
   console.log(`[Eagle Search] Searching for "${searchTerm}" in ${all.length} properties`);

@@ -62,7 +62,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full border-b border-gray-100 bg-white shadow-sm sticky top-0 z-50 transition-shadow duration-300">
+      <header className="w-full border-b border-gray-100 bg-white shadow-sm sticky top-0 z-[100] transition-shadow duration-300">
         <div className="mx-auto flex h-20 md:h-24 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Logo Section */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group">

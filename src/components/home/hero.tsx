@@ -392,7 +392,7 @@ export default function Hero({ settings }: HeroProps) {
           </p>
         </motion.div>
 
-        {/* Search Bar — Premium Glassmorphic Pill */}
+        {/* Search Bar — Premium Redesign */}
         <motion.div
           ref={wrapperRef}
           className="mb-10 sm:mb-14 w-full max-w-2xl mx-auto"
@@ -400,45 +400,37 @@ export default function Hero({ settings }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35 }}
         >
-          <form ref={formRef} onSubmit={handleSubmit} className="relative group">
-            {/* Outer glow on focus */}
-            <div className="absolute -inset-0.5 bg-white/20 rounded-full opacity-0 group-focus-within:opacity-100 blur-sm transition-opacity duration-300" />
-
-            <div className="relative flex items-center bg-white/95 backdrop-blur-xl rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-white/60 overflow-hidden transition-all duration-300 group-focus-within:shadow-[0_8px_40px_rgba(9,30,52,0.18)]">
-              {/* Search Icon */}
-              <div className="pl-4 sm:pl-5 flex-shrink-0 text-gray-400 group-focus-within:text-[#091E34] transition-colors duration-200">
-                <Search size={18} strokeWidth={2.5} />
-              </div>
-
-              {/* Input */}
+          <div className="relative group">
+            <div className="relative flex items-center bg-white rounded-full p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white transition-all duration-300 group-focus-within:shadow-[0_20px_60px_rgba(9,30,52,0.15)]">
               <input
+                ref={formRef as any}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => hasResults && setOpen(true)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e as any)}
                 placeholder="Search properties, blog posts..."
-                className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 px-3 py-3.5 sm:py-4 text-sm sm:text-base font-medium outline-none min-w-0"
+                className="flex-1 bg-transparent text-brand-primary placeholder-gray-400 pl-6 py-3.5 text-sm sm:text-base font-medium outline-none min-w-0 border-0 focus:ring-0"
               />
 
-              {/* Clear button */}
               {query && (
-                <button type="button" onClick={clearSearch}
-                  className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-200 mr-1 cursor-pointer">
-                  <X size={14} strokeWidth={2.5} />
+                <button 
+                  type="button" 
+                  onClick={clearSearch}
+                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-brand-primary hover:bg-gray-100 transition-all mr-2 cursor-pointer"
+                >
+                  <X size={16} />
                 </button>
               )}
 
-              {/* Submit Button */}
-              <button type="submit"
-                className="flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 mr-1.5 sm:mr-2 flex items-center justify-center rounded-full text-white transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
-                style={{ background: 'linear-gradient(135deg, #091E34, #14324E)' }}>
-                {loading
-                  ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  : <Search size={16} strokeWidth={2.5} />
-                }
+              <button 
+                onClick={handleSubmit}
+                className="bg-brand-primary text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center hover:scale-105 transition-transform shadow-lg shrink-0 cursor-pointer"
+              >
+                <Search size={20} />
               </button>
             </div>
-          </form>
+          </div>
         </motion.div>
 
         {/* Portal dropdown renders here */}

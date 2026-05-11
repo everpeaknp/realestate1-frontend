@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const status = searchParams.get('status') || undefined;
-    const propertyType = searchParams.get('propertyType') || undefined;
+    const propertyType = searchParams.get('property_type') || searchParams.get('propertyType') || undefined;
     const search = searchParams.get('search') || undefined;
     const showAllAgents = searchParams.get('showAllAgents') !== 'false';
     // Show all agents by default since Bijen Khadka is not in Eagle API
@@ -31,7 +31,11 @@ export async function GET(request: NextRequest) {
 
     // Only use searchProperties if search term is non-empty
     if (search && search.trim() !== '') {
-      properties = await searchProperties(search, limit);
+      properties = await searchProperties(search, limit, {
+        status,
+        propertyType,
+        agentName: showAllAgents ? undefined : agentName,
+      });
     } else {
       properties = await fetchProperties({
         limit,
