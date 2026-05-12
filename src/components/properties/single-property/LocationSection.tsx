@@ -104,7 +104,7 @@ export default function LocationSection({ property }: LocationSectionProps) {
   const displayNearby = nearbyItems.length > 0 ? nearbyItems : fallbackNearby;
 
   return (
-    <section className="bg-neutral-50 py-32 overflow-hidden">
+    <section className="py-32 overflow-hidden" style={{ backgroundColor: '#FAF9F9' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-10">
 
         {/* Header row */}
