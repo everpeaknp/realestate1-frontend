@@ -136,8 +136,14 @@ export default function FeaturedProperties() {
         }
 
         if (otherData.success && Array.isArray(otherData.properties) && otherData.properties.length > 0) {
+          // Get IDs already added to avoid duplicates
+          const existingIds = new Set(allProperties.map(p => p.id));
+          
+          // Filter out properties that are already in allProperties
+          const uniqueOthers = otherData.properties.filter((prop: EagleProperty) => !existingIds.has(prop.id));
+          
           // Sort by latest (createdAt or updatedAt)
-          const sortedOthers = otherData.properties.sort((a: EagleProperty, b: EagleProperty) => {
+          const sortedOthers = uniqueOthers.sort((a: EagleProperty, b: EagleProperty) => {
             const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
             const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
             return dateB - dateA; // Most recent first
