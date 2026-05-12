@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useAnimationFrame, AnimatePresence } from 'framer-motion';
 import { EagleProperty } from '@/lib/eagle-api';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -14,77 +14,88 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
-  
+
   // Skip the first image (used as hero) and show all remaining images
   const images = (property.images ?? []).slice(1);
-
-  if (images.length === 0) return null;
+  const hasImages = images.length > 0;
 
   // Create a much larger array for truly infinite scrolling (5 copies)
-  const infiniteImages = [
-    ...images,
-    ...images,
-    ...images,
-    ...images,
-    ...images,
-  ];
+  const infiniteImages = hasImages
+    ? [...images, ...images, ...images, ...images, ...images]
+    : [];
 
   const imageWidth = 480 + 24; // width + gap
-  const singleSetWidth = images.length * imageWidth;
+  const singleSetWidth = hasImages ? images.length * imageWidth : 0;
+
+  const openLightbox = useCallback(
+    (index: number) => {
+      if (!hasImages) return;
+      setSelectedImage(index % images.length);
+    },
+    [hasImages, images.length]
+  );
+
+  const closeLightbox = useCallback(() => {
+    setSelectedImage(null);
+  }, []);
+
+  const navigateLightbox = useCallback(
+    (direction: 'prev' | 'next') => {
+      if (!hasImages) return;
+
+      setSelectedImage((currentImage) => {
+        if (currentImage === null) return currentImage;
+
+        if (direction === 'prev') {
+          return (currentImage - 1 + images.length) % images.length;
+        }
+
+        return (currentImage + 1) % images.length;
+      });
+    },
+    [hasImages, images.length]
+  );
 
   // Auto-scroll animation with seamless loop
   useAnimationFrame(() => {
-    if (!isDragging && containerRef.current && selectedImage === null) {
-      const currentX = x.get();
-      const speed = 1.5; // Increased speed for smoother, faster scrolling
-      let newX = currentX - speed;
-      
-      // Seamless infinite loop - reset when reaching boundaries
-      // We have 5 sets, so we can safely scroll through middle 3 sets
-      if (newX < -singleSetWidth * 3) {
-        newX = newX + singleSetWidth;
-      } else if (newX > -singleSetWidth) {
-        newX = newX - singleSetWidth;
-      }
-      
-      x.set(newX);
+    if (!hasImages || isDragging || !containerRef.current || selectedImage !== null || singleSetWidth === 0) {
+      return;
     }
+
+    const currentX = x.get();
+    const speed = 1.5; // Increased speed for smoother, faster scrolling
+    let newX = currentX - speed;
+
+    // Seamless infinite loop - reset when reaching boundaries
+    // We have 5 sets, so we can safely scroll through middle 3 sets
+    if (newX < -singleSetWidth * 3) {
+      newX += singleSetWidth;
+    } else if (newX > -singleSetWidth) {
+      newX -= singleSetWidth;
+    }
+
+    x.set(newX);
   });
-
-  const openLightbox = (index: number) => {
-    setSelectedImage(index % images.length);
-  };
-
-  const closeLightbox = () => {
-    setSelectedImage(null);
-  };
-
-  const navigateLightbox = (direction: 'prev' | 'next') => {
-    if (selectedImage === null) return;
-    
-    if (direction === 'prev') {
-      setSelectedImage((selectedImage - 1 + images.length) % images.length);
-    } else {
-      setSelectedImage((selectedImage + 1) % images.length);
-    }
-  };
 
   // Initialize to middle position
   useEffect(() => {
+    if (!hasImages || singleSetWidth === 0) return;
     x.set(-singleSetWidth * 2); // Start at the middle set (3rd set out of 5)
-  }, []);
+  }, [hasImages, singleSetWidth, x]);
 
   // Handle drag with seamless repositioning
-  const handleDrag = () => {
+  const handleDrag = useCallback(() => {
+    if (!hasImages || singleSetWidth === 0) return;
+
     const currentX = x.get();
-    
+
     // Reposition seamlessly during drag if we're getting too far
     if (currentX < -singleSetWidth * 3.5) {
       x.set(currentX + singleSetWidth);
     } else if (currentX > -singleSetWidth * 0.5) {
       x.set(currentX - singleSetWidth);
     }
-  };
+  }, [hasImages, singleSetWidth, x]);
 
   // ESC key handler for closing lightbox
   useEffect(() => {
@@ -102,7 +113,9 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedImage]);
+  }, [selectedImage, closeLightbox, navigateLightbox]);
+
+  if (!hasImages) return null;
 
   return (
     <>
