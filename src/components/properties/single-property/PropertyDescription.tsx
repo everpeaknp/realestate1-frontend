@@ -1,7 +1,7 @@
 'use client';
 
-import { Building2, Bookmark, Maximize, Ruler, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { CheckCircle2 } from 'lucide-react';
 import { EagleProperty } from '@/lib/eagle-api';
 
 interface PropertyDescriptionProps {
@@ -9,112 +9,77 @@ interface PropertyDescriptionProps {
 }
 
 export default function PropertyDescription({ property }: PropertyDescriptionProps) {
-  const details = [
-    {
-      icon: <Maximize size={18} className="sm:w-5 sm:h-5" />,
-      value: property.landSize ?? 'N/A',
-      label: 'Land Size',
-    },
-    {
-      icon: <Ruler size={18} className="sm:w-5 sm:h-5" />,
-      value: property.landSizeUnits ?? '—',
-      label: 'Size Units',
-    },
-    {
-      icon: <Calendar size={18} className="sm:w-5 sm:h-5" />,
-      value: property.createdAt ? new Date(property.createdAt).getFullYear().toString() : 'N/A',
-      label: 'Listed',
-    },
-  ];
+  // Split description into paragraphs; fall back to a default message
+  const paragraphs = property.description
+    ? property.description.split('\n').map((p) => p.trim()).filter(Boolean)
+    : ['Contact us for more information about this property.'];
 
-  const getPropertyTypeDisplay = (type?: string) => {
-    if (!type) return 'Property';
-    return type.split('_').map(word => word.charAt(0) + word.slice(1).toLowerCase()).join(' ');
-  };
+  // Extract bullet-point features from the description.
+  // Eagle descriptions often use "•", "-", or numbered lines for features.
+  // We pull lines that look like feature items (short, no full stop at end).
+  const featureLines = paragraphs.filter(
+    (p) => p.startsWith('•') || p.startsWith('-') || p.startsWith('*') || /^\d+\./.test(p)
+  ).map((p) => p.replace(/^[•\-*\d.]+\s*/, '').trim());
 
-  const getStatusDisplay = (status?: string) => {
-    if (!status) return 'Available';
-    return status.charAt(0) + status.slice(1).toLowerCase();
-  };
+  // Body paragraphs are everything that isn't a feature bullet
+  const bodyParagraphs = paragraphs.filter(
+    (p) => !p.startsWith('•') && !p.startsWith('-') && !p.startsWith('*') && !/^\d+\./.test(p)
+  );
+
+  // Use headline as the pull-quote if available
+  const pullQuote = property.headline ?? null;
 
   return (
-    <div className="bg-white">
-      {/* Description */}
-      <div className="mb-8 sm:mb-12">
-        <h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-4 sm:mb-6">Description</h2>
-        {property.description ? (
-          <div className="text-[#7C7A70] text-sm sm:text-[15px] leading-[1.8] max-w-5xl">
-            {property.description.split('\n').map((paragraph, index) =>
-              paragraph.trim() ? (
-                <p key={index} className="mb-4">{paragraph}</p>
-              ) : null
-            )}
-          </div>
-        ) : (
-          <p className="text-[#7C7A70] text-sm sm:text-[15px]">
-            Contact us for more information about this property.
-          </p>
-        )}
-      </div>
+    <div className="lg:col-span-7">
+      {/* Pull quote / headline */}
+      {pullQuote && (
+        <motion.h3
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-serif mb-10 leading-[1.3] text-neutral-900"
+        >
+          {pullQuote}
+        </motion.h3>
+      )}
 
-      {/* Property Type & Status */}
-      <div className="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-12">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-white rounded-lg flex-shrink-0" style={{ background: '#000000' }}>
-            <Building2 size={20} className="sm:w-6 sm:h-6" />
-          </div>
-          <div>
-            <span className="block text-[10px] sm:text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-              Property Type
-            </span>
-            <span className="text-base sm:text-lg font-bold text-[#1a1a1a]">
-              {getPropertyTypeDisplay(property.propertyType)}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center text-white rounded-lg flex-shrink-0" style={{ background: '#000000' }}>
-            <Bookmark size={20} className="sm:w-6 sm:h-6" />
-          </div>
-          <div>
-            <span className="block text-[10px] sm:text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-              Property Status
-            </span>
-            <span className="text-base sm:text-lg font-bold text-[#1a1a1a]">
-              {getStatusDisplay(property.status)}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Divider */}
-      <div className="w-full h-px bg-gray-100 mb-8 sm:mb-12" />
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-y-10 sm:gap-x-8 md:gap-x-12">
-        {details.map((detail, index) => (
-          <motion.div
-            key={index}
-            className="flex items-center gap-4 sm:gap-5"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 border border-gray-100 flex items-center justify-center rounded-lg flex-shrink-0 transition-colors" style={{ color: '#000000' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.05)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
-              {detail.icon}
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-0.5 truncate">{detail.value}</span>
-              <span className="text-xs sm:text-[13px] font-bold text-slate-600 tracking-tight">{detail.label}</span>
-            </div>
-          </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
+        viewport={{ once: true }}
+        className="space-y-8 text-on-surface-variant text-lg leading-relaxed font-light"
+      >
+        {/* Body paragraphs */}
+        {bodyParagraphs.map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
         ))}
-      </div>
 
-      {/* Bottom Divider */}
-      <div className="w-full h-px bg-gray-100 mt-12 sm:mt-16" />
+        {/* Feature list — only render if we found bullet lines */}
+        {featureLines.length > 0 && (
+          <div className="pt-10">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-8 underline underline-offset-8 decoration-neutral-300">
+              Premium Features
+            </h4>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
+              {featureLines.map((feature, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 * i }}
+                  viewport={{ once: true }}
+                  className="flex items-start gap-4 text-sm font-medium text-neutral-700"
+                >
+                  <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+                  <span>{feature}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </motion.div>
     </div>
   );
 }

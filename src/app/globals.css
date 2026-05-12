@@ -4,10 +4,11 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Playfair Display", serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
 
-  --color-surface: #FFFAF3;
+  --color-surface: #FAF9F9;
   --color-surface-dim: #dadada;
-  --color-surface-bright: #FFFAF3;
+  --color-surface-bright: #FAF9F9;
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low: #f4f3f3;
   --color-surface-container: #eeeeed;
@@ -29,6 +30,8 @@
   --color-on-tertiary-container: #7e8773;
 
   /* Aliases for backward compatibility if needed */
+  --color-primary: #000000;
+  --color-background: #FAF9F9;
   --color-brand-primary: var(--color-tertiary);
   --color-brand-secondary: var(--color-secondary);
   --color-brand-background: var(--color-surface);

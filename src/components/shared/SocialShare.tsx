@@ -10,7 +10,7 @@ export default function SocialShare({
   description = 'Check this out!'
 }: SocialShareProps) {
   return (
-    <div className="bg-white py-8">
+    <div className="bg-[#FAF9F9] py-8">
       <div className="flex flex-col items-center">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Share This</h3>
         <div className="flex flex-wrap gap-3 justify-center">

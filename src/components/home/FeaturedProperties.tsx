@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ArrowRight } from 'lucide-react';
 import { EagleProperty } from '@/lib/eagle-api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
 import LazyImage from '@/components/shared/LazyImage';
+import { parsePropertyStats } from '@/lib/property-utils';
 
 // ─── Hardcoded Fallback Data (as requested by user) ──────────────────────────
 const FALLBACK_PROPERTIES = [
@@ -52,13 +54,21 @@ const FALLBACK_PROPERTIES = [
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function removeEmojis(text: string): string {
+  // Remove all emojis and emoji-like characters
+  return text.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA00}-\u{1FA6F}]|[\u{1FA70}-\u{1FAFF}]|[\u{FE00}-\u{FE0F}]|[\u{1F004}]|[\u{1F0CF}]|[\u{1F18E}]|[\u{3030}]|[\u{2B50}]|[\u{2B55}]|[\u{231A}]|[\u{231B}]|[\u{23E9}-\u{23EC}]|[\u{23F0}]|[\u{23F3}]|[\u{25FD}]|[\u{25FE}]|[\u{2614}]|[\u{2615}]|[\u{2648}-\u{2653}]|[\u{267F}]|[\u{2693}]|[\u{26A1}]|[\u{26AA}]|[\u{26AB}]|[\u{26BD}]|[\u{26BE}]|[\u{26C4}]|[\u{26C5}]|[\u{26CE}]|[\u{26D4}]|[\u{26EA}]|[\u{26F2}]|[\u{26F3}]|[\u{26F5}]|[\u{26FA}]|[\u{26FD}]|[\u{2705}]|[\u{270A}]|[\u{270B}]|[\u{2728}]|[\u{274C}]|[\u{274E}]|[\u{2753}-\u{2755}]|[\u{2757}]|[\u{2795}-\u{2797}]|[\u{27B0}]|[\u{27BF}]|[\u{2B1B}]|[\u{2B1C}]/gu, '').trim();
+}
+
 function getStatusLabel(status?: string): string {
   if (!status) return 'FOR SALE';
   return status.replace(/_/g, ' ').toUpperCase();
 }
 
 function formatPrice(property: EagleProperty): string {
-  if (property.advertisedPrice) return property.advertisedPrice;
+  if (property.advertisedPrice) {
+    const cleaned = property.advertisedPrice.split(/\s*[|—–]\s*/)[0].trim();
+    if (/[\d$]/.test(cleaned)) return cleaned;
+  }
   if (property.price) {
     return '$' + property.price.toLocaleString('en-AU', { maximumFractionDigits: 0 });
   }
@@ -66,20 +76,16 @@ function formatPrice(property: EagleProperty): string {
 }
 
 function getPropertyDetails(property: EagleProperty): string {
-  const text = `${property.headline || ''} ${property.description || ''}`.toLowerCase();
-  
-  const bedroomMatch = text.match(/(\d+)\s*(?:bed|bedroom)/i);
-  const bathroomMatch = text.match(/(\d+)\s*(?:bath|bathroom)/i);
-  const carMatch = text.match(/(\d+)\s*(?:car|garage|parking)/i);
+  const { beds, baths, cars } = parsePropertyStats(property);
 
   const parts = [];
-  if (bedroomMatch) parts.push(`${bedroomMatch[1]} Bed`);
-  if (bathroomMatch) parts.push(`${bathroomMatch[1]} Bath`);
-  if (carMatch) parts.push(`${carMatch[1]} Car`);
-  
+  if (beds) parts.push(`${beds} Bed`);
+  if (baths) parts.push(`${baths} Bath`);
+  if (cars) parts.push(`${cars} Car`);
+
   const price = formatPrice(property);
   if (price !== 'Contact for price') parts.push(price);
-  
+
   return parts.join(' · ');
 }
 
@@ -91,27 +97,80 @@ export default function FeaturedProperties() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/eagle/properties?limit=5');
-        const data = await res.json();
+        // Fetch home properties for first card
+        const homeRes = await fetch('/api/eagle/properties?limit=20&propertyType=HOUSE');
+        const homeData = await homeRes.json();
+        
+        // Fetch other properties for remaining cards
+        const otherRes = await fetch('/api/eagle/properties?limit=20');
+        const otherData = await otherRes.json();
 
-        if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
-          // Map dynamic data to the requested design format
-          const mapped = data.properties.map((prop: EagleProperty, idx: number) => ({
-            id: prop.id,
-            title: prop.headline || prop.formattedAddress.split(',')[0],
-            location: prop.formattedAddress.split(',')[1]?.trim() || 'Sydney',
-            details: getPropertyDetails(prop),
-            img: prop.thumbnailSquare || prop.images?.[0]?.url || FALLBACK_PROPERTIES[idx]?.img,
-            span: idx === 0 ? "md:col-span-6 lg:col-span-8" : "md:col-span-3 lg:col-span-4",
-            badge: getStatusLabel(prop.status),
-            badgeDark: prop.status === 'SOLD',
-            slug: buildEagleSlug(prop.id, prop.formattedAddress)
-          }));
-          setProperties(mapped);
+        let allProperties: any[] = [];
+        
+        if (homeData.success && Array.isArray(homeData.properties) && homeData.properties.length > 0) {
+          // Sort by latest (createdAt or updatedAt)
+          const sortedHomes = homeData.properties.sort((a: EagleProperty, b: EagleProperty) => {
+            const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+            const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+            return dateB - dateA; // Most recent first
+          });
+          
+          // Add latest home property as first card
+          const homeProp = sortedHomes[0];
+          const rawTitle = homeProp.headline || homeProp.formattedAddress.split(',')[0];
+          const cleanTitle = removeEmojis(rawTitle);
+          allProperties.push({
+            id: homeProp.id,
+            title: cleanTitle,
+            location: homeProp.formattedAddress.split(',')[1]?.trim() || 'Sydney',
+            details: getPropertyDetails(homeProp),
+            img: homeProp.thumbnailSquare || homeProp.images?.[0]?.url || FALLBACK_PROPERTIES[0]?.img,
+            span: "md:col-span-6 lg:col-span-8",
+            badge: getStatusLabel(homeProp.status),
+            badgeDark: homeProp.status === 'SOLD',
+            slug: buildEagleSlug(homeProp.id, cleanTitle)
+          });
         } else {
-          // Use fallback data if API returns nothing
-          setProperties(FALLBACK_PROPERTIES);
+          // Use fallback for first card if no home property found
+          allProperties.push(FALLBACK_PROPERTIES[0]);
         }
+
+        if (otherData.success && Array.isArray(otherData.properties) && otherData.properties.length > 0) {
+          // Sort by latest (createdAt or updatedAt)
+          const sortedOthers = otherData.properties.sort((a: EagleProperty, b: EagleProperty) => {
+            const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+            const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+            return dateB - dateA; // Most recent first
+          });
+          
+          // Add other properties for remaining cards
+          const otherProps = sortedOthers.slice(0, 4).map((prop: EagleProperty, idx: number) => {
+            const rawTitle = prop.headline || prop.formattedAddress.split(',')[0];
+            const cleanTitle = removeEmojis(rawTitle);
+            return {
+              id: prop.id,
+              title: cleanTitle,
+              location: prop.formattedAddress.split(',')[1]?.trim() || 'Sydney',
+              details: getPropertyDetails(prop),
+              img: prop.thumbnailSquare || prop.images?.[0]?.url || FALLBACK_PROPERTIES[idx + 1]?.img,
+              span: "md:col-span-3 lg:col-span-4",
+              badge: getStatusLabel(prop.status),
+              badgeDark: prop.status === 'SOLD',
+              slug: buildEagleSlug(prop.id, cleanTitle)
+            };
+          });
+          allProperties = [...allProperties, ...otherProps];
+        } else {
+          // Use fallback for remaining cards
+          allProperties = [...allProperties, ...FALLBACK_PROPERTIES.slice(1, 5)];
+        }
+
+        // Ensure we have exactly 5 properties
+        if (allProperties.length < 5) {
+          allProperties = [...allProperties, ...FALLBACK_PROPERTIES.slice(allProperties.length, 5)];
+        }
+
+        setProperties(allProperties);
       } catch (err) {
         console.error('Failed to fetch Featured properties:', err);
         setProperties(FALLBACK_PROPERTIES);
@@ -143,6 +202,17 @@ export default function FeaturedProperties() {
   return (
     <section className="pb-section-gap bg-white py-section-gap">
       <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop">
+        {/* See More Link */}
+        <div className="flex justify-end mb-6">
+          <button
+            onClick={() => router.push('/properties')}
+            className="flex items-center gap-2 text-sm font-medium text-black hover:text-black/70 transition-colors cursor-pointer group"
+          >
+            <span>See More</span>
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-gutter auto-rows-[450px]">
           {properties.map((prop, idx) => (
             <div 
@@ -166,9 +236,16 @@ export default function FeaturedProperties() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
               
               <div className="absolute bottom-0 left-0 p-8 md:p-10 text-white w-full">
-                <span className="label-caps text-white/70 mb-2 block tracking-widest">{prop.location}</span>
-                <h4 className={`${idx === 0 ? 'text-3xl' : 'text-2xl'} font-semibold mb-2`}>{prop.title}</h4>
-                {prop.details && <p className="opacity-80 font-light text-sm">{prop.details}</p>}
+                <span 
+                  className="label-caps mb-2 block tracking-widest"
+                  style={{ color: idx === 0 ? 'rgba(255, 255, 255, 0.7)' : '#FFDEA0' }}
+                >
+                  {prop.location}
+                </span>
+                <h4 className={`${idx === 0 ? 'text-3xl' : 'text-2xl'} font-semibold mb-2 ${idx !== 0 ? 'line-clamp-1' : ''}`}>
+                  {prop.title}
+                </h4>
+                {idx === 0 && prop.details && <p className="opacity-80 font-light text-sm">{prop.details}</p>}
               </div>
             </div>
           ))}

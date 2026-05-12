@@ -67,7 +67,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
         <div className="pt-3">
           <Link 
-            href={`/property/${property.slug || property.id}`}
+            href={`/properties/${property.slug || property.id}`}
             className="inline-flex items-center gap-2 font-sans text-[10px] font-bold tracking-widest uppercase text-brand-primary border-b border-brand-primary/20 pb-1 hover:border-brand-primary hover:gap-3 transition-all duration-300"
           >
             VIEW PROPERTY <ArrowRight size={14} />

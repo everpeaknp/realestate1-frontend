@@ -19,7 +19,6 @@ interface HomeProps {
   heroSettings: any;
   heroCards: any[];
   howItWorks: any[];
-  neighborhoods: any[];
   benefits: any[];
   benefitGallery: any[];
   benefitsSection: any;
@@ -33,7 +32,6 @@ export default function Home({
   heroSettings,
   heroCards,
   howItWorks,
-  neighborhoods,
   benefits,
   benefitGallery,
   benefitsSection,
@@ -50,7 +48,7 @@ export default function Home({
       <FeaturedProperties />
       <SoldGallery />
 
-      <PopularNeighborhoods neighborhoods={neighborhoods} />
+      <PopularNeighborhoods />
       <HowItWorks steps={howItWorks} />
   
       <Testimonials />

@@ -1,10 +1,8 @@
 'use client';
 
-import { Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { API_ENDPOINTS } from '@/lib/api';
-import LazyImage from '@/components/shared/LazyImage';
 
 interface Agent {
   id: number;
@@ -13,6 +11,7 @@ interface Agent {
   phone: string;
   avatar: string;
   bio: string;
+  quote: string;
 }
 
 export default function PropertySidebar() {
@@ -22,122 +21,75 @@ export default function PropertySidebar() {
     fetch(API_ENDPOINTS.agents.list)
       .then((r) => r.ok ? r.json() : null)
       .then((json) => {
-        // API returns { results: [...] } or plain array
         const list: Agent[] = Array.isArray(json) ? json : (json?.results ?? []);
         if (list.length > 0) setAgent(list[0]);
       })
       .catch(() => {});
   }, []);
 
-  // Fall back to static defaults if no agent in Django yet
-  const agentName   = agent?.name   ?? 'Justin Nelson';
-  const agentBio    = agent?.bio    ?? 'Investment property specialist';
+  const agentName   = agent?.name   ?? 'Bijen Khadka';
+  const agentTitle  = agent?.bio    ?? 'Principal Director';
+  const agentQuote  = agent?.quote  ?? "I believe real estate is more than a transaction; it's about finding the space where your life's best moments happen.";
   const agentAvatar = agent?.avatar ?? '/person.png';
   const agentPhone  = agent?.phone  ?? '0414701721';
   const agentEmail  = agent?.email  ?? 'bijen@lilywhiterealestate.com.au';
 
+  const handleBookInspection = () => {
+    window.location.href = `tel:${agentPhone}`;
+  };
+
+  const handleInquire = () => {
+    window.location.href = `mailto:${agentEmail}`;
+  };
+
   return (
-    <aside className="flex flex-col gap-8 w-full">
-      {/* Agent Card */}
-      <motion.div 
-        className="bg-white p-6 rounded-lg border border-gray-100 flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow duration-200"
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-      >
-        <div className="w-24 h-24 overflow-hidden rounded-lg flex items-center justify-center border-2 border-gray-200">
-          <LazyImage 
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="bg-neutral-50 rounded-2xl p-10 lg:sticky lg:top-32 shadow-sm border border-neutral-100"
+    >
+      {/* Agent info */}
+      <div className="flex items-center gap-6 mb-10">
+        <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 transition-all hover:scale-105 bg-neutral-100">
+          <img
             src={agentAvatar}
             alt={agentName}
             className="w-full h-full object-contain"
           />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-[#1a1a1a] font-sans">{agentName}</h3>
-          <p className="text-slate-600 text-sm">{agentBio}</p>
+          <h4 className="text-xl font-serif font-medium">{agentName}</h4>
+          <p className="text-sm text-neutral-500 font-medium tracking-wide">{agentTitle}</p>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Contact Form Card */}
-      <motion.div 
-        className="bg-white p-8 rounded-lg border border-gray-100 shadow-sm"
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.1 }}
-      >
-        <h3 className="text-xl font-bold text-[#1a1a1a] text-center mb-8 font-sans leading-tight">
-          Contact For Your Real Estate Solutions
-        </h3>
-        
-        <form className="flex flex-col gap-5">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Your Name</label>
-            <input 
-              type="text" 
-              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
-              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
-            />
-          </div>
-          
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Email Address</label>
-            <input 
-              type="email" 
-              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
-              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
-            />
-          </div>
+      {/* Quote */}
+      <blockquote className="text-on-surface-variant text-base leading-relaxed italic mb-10 pl-6 border-l-2 border-neutral-200">
+        "{agentQuote}"
+      </blockquote>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Phone Number</label>
-            <input 
-              type="tel" 
-              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200"
-              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase text-slate-600 tracking-wider">Message</label>
-            <textarea 
-              rows={4}
-              className="w-full p-3 bg-white border border-gray-200 rounded-lg focus:ring-2 outline-none transition-all duration-200 resize-none text-sm"
-              style={{ '--tw-ring-color': '#000000' } as React.CSSProperties}
-            />
-          </div>
-
-          <button className="w-full text-white font-bold py-4 uppercase tracking-widest text-sm transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 cursor-pointer mt-2 hover:opacity-90" style={{ background: '#000000' }}>
-            Submit
-          </button>
-        </form>
-      </motion.div>
-
-      {/* Contact Info Card */}
-      <motion.div 
-        className="bg-white p-6 rounded-lg border border-gray-100 flex flex-col gap-3 items-center shadow-sm"
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.2 }}
-      >
-        <a
-          href={`tel:${agentPhone}`}
-          className="flex items-center gap-3 transition-colors cursor-pointer hover:opacity-80"
-          style={{ color: '#000000' }}
+      {/* CTA buttons */}
+      <div className="flex flex-col gap-4">
+        <motion.button
+          whileHover={{ y: -4, scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleBookInspection}
+          className="w-full bg-primary text-white py-5 rounded-full text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-neutral-200 cursor-pointer"
         >
-          <Phone size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">{agentPhone}</span>
-        </a>
-        <a
-          href={`mailto:${agentEmail}`}
-          className="flex items-center gap-3 transition-colors cursor-pointer hover:opacity-80"
-          style={{ color: '#000000' }}
+          Book Inspection
+        </motion.button>
+
+        <motion.button
+          whileHover={{ y: -4, scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleInquire}
+          className="w-full border border-neutral-200 bg-white text-primary py-5 rounded-full text-xs font-bold uppercase tracking-[0.2em] hover:bg-neutral-50 transition-colors cursor-pointer"
         >
-          <Mail size={18} />
-          <span className="font-bold text-[#1a1a1a] tracking-tight">{agentEmail}</span>
-        </a>
-      </motion.div>
-    </aside>
+          Inquire Now
+        </motion.button>
+      </div>
+    </motion.div>
   );
 }

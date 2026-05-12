@@ -146,11 +146,12 @@ export default function Hero({ settings }: HeroProps) {
               );
               if (!duplicate) {
                 const rawPrice = p.advertisedPrice || (p.price ? `$${Number(p.price).toLocaleString()}` : '');
+                const title = p.headline || p.formattedAddress || 'Eagle Property';
                 mergedProperties.push({
                   key: `eagle-${p.id}`,
-                  slug: buildEagleSlug(p.id, p.formattedAddress),
+                  slug: buildEagleSlug(p.id, title),
                   eagleId: p.id,
-                  title: p.headline || p.formattedAddress || 'Eagle Property',
+                  title: title,
                   location: p.formattedAddress || '',
                   price: rawPrice,
                   image: p.thumbnailSquare || (p.images?.[0]?.url ?? null),

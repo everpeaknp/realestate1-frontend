@@ -10,7 +10,6 @@ export default async function HomePage() {
     heroSettings,
     heroCards,
     howItWorks,
-    neighborhoods,
     benefits,
     benefitGallery,
     benefitsSection,
@@ -22,7 +21,6 @@ export default async function HomePage() {
     homeAPI.getHeroSettings().catch(() => null),
     homeAPI.getHeroCards().catch(() => []),
     homeAPI.getHowItWorks().catch(() => []),
-    homeAPI.getNeighborhoods().catch(() => []),
     homeAPI.getBenefits().catch(() => []),
     homeAPI.getBenefitGallery().catch(() => []),
     homeAPI.getBenefitsSection().catch(() => null),
@@ -37,7 +35,6 @@ export default async function HomePage() {
       heroSettings={heroSettings}
       heroCards={heroCards}
       howItWorks={howItWorks}
-      neighborhoods={neighborhoods}
       benefits={benefits}
       benefitGallery={benefitGallery}
       benefitsSection={benefitsSection}

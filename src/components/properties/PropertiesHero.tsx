@@ -74,7 +74,7 @@ function BorderlessSelect({
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="absolute left-0 mt-4 w-56 bg-white rounded-2xl shadow-2xl border border-brand-surface-container-low py-3 z-[100] overflow-hidden"
             >
-              <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
+              <div className="max-h-[300px] overflow-y-auto scrollbar-hide">
                 {options.map((option) => (
                   <button
                     key={option.value}
@@ -228,6 +228,31 @@ export default function PropertiesHero() {
     setIsSearchOpen(false);
   };
 
+  const clearAllFilters = () => {
+    const defaultFilters = {
+      type: 'All',
+      minPrice: 0,
+      maxPrice: 50000000,
+      beds: 'All',
+      status: 'All',
+      search: '',
+    };
+    setFilters(defaultFilters);
+    updateUrl(defaultFilters);
+    setIsSearchOpen(false);
+  };
+
+  const hasActiveFilters = useMemo(() => {
+    return (
+      filters.type !== 'All' ||
+      filters.minPrice > 0 ||
+      filters.maxPrice < 50000000 ||
+      filters.beds !== 'All' ||
+      filters.status !== 'All' ||
+      filters.search.trim() !== ''
+    );
+  }, [filters]);
+
   // Process dynamic options with fallbacks and ensuring "All" is present
   const typeOptions = useMemo(() => {
     const base = settings?.property_types || [];
@@ -315,7 +340,7 @@ export default function PropertiesHero() {
 
   return (
     <section 
-      className="relative w-full px-5 md:px-10 lg:px-20 pt-10 md:pt-16 mb-12 md:mb-20 z-10"
+      className="relative w-full px-5 md:px-10 lg:px-20 pt-10 md:pt-16 mb-12 md:mb-20 z-50"
       style={{ minHeight: settings?.background_url ? '600px' : 'auto' }}
     >
       {/* Background Container with Image & Overlay */}
@@ -432,6 +457,15 @@ export default function PropertiesHero() {
                 onChange={(val) => onFilterChange('status', val)}
                 isLoading={isLoadingSettings}
               />
+
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="ml-6 font-sans text-xs font-medium text-brand-outline hover:text-brand-primary transition-colors underline underline-offset-2"
+                >
+                  Clear All
+                </button>
+              )}
             </div>
 
             <div className="relative flex items-center h-full ml-10">
@@ -643,6 +677,15 @@ export default function PropertiesHero() {
                   </div>
                 </div>
               </div>
+
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="w-full mb-4 py-3 rounded-xl font-sans text-xs font-medium text-brand-outline hover:text-brand-primary transition-colors border border-brand-surface-container hover:border-brand-primary"
+                >
+                  Clear All Filters
+                </button>
+              )}
 
               <button 
                 onClick={() => {

@@ -39,7 +39,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         </div>
         
         <h3 className={styles.title}>
-          <Link href={`/property/${property._id}`}>
+          <Link href={`/properties/${property._id}`}>
             {property.title}
           </Link>
         </h3>

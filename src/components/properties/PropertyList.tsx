@@ -9,6 +9,7 @@ import { buildEagleSlug } from '@/lib/eagle-slug';
 import PropertyCard from './PropertyCard';
 import { Property } from './types';
 import PropertyCardSkeleton from '@/components/shared/PropertyCardSkeleton';
+import { parsePropertyStats } from '@/lib/property-utils';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -92,10 +93,8 @@ export default function PropertyList() {
       // Bedrooms filter
       if (beds && beds !== 'All') {
         const minBedsRequired = parseInt(beds.replace('+', ''), 10);
-        const text = `${property.headline || ''} ${property.description || ''}`.toLowerCase();
-        const bedroomMatch = text.match(/(\d+)\s*(?:bed|bedroom)/i);
-        const propertyBeds = bedroomMatch ? parseInt(bedroomMatch[1], 10) : 0;
-        if (propertyBeds < minBedsRequired) return false;
+        const { beds: propertyBeds } = parsePropertyStats(property);
+        if ((propertyBeds ?? 0) < minBedsRequired) return false;
       }
 
       return true;
@@ -105,15 +104,12 @@ export default function PropertyList() {
   // Map to the editorial Property interface
   const mappedProperties = useMemo(() => {
     return filteredProperties.map((p): Property => {
-      const text = `${p.headline || ''} ${p.description || ''}`.toLowerCase();
-      
-      const bedroomMatch = text.match(/(\d+)\s*(?:bed|bedroom)/i);
-      const bathroomMatch = text.match(/(\d+)\s*(?:bath|bathroom)/i);
-      const carMatch = text.match(/(\d+)\s*(?:car|garage|parking)/i);
+      const { beds, baths, cars } = parsePropertyStats(p);
 
-      let displayPrice = p.advertisedPrice || (p.price ? `$${p.price.toLocaleString()}` : 'Contact Agent');
-      if (p.advertisedPrice && p.advertisedPrice.includes('|')) {
-        displayPrice = p.advertisedPrice.split('|')[0].trim();
+      let displayPrice = p.price ? `$${p.price.toLocaleString()}` : 'Contact Agent';
+      if (p.advertisedPrice) {
+        const cleaned = p.advertisedPrice.split(/\s*[|—–]\s*/)[0].trim();
+        if (/[\d$]/.test(cleaned)) displayPrice = cleaned;
       }
 
       let tag = undefined;
@@ -130,26 +126,25 @@ export default function PropertyList() {
         tag = 'FEATURED';
         tagColor = 'bg-brand-primary';
       } else if (pStatus === 'CURRENT') {
-        // Only show tag if it's "Just Listed" or special, otherwise hide for CURRENT
-        // If headline contains "Just Listed", show it
-        if (text.includes('just listed')) {
+        if ((p.headline || '').toLowerCase().includes('just listed')) {
           tag = 'JUST LISTED';
           tagColor = 'bg-emerald-600';
         }
       }
 
+      const title = p.headline || p.formattedAddress.split(',')[0];
       return {
         id: p.id,
-        title: p.headline || p.formattedAddress.split(',')[0],
+        title: title,
         price: displayPrice,
         location: p.formattedAddress,
-        beds: bedroomMatch ? parseInt(bedroomMatch[1], 10) : 0,
-        baths: bathroomMatch ? parseInt(bathroomMatch[1], 10) : 0,
-        cars: carMatch ? parseInt(carMatch[1], 10) : 0,
+        beds: beds ?? 0,
+        baths: baths ?? 0,
+        cars: cars ?? 0,
         image: p.images?.[0]?.url || p.thumbnailSquare || '/images/placeholder-property.jpg',
         tag,
         tagColor,
-        slug: buildEagleSlug(p.id, p.formattedAddress)
+        slug: buildEagleSlug(p.id, title)
       };
     });
   }, [filteredProperties]);
@@ -193,7 +188,7 @@ export default function PropertyList() {
   }
 
   return (
-    <section className="w-full px-5 md:px-10 lg:px-20 mb-32 relative">
+    <section className="w-full px-5 md:px-10 lg:px-20 mb-32 relative z-10">
       {/* Loading Overlay */}
       <AnimatePresence>
         {loading && allProperties.length > 0 && (

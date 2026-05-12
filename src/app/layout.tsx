@@ -4,6 +4,7 @@ import "./globals.css";
 import { CMSProvider } from "@/contexts/CMSContext";
 import { DynamicMetadata } from "@/components/shared/DynamicMetadata";
 import { Chatbot } from "@/components/chatbot";
+import { ThemeProvider } from "next-themes";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,15 +32,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full">
-        <CMSProvider>
-          <DynamicMetadata />
-          <MainWrapper>
-            {children}
-          </MainWrapper>
-          <Chatbot />
-        </CMSProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
+          <CMSProvider>
+            <DynamicMetadata />
+            <MainWrapper>
+              {children}
+            </MainWrapper>
+            <Chatbot />
+          </CMSProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

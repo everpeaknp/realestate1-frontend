@@ -1,135 +1,44 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { EagleProperty, EagleImage } from '@/lib/eagle-api';
-import LazyImage from '@/components/shared/LazyImage';
+import { motion } from 'framer-motion';
+import { EagleProperty } from '@/lib/eagle-api';
 
 interface PropertyGalleryProps {
   property: EagleProperty;
 }
 
 export default function PropertyGallery({ property }: PropertyGalleryProps) {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  // Skip the first image (used as hero) and take up to 3 more
+  const images = (property.images ?? [])
+    .slice(1, 4)
+    .map((img, idx) => ({
+      src: img.url,
+      alt: `${property.formattedAddress} — photo ${idx + 2}`,
+      delay: 0.2 + idx * 0.2,
+    }));
 
-  const images: EagleImage[] = property.images || [];
-
-  if (images.length === 0) {
-    return null;
-  }
-
-  const openLightbox = (index: number) => {
-    setSelectedImage(index);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeLightbox = () => {
-    setSelectedImage(null);
-    document.body.style.overflow = 'unset';
-  };
-
-  const goToPrevious = () => {
-    if (selectedImage !== null) {
-      setSelectedImage(selectedImage === 0 ? images.length - 1 : selectedImage - 1);
-    }
-  };
-
-  const goToNext = () => {
-    if (selectedImage !== null) {
-      setSelectedImage(selectedImage === images.length - 1 ? 0 : selectedImage + 1);
-    }
-  };
+  if (images.length === 0) return null;
 
   return (
-    <section className="bg-white">
-      <h2 className="text-xl sm:text-2xl font-bold text-[#1a1a1a] mb-6 sm:mb-8">
-        Property Gallery
-      </h2>
-
-      {/* Gallery Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {images.map((image, index) => (
+    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {images.map((img, idx) => (
           <motion.div
-            key={image.id}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            key={idx}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: img.delay, duration: 0.8 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="relative aspect-[4/3] overflow-hidden rounded-lg cursor-pointer group"
-            onClick={() => openLightbox(index)}
+            className="h-64 md:h-80 overflow-hidden rounded-xl shadow-2xl group"
           >
-            <LazyImage
-              src={image.url}
-              alt={`Property image ${index + 1}`}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            <img
+              src={img.src}
+              alt={img.alt}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent)' }} />
           </motion.div>
         ))}
       </div>
-
-      {/* Lightbox */}
-      <AnimatePresence>
-        {selectedImage !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
-            onClick={closeLightbox}
-          >
-            {/* Close */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
-              aria-label="Close gallery"
-            >
-              <X size={32} />
-            </button>
-
-            {/* Prev */}
-            <button
-              onClick={(e) => { e.stopPropagation(); goToPrevious(); }}
-              className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10"
-              aria-label="Previous image"
-            >
-              <ChevronLeft size={48} />
-            </button>
-
-            {/* Next */}
-            <button
-              onClick={(e) => { e.stopPropagation(); goToNext(); }}
-              className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10"
-              aria-label="Next image"
-            >
-              <ChevronRight size={48} />
-            </button>
-
-            {/* Image */}
-            <motion.div
-              key={selectedImage}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-              className="max-w-7xl max-h-[90vh] mx-4"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <LazyImage
-                src={images[selectedImage].url}
-                alt={`Property image ${selectedImage + 1}`}
-                className="max-w-full max-h-[90vh] object-contain"
-              />
-            </motion.div>
-
-            {/* Counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
-              {selectedImage + 1} / {images.length}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
+    </div>
   );
 }

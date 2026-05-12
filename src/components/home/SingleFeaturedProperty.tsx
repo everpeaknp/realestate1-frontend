@@ -5,25 +5,13 @@ import { useRouter } from 'next/navigation';
 import { Bed, Bath, Car } from 'lucide-react';
 import { EagleProperty } from '@/lib/eagle-api';
 import { buildEagleSlug } from '@/lib/eagle-slug';
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function extractFeatures(property: EagleProperty) {
-  const text = `${property.headline || ''} ${property.description || ''}`;
-
-  const bedMatch = text.match(/(\d+)\s*(?:bed(?:room)?s?)/i);
-  const bathMatch = text.match(/(\d+)\s*(?:bath(?:room)?s?)/i);
-  const carMatch = text.match(/(\d+)\s*(?:car(?:s|port|garage)?|garage|parking)/i);
-
-  return {
-    beds: bedMatch ? parseInt(bedMatch[1]) : null,
-    baths: bathMatch ? parseInt(bathMatch[1]) : null,
-    cars: carMatch ? parseInt(carMatch[1]) : null,
-  };
-}
+import { parsePropertyStats } from '@/lib/property-utils';
 
 function formatPrice(property: EagleProperty): string {
-  if (property.advertisedPrice) return property.advertisedPrice;
+  if (property.advertisedPrice) {
+    const cleaned = property.advertisedPrice.split(/\s*[|—–]\s*/)[0].trim();
+    if (/[\d$]/.test(cleaned)) return cleaned;
+  }
   if (property.price) {
     return '$' + property.price.toLocaleString('en-AU', { maximumFractionDigits: 0 });
   }
@@ -92,14 +80,21 @@ export default function SingleFeaturedProperty() {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        // Fetch a small set and pick the first featured one, or just the first
-        const res = await fetch('/api/eagle/properties?limit=10');
+        // Fetch HOUSE properties only (homes, not land) - fetch more to sort
+        const res = await fetch('/api/eagle/properties?limit=20&propertyType=HOUSE');
         const data = await res.json();
 
         if (data.success && Array.isArray(data.properties) && data.properties.length > 0) {
-          // Prefer a property explicitly marked as featured
+          // Sort by latest (createdAt or updatedAt)
+          const sortedProperties = data.properties.sort((a: EagleProperty, b: EagleProperty) => {
+            const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+            const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+            return dateB - dateA; // Most recent first
+          });
+          
+          // Prefer a property explicitly marked as featured, otherwise use the latest
           const featured =
-            data.properties.find((p: EagleProperty) => p.featured) ?? data.properties[0];
+            sortedProperties.find((p: EagleProperty) => p.featured) ?? sortedProperties[0];
           setProperty(featured);
         }
       } catch (err) {
@@ -117,14 +112,15 @@ export default function SingleFeaturedProperty() {
   // If no property came back, render nothing (FeaturedProperties grid below will show)
   if (!property) return null;
 
-  const { beds, baths, cars } = extractFeatures(property);
+  const { beds, baths, cars } = parsePropertyStats(property);
   const price = formatPrice(property);
   const badge = getStatusBadge(property.status);
+  const title = property.headline || property.formattedAddress.split(',')[0];
   const image =
     property.images?.[0]?.url ||
     property.thumbnailSquare ||
     'https://lh3.googleusercontent.com/aida-public/AB6AXuCzpXqzg_1poibm6hGs_fY753srQatXUhnclxjIf_HVXtB0mQwc-UErPlw_S8Ucbexm9jI1cOSqBasruZVpUR2KjUuGNz7mtlnQkCenDLgV9C2uUDza6SG4gM4KUlCf4NV9ghM_Y7XIMXcOgkC5KLtBZjamAutcyHj5M5mGHCreR-ff5YvQW3CoOvm65hex1d-TKVFWFqZcPCbVsDWRrQ8GtET4a-EqN_iDpwFlFXVFar6Qk8tqzOXMFcgw0_b2cIdhrCIetx92s-c';
-  const slug = buildEagleSlug(property.id, property.formattedAddress);
+  const slug = buildEagleSlug(property.id, title);
 
   const features = [
     ...(beds !== null ? [{ icon: <Bed size={20} />, label: `${beds} BEDS` }] : []),
