@@ -62,9 +62,10 @@ export default function PersonSection({ settings }: PersonSectionProps) {
   }
 
   return (
-    <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 lg:pb-0 overflow-hidden">
+    <section style={{ backgroundColor: '#F2F2F2' }} className="py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-col lg:flex-row items-center lg:items-center gap-8 lg:gap-12">
+        <div style={{ backgroundColor: '#ffffff' }} className="rounded-[32px] p-8 sm:p-12 lg:p-16 shadow-lg">
+          <div className="flex flex-col lg:flex-row items-center lg:items-center gap-8 lg:gap-12">
           {/* Left Column: Content */}
           <motion.div 
             className="z-10 w-full lg:w-1/2"
@@ -73,11 +74,11 @@ export default function PersonSection({ settings }: PersonSectionProps) {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-[42px] leading-tight font-bold text-[#1a1a1a] mb-6 sm:mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-[42px] leading-tight font-bold text-[#000000] mb-6 sm:mb-8">
               {data.title}
             </h2>
             
-            <p className="text-[#7C7A70] text-base sm:text-[17px] leading-relaxed mb-8 sm:mb-12 text-justify">
+            <p className="text-[#000000] text-base sm:text-[17px] leading-relaxed mb-8 sm:mb-12 text-justify">
               {data.description}
             </p>
 
@@ -94,7 +95,7 @@ export default function PersonSection({ settings }: PersonSectionProps) {
                 <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(0,0,0,0.15)]">
                   <Phone size={18} style={{ color: '#000000' }} className="flex-shrink-0" fill="currentColor" stroke="none" />
                 </div>
-                <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#000000]">
+                <span className="text-base sm:text-lg font-bold text-[#000000] transition-colors duration-200 group-hover:text-black/70">
                   {data.phone}
                 </span>
               </a>
@@ -102,7 +103,7 @@ export default function PersonSection({ settings }: PersonSectionProps) {
                 <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(0,0,0,0.15)]">
                   <Mail size={18} style={{ color: '#000000' }} className="flex-shrink-0" />
                 </div>
-                <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#000000]">
+                <span className="text-base sm:text-lg font-bold text-[#000000] transition-colors duration-200 group-hover:text-black/70">
                   {data.email}
                 </span>
               </a>
@@ -127,6 +128,7 @@ export default function PersonSection({ settings }: PersonSectionProps) {
               <div className="absolute -bottom-6 -left-6 -z-10 w-48 h-48 sm:w-64 sm:h-64 bg-gray-50 rounded-full blur-3xl opacity-50" />
             </div>
           </motion.div>
+          </div>
         </div>
       </div>
     </section>

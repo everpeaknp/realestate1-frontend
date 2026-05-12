@@ -125,7 +125,7 @@ export default function FeaturedProperties() {
 
   if (loading) {
     return (
-      <section className="bg-surface-container-lowest py-section-gap">
+    <section className="pb-section-gap bg-white py-section-gap">
         <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop">
           <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-gutter auto-rows-[450px]">
             {[...Array(5)].map((_, i) => (
@@ -141,7 +141,7 @@ export default function FeaturedProperties() {
   }
 
   return (
-    <section className="pb-section-gap bg-surface-container-lowest py-section-gap">
+    <section className="pb-section-gap bg-white py-section-gap">
       <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop">
         <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-gutter auto-rows-[450px]">
           {properties.map((prop, idx) => (
@@ -166,7 +166,7 @@ export default function FeaturedProperties() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
               
               <div className="absolute bottom-0 left-0 p-8 md:p-10 text-white w-full">
-                <span className="label-caps text-secondary-container mb-2 block tracking-widest">{prop.location}</span>
+                <span className="label-caps text-white/70 mb-2 block tracking-widest">{prop.location}</span>
                 <h4 className={`${idx === 0 ? 'text-3xl' : 'text-2xl'} font-semibold mb-2`}>{prop.title}</h4>
                 {prop.details && <p className="opacity-80 font-light text-sm">{prop.details}</p>}
               </div>

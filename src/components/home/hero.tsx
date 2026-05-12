@@ -215,7 +215,7 @@ export default function Hero({ settings }: HeroProps) {
   // If no settings provided, show loading state
   if (!settings) {
     return (
-      <section className="relative min-h-[70vh] sm:min-h-[85vh] md:min-h-screen h-auto md:h-[110vh] w-full overflow-hidden flex items-center justify-center bg-gray-900">
+      <section className="relative min-h-[70vh] sm:min-h-[85vh] md:min-h-screen h-auto md:h-[110vh] w-full overflow-hidden flex items-center justify-center bg-black">
         <div className="text-white text-center">
           <div className="animate-pulse">Loading...</div>
         </div>
@@ -387,7 +387,7 @@ export default function Hero({ settings }: HeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold max-w-4xl mx-auto leading-snug px-2 sm:px-4 text-[#EADEC9] whitespace-nowrap">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold max-w-4xl mx-auto leading-snug px-2 sm:px-4 text-white/80 whitespace-nowrap">
             {subtitle}
           </p>
         </motion.div>
@@ -450,7 +450,7 @@ export default function Hero({ settings }: HeroProps) {
             </button>
           </Link>
           <Link href={secondaryButtonLink} className="w-full sm:w-auto">
-            <button className="w-full sm:w-auto group flex items-center justify-center gap-1 text-white font-bold text-xs sm:text-sm tracking-widest border-b-2 border-white hover:border-blue-400 transition-all duration-200 pb-1 cursor-pointer">
+            <button className="w-full sm:w-auto group flex items-center justify-center gap-1 text-white font-bold text-xs sm:text-sm tracking-widest border-b-2 border-white hover:border-white/50 transition-all duration-200 pb-1 cursor-pointer">
               {secondaryButtonText}
               <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform duration-200" />
             </button>
@@ -458,7 +458,7 @@ export default function Hero({ settings }: HeroProps) {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-24 sm:h-32 bg-gradient-to-t from-gray-950/20 to-transparent z-1" />
+      <div className="absolute bottom-0 left-0 w-full h-24 sm:h-32 bg-gradient-to-t from-black/20 to-transparent z-1" />
     </section>
   );
 }

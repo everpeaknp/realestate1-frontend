@@ -84,7 +84,7 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
   const email = sectionData.email;
 
   return (
-    <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
+    <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden border-t border-black/5">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 items-center">
           
@@ -96,12 +96,12 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
             transition={{ duration: 0.8 }}
           >
             <div className="inline-block">
-              <h2 className="text-3xl sm:text-4xl md:text-[40px] leading-tight font-bold text-[#1a1a1a] mb-6 sm:mb-8">
+              <h2 className="text-3xl sm:text-4xl md:text-[40px] leading-tight font-bold text-black mb-6 sm:mb-8">
                 {title}
               </h2>
             </div>
             
-            <p className="text-[#7C7A70] text-base sm:text-[17px] leading-relaxed mb-8 sm:mb-10">
+            <p className="text-black/60 text-base sm:text-[17px] leading-relaxed mb-8 sm:mb-10">
               {description}
             </p>
 
@@ -115,11 +115,10 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <div className="mt-1 rounded-full p-1 flex-shrink-0 shadow-sm"
-                    style={{ background: '#000000', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.3)' }}>
+                  <div className="mt-1 rounded-full p-1 flex-shrink-0 bg-black shadow-sm">
                     <Check size={14} className="text-white" strokeWidth={3} />
                   </div>
-                  <span className="text-slate-600 text-sm sm:text-[16px] font-medium leading-normal group-hover:text-slate-800 transition-colors duration-200">
+                  <span className="text-black/70 text-sm sm:text-[16px] font-medium leading-normal group-hover:text-black transition-colors duration-200">
                     {typeof benefit === 'string' ? benefit : benefit.text}
                   </span>
                 </motion.li>
@@ -127,37 +126,24 @@ export default function BenefitsSection({ benefits = [], gallery = [], section }
             </ul>
 
             <div className="flex flex-col gap-6 sm:gap-10 w-full">
-              <button className="text-white px-8 sm:px-14 py-3 sm:py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px] cursor-pointer hover:opacity-90"
-                style={{ background: '#000000' }}>
+              <button className="bg-black text-white px-8 sm:px-14 py-3 sm:py-4 font-bold text-sm tracking-widest transition-all duration-200 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 uppercase w-full min-h-[44px] cursor-pointer hover:bg-black/90">
                 Contact Me
               </button>
 
               <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-8">
                 <a href={`tel:${phone}`} className="flex items-center gap-2 group cursor-pointer min-h-[44px]">
-                  <div className="p-2 rounded-lg transition-colors duration-200"
-                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.15)'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.1)'}>
-                    <Phone size={18} className="flex-shrink-0" style={{ color: '#000000' }} fill="currentColor" stroke="none" />
+                  <div className="p-2 rounded-lg bg-black/10 group-hover:bg-black/20 transition-colors duration-200">
+                    <Phone size={18} className="flex-shrink-0 text-black" fill="currentColor" stroke="none" />
                   </div>
-                  <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200"
-                    style={{ color: '#1e293b' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#000000'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#1e293b'}>
+                  <span className="text-base sm:text-lg font-bold text-black/80 group-hover:text-black transition-colors duration-200">
                     {phone}
                   </span>
                 </a>
                 <a href={`mailto:${email}`} className="flex items-center gap-2 group cursor-pointer min-h-[44px]">
-                  <div className="p-2 rounded-lg transition-colors duration-200"
-                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.15)'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.1)'}>
-                    <Mail size={18} className="flex-shrink-0" style={{ color: '#000000' }} />
+                  <div className="p-2 rounded-lg bg-black/10 group-hover:bg-black/20 transition-colors duration-200">
+                    <Mail size={18} className="flex-shrink-0 text-black" />
                   </div>
-                  <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 break-all"
-                    style={{ color: '#1e293b' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#000000'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#1e293b'}>
+                  <span className="text-base sm:text-lg font-bold text-black/80 group-hover:text-black transition-colors duration-200 break-all">
                     {email}
                   </span>
                 </a>

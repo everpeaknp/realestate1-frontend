@@ -106,12 +106,12 @@ export default function Testimonials() {
   });
 
   return (
-    <section className="bg-blue-50 py-12 sm:py-16 md:py-20 lg:py-24 pb-16 sm:pb-20 md:pb-24 lg:pb-32 overflow-hidden">
+    <section className="bg-[#F4F3F3] py-12 sm:py-16 md:py-20 lg:py-24 pb-16 sm:pb-20 md:pb-24 lg:pb-32 overflow-hidden border-t border-black/5">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 text-center">
         {/* Section Header */}
         <div className="mb-12 sm:mb-16 md:mb-20">
           <motion.h2 
-            className="text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-4 sm:mb-6"
+            className="text-3xl sm:text-4xl font-bold text-black mb-4 sm:mb-6"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -120,7 +120,7 @@ export default function Testimonials() {
             Testimonials
           </motion.h2>
           <motion.p 
-            className="text-slate-600 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
+            className="text-black/60 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -160,21 +160,20 @@ export default function Testimonials() {
                   alt="Happy Clients"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-6 sm:p-8 md:p-12">
+                <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center text-white p-6 sm:p-8 md:p-12">
                   <div className="text-center">
                     <h3 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 max-w-xs leading-tight mx-auto px-4">
                       {videoTestimonial.title}
                     </h3>
                     
-                    <div className="mb-6 sm:mb-8 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto"
-                      style={{ background: '#000000' }}>
+                    <div className="mb-6 sm:mb-8 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/20 border border-white/40 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mx-auto">
                       <Play size={20} className="sm:w-6 sm:h-6 text-white ml-1" fill="currentColor" />
                     </div>
 
                     <div>
                       <StarRating />
                       <p className="font-bold text-base sm:text-lg">{videoTestimonial.name}</p>
-                      <p className="text-xs sm:text-sm opacity-80">{videoTestimonial.role}</p>
+                      <p className="text-xs sm:text-sm text-white/70">{videoTestimonial.role}</p>
                     </div>
                   </div>
                 </div>
@@ -186,8 +185,8 @@ export default function Testimonials() {
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {/* Standard Testimonial Column 1 */}
             {textTestimonials[0] && (
-              <motion.div 
-                className="bg-white p-6 sm:p-8 flex flex-col shadow-lg rounded-lg min-h-[450px] sm:min-h-[500px] lg:h-[578px] border border-blue-100 hover:shadow-xl transition-shadow duration-300"
+                <motion.div 
+                className="bg-[#ffffff] p-6 sm:p-8 flex flex-col shadow-lg rounded-lg min-h-[450px] sm:min-h-[500px] lg:h-[578px] hover:shadow-xl transition-shadow duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -201,15 +200,15 @@ export default function Testimonials() {
                   />
                 </div>
                 <div className="flex-1 flex flex-col">
-                  <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[0].title}</h3>
-                  <p className="text-slate-600 text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-[#000000] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[0].title}</h3>
+                  <p className="text-[#000000] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
                     {textTestimonials[0].text}
                   </p>
                   
-                  <div className="pt-4 sm:pt-6 border-t border-blue-100 mt-auto flex-shrink-0">
+                  <div className="pt-4 sm:pt-6 border-t border-black/10 mt-auto flex-shrink-0">
                     <StarRating />
-                    <p className="font-bold text-[#1a1a1a] text-sm sm:text-base">{textTestimonials[0].name}</p>
-                    <p className="text-xs text-slate-600 uppercase tracking-widest">{textTestimonials[0].role}</p>
+                    <p className="font-bold text-[#000000] text-sm sm:text-base">{textTestimonials[0].name}</p>
+                    <p className="text-xs text-[#000000] uppercase tracking-widest">{textTestimonials[0].role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -217,8 +216,8 @@ export default function Testimonials() {
 
             {/* Standard Testimonial Column 2 */}
             {textTestimonials[1] && (
-              <motion.div 
-                className="bg-white p-6 sm:p-8 flex flex-col shadow-lg rounded-lg min-h-[450px] sm:min-h-[500px] lg:h-[578px] border border-blue-100 hover:shadow-xl transition-shadow duration-300"
+                <motion.div 
+                className="bg-[#ffffff] p-6 sm:p-8 flex flex-col shadow-lg rounded-lg min-h-[450px] sm:min-h-[500px] lg:h-[578px] hover:shadow-xl transition-shadow duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -232,15 +231,15 @@ export default function Testimonials() {
                   />
                 </div>
                 <div className="flex-1 flex flex-col">
-                  <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[1].title}</h3>
-                  <p className="text-slate-600 text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
+                  <h3 className="text-lg sm:text-xl font-bold text-[#000000] mb-4 sm:mb-5 flex-shrink-0">{textTestimonials[1].title}</h3>
+                  <p className="text-[#000000] text-sm sm:text-[15px] leading-relaxed mb-6 sm:mb-8 flex-1">
                     {textTestimonials[1].text}
                   </p>
                   
-                  <div className="pt-4 sm:pt-6 border-t border-blue-100 mt-auto flex-shrink-0">
+                  <div className="pt-4 sm:pt-6 border-t border-black/10 mt-auto flex-shrink-0">
                     <StarRating />
-                    <p className="font-bold text-[#1a1a1a] text-sm sm:text-base">{textTestimonials[1].name}</p>
-                    <p className="text-xs text-slate-600 uppercase tracking-widest">{textTestimonials[1].role}</p>
+                    <p className="font-bold text-[#000000] text-sm sm:text-base">{textTestimonials[1].name}</p>
+                    <p className="text-xs text-[#000000] uppercase tracking-widest">{textTestimonials[1].role}</p>
                   </div>
                 </div>
               </motion.div>

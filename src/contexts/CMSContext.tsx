@@ -41,6 +41,8 @@ interface FooterSettings {
   twitter_url: string;
   instagram_url: string;
   linkedin_url: string;
+  description: string;
+  office_address: string;
   is_active: boolean;
   footer_links: FooterLink[];
 }

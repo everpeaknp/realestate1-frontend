@@ -4,6 +4,7 @@ import Hero from './hero';
 import HeroCards from '../shared/HeroCards';
 import PersonSection from '../shared/PersonSection';
 import FeaturedProperties from './FeaturedProperties';
+import SingleFeaturedProperty from './SingleFeaturedProperty';
 import SoldGallery from './SoldGallery';
 import PopularNeighborhoods from './PopularNeighborhoods';
 import HowItWorks from './HowItWorks';
@@ -44,21 +45,26 @@ export default function Home({
   return (
     <>
       <Hero settings={heroSettings} />
+ 
+      <SingleFeaturedProperty />
       <FeaturedProperties />
       <SoldGallery />
-      <StatsSection stats={stats} />
+
       <PopularNeighborhoods neighborhoods={neighborhoods} />
       <HowItWorks steps={howItWorks} />
   
       <Testimonials />
+        <StatsSection stats={stats} />
       <BenefitsSection 
         benefits={benefits}
         gallery={benefitGallery}
         section={benefitsSection}
-      />
+      />    
+            <InstagramGallery />
       <ContactSection settings={contactSection} />
-      <Newsletter />
-      <InstagramGallery />
+ 
+
+          <Newsletter />
       
     </>
   );

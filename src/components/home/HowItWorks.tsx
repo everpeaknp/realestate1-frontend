@@ -44,12 +44,12 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
     };
   });
   return (
-    <section className="bg-[#FFFAF3] py-12 sm:py-16 md:py-20 overflow-hidden">
+    <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 text-center">
         {/* Section Header */}
         <div className="mb-10 sm:mb-12">
           <motion.h2 
-            className="text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-4 sm:mb-6"
+            className="text-3xl sm:text-4xl font-bold text-black mb-4 sm:mb-6"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -58,7 +58,7 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
             How It Works
           </motion.h2>
           <motion.p 
-            className="text-[#7C7A70] max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
+            className="text-black/60 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -85,12 +85,12 @@ export default function HowItWorks({ steps = defaultSteps }: HowItWorksProps) {
               >
                 {/* Step Ribbon */}
                 <div className="absolute top-4 left-[-35px] z-10 w-[140px] h-8 flex items-center justify-center -rotate-45 shadow-sm"
-                  style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
-                  <span className="text-white text-[10px] font-bold tracking-widest pl-2">STEP {step.number}</span>
+                  style={{ backgroundColor: '#ffffff' }}>
+                  <span className="text-black text-[10px] font-bold tracking-widest pl-2">STEP {step.number}</span>
                 </div>
 
                 {/* Icon */}
-                <div className="text-white/90 mb-2 transform group-hover:scale-110 transition-transform duration-300">
+                <div className="text-white mb-2 transform group-hover:scale-110 transition-transform duration-300">
                   <step.IconComponent size={40} strokeWidth={1.5} className="sm:w-12 sm:h-12" />
                 </div>
 

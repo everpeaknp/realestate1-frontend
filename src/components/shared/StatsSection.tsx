@@ -119,7 +119,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
                 }}
               >
                 {/* Brand Elements in original layout */}
-                <div className="text-blue-100">
+                <div className="text-white/80">
                   <stat.IconComponent size={32} className="sm:w-9 sm:h-9" strokeWidth={1} fill="currentColor" fillOpacity={0.3} />
                 </div>
                 <h3 className="text-sm sm:text-base md:text-lg font-bold tracking-tight px-2 sm:px-4 leading-snug text-white">
@@ -136,7 +136,7 @@ export default function StatsSection({ stats }: StatsSectionProps) {
                   backgroundColor: '#000000'
                 }}
               >
-                <p className="text-xs sm:text-sm md:text-[15px] leading-relaxed text-blue-50 italic font-medium max-w-[240px]">
+                <p className="text-xs sm:text-sm md:text-[15px] leading-relaxed text-white/60 italic font-medium max-w-[240px]">
                   {stat.description || 'Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam.'}
                 </p>
               </div>

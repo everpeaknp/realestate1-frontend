@@ -60,12 +60,12 @@ function ContactSection({ settings }: ContactSectionProps) {
     return (
       <section className="bg-[#FFFAF3] pt-12 sm:pt-16 md:pt-20 pb-0 lg:pb-0 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 relative">
-          <div className="flex flex-col lg:flex-row items-center lg:items-end gap-8 lg:gap-0">
-            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end lg:pr-12 relative z-0 order-2 lg:order-1">
+          <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8 lg:gap-0">
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-start lg:pl-0 relative z-0 order-2 lg:order-1">
               <div className="max-h-[400px] sm:max-h-[500px] md:max-h-[600px] lg:max-h-[700px] w-64 bg-gray-200 animate-pulse rounded" />
             </div>
             <div className="w-full lg:w-1/2 relative lg:static flex justify-center lg:justify-start order-1 lg:order-2">
-              <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-sm relative lg:-ml-32 lg:mb-0 z-10 w-full max-w-md lg:max-w-[396px] min-h-[400px] sm:min-h-[430px]">
+              <div className="bg-white p-6 sm:p-8 shadow-2xl rounded-sm relative lg:mb-0 z-10 w-full max-w-md lg:max-w-[396px] min-h-[400px] sm:min-h-[430px]">
                 <div className="space-y-4 animate-pulse">
                   <div className="h-8 bg-gray-200 rounded w-3/4" />
                   <div className="h-4 bg-gray-200 rounded w-1/2" />

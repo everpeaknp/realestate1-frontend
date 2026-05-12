@@ -84,7 +84,7 @@ export default function SoldGallery() {
       <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div>
-            <span className="label-caps text-outline-variant tracking-widest uppercase">Proven Results</span>
+            <span className="label-caps text-white/40 tracking-widest uppercase">Proven Results</span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl mt-4 line-clamp-1">Recently Sold</h2>
           </div>
           <button className="flex items-center gap-2 group transition-all text-sm font-semibold tracking-widest uppercase mb-2">
@@ -103,13 +103,13 @@ export default function SoldGallery() {
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <p className={`text-4xl md:text-5xl font-display font-bold ${sold.rotation} opacity-90 border-4 border-red-600 px-8 py-2 text-red-600 uppercase tracking-tighter`}>
+                  <p className={`text-4xl md:text-5xl font-display font-bold ${sold.rotation} opacity-90 border-4 border-white px-8 py-2 text-white uppercase tracking-tighter bg-transparent transition-all duration-300 group-hover:border-red-600 group-hover:text-red-600`}>
                     SOLD
                   </p>
                 </div>
               </div>
               <div className="mt-8">
-                <p className="label-caps text-outline-variant mb-2">{sold.location}</p>
+                <p className="label-caps text-white/40 mb-2">{sold.location}</p>
                 <p className="text-3xl font-semibold">{sold.price}</p>
               </div>
             </div>

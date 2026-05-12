@@ -1,120 +1,87 @@
-import { MapPin } from 'lucide-react';
-import { motion } from 'framer-motion';
-import LazyImage from '@/components/shared/LazyImage';
-
 interface Neighborhood {
   id: string;
   name: string;
   image: string;
-  gridClass: string;
+  description?: string;
+  priceRange?: string;
+  gridClass?: string;
 }
 
-const defaultNeighborhoods: Neighborhood[] = [
+const DEFAULT_AREAS = [
   {
     id: '1',
-    name: 'Westwood',
-    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-1 lg:row-start-1 lg:w-[384px] lg:h-[242px]',
+    name: 'Leppington',
+    priceRange: '$900k — $1.8M',
+    description:
+      'The heart of the South West, offering seamless connectivity and premium modern living for growing families.',
+    image:
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBrghhNyWymY9RP9QoqpVd9nLtSwusQMMJlgrdwi3TYrAkPWxOl6geHVGOMGlYXrzeWSvb3KGpb7jnyL9x2_ogCZnRpINWpRth29xK873DxQvGXkXPG3uc9sige2FiTxt_Vp4ldSKZTCKsynZhceWr35TOysmOyJekrmZpDWgyxrwrTeKud8EeJeSdxLfjDCDavuyfo6CrcDL7n1Wu_V35VPGV1GkgtGnAjuObv0vucIUQmisHCVm3TuztLmECB39R3sQa-x9sn5nM',
   },
   {
     id: '2',
-    name: 'Hyde Park',
-    image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-1 lg:row-start-2 lg:w-[384px] lg:h-[242px]',
+    name: 'Oran Park',
+    priceRange: '$850k — $1.6M',
+    description:
+      'A vibrant, master-planned town center designed with lifestyle, work, and recreation in perfect balance.',
+    image:
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuDUXGmna6KoGwMH1Ap7oC-E1z8TDa6fBmHaDvAIUESlW72VSEvoj_VSvfvklootiacmT8BBWTu8wruroviI2wuagrSPde2fBzkVm_oQ7iCI6x72g3tR4WDvpwLLesmZRWXiVFxCnzHdh_EJ8r1oVTIe_ad_oBKjDO6MouAKN-IJ-Fp2uj1UaqloIlcYR1o-ljANMA243Xt98pejqS2KjVZrvqqEyhz1YDKrkdnANJDdW_78BMoEe1OBYBsmLbk9dPouxhw3YE6td8Q',
   },
   {
     id: '3',
-    name: 'Sunset Square',
-    image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-2 lg:row-span-2 lg:w-[384px] lg:h-[492px]',
-  },
-  {
-    id: '4',
-    name: 'East Village',
-    image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-3 lg:row-start-1 lg:w-[384px] lg:h-[242px]',
-  },
-  {
-    id: '5',
-    name: 'Las Colinas',
-    image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&q=80&w=800',
-    gridClass: 'lg:col-start-3 lg:row-start-2 lg:w-[384px] lg:h-[242px]',
+    name: 'Austral',
+    priceRange: '$800k — $1.5M',
+    description:
+      'Quiet residential serenity met with immense future growth potential near the new airport precinct.',
+    image:
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuCSgSwaLSINC__IiTRwQh-s0MZpWdF19rRPOYqckUBKPq31zUei0OP92EbImxbRlHzR0DtSbGv1y9adhbRr6lRuJvOuVQGNUhslnB31_UuenF8o_-yXdtIpXf3-6dbvCEE8AUwQgCe2LNF6K-qxnHmetaNWKI6PqhS98VNZWem_dDh0j5wZt19LqTIbT6OWSmFU497-Y5eOsnwhxLoui7R2deBFP7lC-V_kFpZygRWJHr3xIAYcI2ixVFWjez1kNHMGDgtxzILdNIg',
   },
 ];
 
 interface PopularNeighborhoodsProps {
-  neighborhoods?: any[];
+  neighborhoods?: Neighborhood[];
 }
 
-export default function PopularNeighborhoods({ neighborhoods = defaultNeighborhoods }: PopularNeighborhoodsProps) {
+export default function PopularNeighborhoods({ neighborhoods }: PopularNeighborhoodsProps) {
+  // Use passed neighborhoods if they have useful data, otherwise fall back to defaults
+  const areas =
+    neighborhoods && neighborhoods.length > 0 && neighborhoods[0].description
+      ? neighborhoods
+      : DEFAULT_AREAS;
+
   return (
-    <section className="bg-white py-12 sm:py-16 md:py-24 pb-16 sm:pb-24 md:pb-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 text-center">
-        {/* Section Header */}
-        <div className="mb-12 sm:mb-16">
-          <motion.h2 
-            className="text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-4 sm:mb-6"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Popular Neighborhoods
-          </motion.h2>
-          <motion.p 
-            className="text-[#7C7A70] max-w-2xl mx-auto text-base sm:text-lg leading-relaxed font-medium px-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            I assist my customers in identifying their fundamental goals for buying or selling 
-            property, and I attentively handle the process from beginning to end.
-          </motion.p>
+    <section className="py-[120px] bg-surface-container-low" id="expertise">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-[80px]">
+        {/* Header */}
+        <div className="text-center mb-20">
+          <span className="label-caps tracking-widest text-black">Growth Corridors</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl mt-6">Areas of Expertise</h2>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-0.5">
-          {(neighborhoods || defaultNeighborhoods).map((item, index) => (
-            <motion.div
-              key={item.id}
-              className={`relative overflow-hidden group cursor-pointer rounded-sm h-[200px] sm:h-[220px] lg:h-auto ${item.gridClass}`}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
+          {areas.map((area, i) => (
+            <div
+              key={area.id ?? i}
+              className="bg-white rounded-xl overflow-hidden soft-shadow group cursor-pointer"
             >
-              {/* Neighborhood Image */}
-              <LazyImage 
-                src={item.image} 
-                alt={item.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              
-              {/* Overlay Overlay */}
-              <div className="absolute inset-0 bg-black/30 transition-colors duration-300" 
-                style={{ 
-                  background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5))'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6))';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5))';
-                }}
-              />
-              
-              {/* Label */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <div className="p-1.5 rounded-full mb-3 shadow-lg transform group-hover:scale-110 transition-transform"
-                  style={{ backgroundColor: '#000000' }}>
-                  <MapPin size={16} fill="white" className="text-white sm:w-[18px] sm:h-[18px]" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white tracking-wide shadow-black drop-shadow-md">
-                  {item.name}
-                </h3>
+              <div className="h-64 overflow-hidden">
+                <img
+                  src={area.image}
+                  alt={area.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  referrerPolicy="no-referrer"
+                />
               </div>
-            </motion.div>
+              <div className="p-10 space-y-4">
+                <h4 className="text-2xl font-semibold">{area.name}</h4>
+                {area.priceRange && (
+                  <p className="label-caps text-secondary tracking-widest">{area.priceRange}</p>
+                )}
+                {area.description && (
+                  <p className="text-on-surface-variant leading-relaxed">{area.description}</p>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       </div>

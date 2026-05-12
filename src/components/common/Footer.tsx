@@ -95,106 +95,105 @@ export default function Footer() {
   ].filter(social => social.show || !footerSettings);
 
   return (
-    <footer className="bg-gradient-to-br from-slate-50 to-white pt-12 sm:pt-16 md:pt-20 pb-6 sm:pb-8 md:pb-10 border-t border-gray-100">
+    <footer className="bg-black pt-12 sm:pt-16 md:pt-20 pb-6 sm:pb-8 md:pb-10 border-t border-white/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         
-        {/* Top Section: Logo, Contact, Socials */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 sm:gap-10 lg:gap-6 pb-12 sm:pb-14 md:pb-16">
-          
-          {/* Logo Section */}
-          <motion.div 
-            className="flex items-center gap-2 sm:gap-3 group"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+        {/* Top Section: Logo, Contact, Socials — all in one row */}
+        <motion.div
+          className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 pb-12 sm:pb-14 md:pb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          {/* Logo */}
+          <div className="flex items-center gap-2 sm:gap-3 group cursor-default flex-shrink-0">
             {logoImage && getImageUrl(logoImage) ? (
-              <div className="relative h-12 sm:h-16 md:h-20 w-auto transition-transform duration-200 group-hover:scale-105">
-                <LazyImage 
-                  src={getImageUrl(logoImage)!} 
+              <div className="relative h-14 sm:h-16 w-auto transition-transform duration-200 group-hover:scale-105 flex-shrink-0">
+                <img
+                  src={getImageUrl(logoImage)!}
                   alt={logoText}
-                  className="h-12 sm:h-16 md:h-20 w-auto object-contain"
+                  className="h-14 sm:h-16 w-auto object-contain"
+                  style={{ mixBlendMode: 'screen' }}
                 />
               </div>
             ) : (
-              <div className="relative h-8 sm:h-10 w-10 sm:w-12 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
+              <div className="relative h-8 w-10 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
                 <div className="absolute inset-0 flex">
-                  <div 
-                    className="w-1/2 h-full" 
-                    style={{ 
-                      background: 'linear-gradient(to bottom right, #000000, #0a2240)',
-                      clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' 
+                  <div
+                    className="w-1/2 h-full"
+                    style={{
+                      background: 'linear-gradient(to bottom right, #ffffff, #cccccc)',
+                      clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)',
                     }}
                   />
-                  <div 
-                    className="w-1/2 h-full" 
-                    style={{ 
-                      background: 'linear-gradient(to bottom right, #0d2d4d, #0f3558)',
-                      clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' 
+                  <div
+                    className="w-1/2 h-full"
+                    style={{
+                      background: 'linear-gradient(to bottom right, #dddddd, #aaaaaa)',
+                      clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)',
                     }}
                   />
                 </div>
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 sm:w-4 h-4 sm:h-5 bg-white flex flex-col items-center justify-center rounded-t-sm shadow-md">
-                   <div style={{ backgroundColor: '#000000' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1 mb-0.5"></div>
-                   <div className="flex gap-0.5">
-                     <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
-                     <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }} className="w-0.5 sm:w-1 h-0.5 sm:h-1"></div>
-                   </div>
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 h-4 bg-black border border-white/20 flex flex-col items-center justify-center rounded-t-sm">
+                  <div style={{ backgroundColor: '#ffffff' }} className="w-0.5 h-0.5 mb-0.5" />
+                  <div className="flex gap-0.5">
+                    <div style={{ backgroundColor: 'rgba(255,255,255,0.4)' }} className="w-0.5 h-0.5" />
+                    <div style={{ backgroundColor: 'rgba(255,255,255,0.4)' }} className="w-0.5 h-0.5" />
+                  </div>
                 </div>
               </div>
             )}
-            <span className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-slate-800 transition-colors duration-200 group-hover:text-[#000000]">
+            <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-white whitespace-nowrap">
               {logoText}
             </span>
-          </motion.div>
+          </div>
 
-          {/* Contact Details */}
-          <motion.div 
-            className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 lg:gap-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+          {/* Divider */}
+          <span className="hidden sm:block w-px h-6 bg-white/20 flex-shrink-0" aria-hidden="true" />
+
+          {/* Phone */}
+          <a
+            href={`tel:${phoneNumber.replace(/\s/g, '')}`}
+            className="flex items-center gap-2 transition-colors duration-200 group cursor-pointer flex-shrink-0"
           >
-            <a 
-              href={`tel:${phoneNumber.replace(/\s/g, '')}`}
-              className="flex items-center gap-2 sm:gap-3 transition-colors duration-200 group cursor-pointer"
-            >
-              <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(0,0,0,0.15)]">
-                <Phone size={16} fill="currentColor" stroke="none" style={{ color: '#000000' }} className="sm:w-[18px] sm:h-[18px]" />
-              </div>
-              <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#000000]">{phoneNumber}</span>
-            </a>
-            <a 
-              href={`mailto:${email}`}
-              className="flex items-center gap-2 sm:gap-3 transition-colors duration-200 group cursor-pointer"
-            >
-              <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }} className="p-2 rounded-lg transition-colors duration-200 hover:bg-[rgba(0,0,0,0.15)]">
-                <Mail size={16} style={{ color: '#000000' }} className="sm:w-[18px] sm:h-[18px]" />
-              </div>
-              <span className="text-base sm:text-lg font-bold text-slate-700 transition-colors duration-200 group-hover:text-[#000000]">{email}</span>
-            </a>
-          </motion.div>
+            <div className="p-1.5 rounded-lg bg-white/10 transition-colors duration-200 group-hover:bg-white/20">
+              <Phone size={15} fill="currentColor" stroke="none" className="text-white" />
+            </div>
+            <span className="text-sm sm:text-base font-semibold text-white/80 transition-colors duration-200 group-hover:text-white whitespace-nowrap">
+              {phoneNumber}
+            </span>
+          </a>
+
+          {/* Email */}
+          <a
+            href={`mailto:${email}`}
+            className="flex items-center gap-2 transition-colors duration-200 group cursor-pointer flex-shrink-0"
+          >
+            <div className="p-1.5 rounded-lg bg-white/10 transition-colors duration-200 group-hover:bg-white/20">
+              <Mail size={15} className="text-white" />
+            </div>
+            <span className="text-sm sm:text-base font-semibold text-white/80 transition-colors duration-200 group-hover:text-white whitespace-nowrap">
+              {email}
+            </span>
+          </a>
+
+          {/* Divider */}
+          {socialLinks.length > 0 && (
+            <span className="hidden sm:block w-px h-6 bg-white/20 flex-shrink-0" aria-hidden="true" />
+          )}
 
           {/* Social Icons */}
           {socialLinks.length > 0 && (
-            <motion.div 
-              className="flex items-center gap-2 sm:gap-3"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+            <div className="flex items-center gap-2 flex-shrink-0">
               {socialLinks.map((social, idx) => (
                 <motion.a
                   key={idx}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ background: '#000000' }}
-                  className="w-9 h-9 sm:w-10 sm:h-10 text-white flex items-center justify-center rounded-lg hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer"
-                  whileHover={{ y: -3, scale: 1.05 }}
+                  className="w-8 h-8 sm:w-9 sm:h-9 text-white bg-white/10 border border-white/20 flex items-center justify-center rounded-lg hover:bg-white/20 transition-all duration-200 cursor-pointer"
+                  whileHover={{ y: -2, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   title={social.label}
                   aria-label={social.label}
@@ -202,12 +201,12 @@ export default function Footer() {
                   {social.icon}
                 </motion.a>
               ))}
-            </motion.div>
+            </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Bottom Section: Links and Copyright */}
-        <div className="pt-6 sm:pt-8 md:pt-10 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4">
+        <div className="pt-6 sm:pt-8 md:pt-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4">
           
           {/* Footer Links */}
           <motion.div 
@@ -231,17 +230,15 @@ export default function Footer() {
                   }}
                   className={`group flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer no-underline ${
                     active 
-                      ? 'text-[#000000]' 
-                      : 'text-slate-600 hover:text-[#000000]'
+                      ? 'text-white' 
+                      : 'hover:text-white'
                   }`}
+                  style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.55)' }}
                 >
                   <ChevronRight 
                     size={12} 
-                    className={`sm:w-[14px] sm:h-[14px] transition-all duration-200 ${
-                      active 
-                        ? 'text-[#000000]' 
-                        : 'text-slate-300 group-hover:text-[#000000] group-hover:translate-x-0.5'
-                    }`}
+                    className="sm:w-[14px] sm:h-[14px] transition-all duration-200 group-hover:translate-x-0.5"
+                    style={{ color: active ? '#ffffff' : 'rgba(255,255,255,0.35)' }}
                   />
                   <span className="whitespace-nowrap">{link.name}</span>
                 </a>
@@ -251,7 +248,8 @@ export default function Footer() {
           
           {/* Copyright */}
           <motion.div 
-            className="text-xs sm:text-sm font-medium text-slate-600 text-center md:text-right"
+            className="text-xs sm:text-sm font-medium text-center md:text-right"
+            style={{ color: 'rgba(255,255,255,0.4)' }}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

@@ -124,7 +124,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section style={{ background: '#1D1E3D' }} className="pt-0 pb-12 sm:py-16 md:py-20 w-full overflow-hidden">
+    <section style={{ background: '#000000' }} className="pt-0 pb-12 sm:py-16 md:py-20 w-full overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-20">
           {/* Text Content */}
@@ -153,7 +153,7 @@ export default function NewsletterSection() {
             >
               <div className="text-center text-white">
                 <svg
-                  className="w-7 h-7 sm:w-8 sm:h-8 mx-auto mb-2 sm:mb-3 text-blue-200"
+                  className="w-7 h-7 sm:w-8 sm:h-8 mx-auto mb-2 sm:mb-3 text-white/60"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -193,7 +193,7 @@ export default function NewsletterSection() {
                     flex-1 bg-white px-4 sm:px-6 py-4 sm:py-5 
                     text-sm sm:text-base text-slate-800 
                     placeholder:text-slate-400 outline-none 
-                    focus:ring-2 focus:ring-blue-400 transition-all duration-200 min-h-[48px]
+                    focus:ring-2 focus:ring-black/20 transition-all duration-200 min-h-[48px]
                     ${errors.email ? 'border-2 border-red-500' : ''}
                   `}
                   disabled={submitting}
@@ -228,7 +228,7 @@ export default function NewsletterSection() {
               <button
                 type="submit"
                 disabled={submitting || !isValid}
-                className="bg-white hover:bg-gray-100 text-[#1D1E3D] px-6 sm:px-10 py-4 sm:py-5 font-bold text-xs tracking-[0.2em] transition-all duration-200 uppercase whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed min-h-[48px] cursor-pointer shadow-md hover:shadow-lg"
+                className="bg-white hover:bg-gray-100 text-black px-6 sm:px-10 py-4 sm:py-5 font-bold text-xs tracking-[0.2em] transition-all duration-200 uppercase whitespace-nowrap disabled:opacity-60 disabled:cursor-not-allowed min-h-[48px] cursor-pointer shadow-md hover:shadow-lg"
                 aria-label="Subscribe to newsletter"
               >
                 {submitting ? 'Subscribing...' : 'Subscribe'}
