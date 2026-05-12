@@ -13,6 +13,18 @@ export interface PropertyStats {
  * We strip non-ASCII first, then try multiple patterns in priority order.
  */
 export function parsePropertyStats(property: EagleProperty): PropertyStats {
+  const explicitBeds = typeof property.beds === 'number' && !Number.isNaN(property.beds) ? property.beds : null;
+  const explicitBaths = typeof property.baths === 'number' && !Number.isNaN(property.baths) ? property.baths : null;
+  const explicitCars = typeof property.cars === 'number' && !Number.isNaN(property.cars) ? property.cars : null;
+
+  if (explicitBeds !== null || explicitBaths !== null || explicitCars !== null) {
+    return {
+      beds: explicitBeds,
+      baths: explicitBaths,
+      cars: explicitCars,
+    };
+  }
+
   const raw = `${property.headline ?? ''} ${property.description ?? ''}`;
 
   // Strip non-ASCII bytes (emoji, Unicode bullets â¢, â, etc.) and collapse whitespace

@@ -11,6 +11,10 @@
 export interface EagleProperty {
   id: string;
   formattedAddress: string;
+  /** Optional explicit room counts (used by REAXML feed mapping) */
+  beds?: number;
+  baths?: number;
+  cars?: number;
   latitude?: number;
   longitude?: number;
   /** PropertyTypeEnum value e.g. HOUSE, APARTMENT */

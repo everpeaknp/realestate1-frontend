@@ -8,18 +8,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchPropertyById } from '@/lib/eagle-api';
 
+function getBackendBaseUrl() {
+  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+}
+
+function getPropertyFeedSource() {
+  return (process.env.PROPERTY_FEED_SOURCE || 'EAGLE_API').toUpperCase();
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
+    const propertyFeedSource = getPropertyFeedSource();
 
     if (!id) {
       return NextResponse.json(
         { success: false, error: 'Property ID is required' },
         { status: 400 }
       );
+    }
+
+    if (propertyFeedSource === 'REAXML') {
+      const backendUrl = `${getBackendBaseUrl()}/api/reaxml/properties/${id}/`;
+      const response = await fetch(backendUrl, { cache: 'no-store' });
+      const payload = await response.json();
+      return NextResponse.json(payload, { status: response.status });
     }
 
     const property = await fetchPropertyById(id);
@@ -34,6 +50,7 @@ export async function GET(
     return NextResponse.json({
       success: true,
       property,
+      source: propertyFeedSource,
     });
   } catch (error) {
     console.error('Eagle API error:', error);

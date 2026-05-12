@@ -7,7 +7,41 @@
 
 import { NextResponse } from 'next/server';
 
+function getBackendBaseUrl() {
+  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+}
+
+function getPropertyFeedSource() {
+  return (process.env.PROPERTY_FEED_SOURCE || 'EAGLE_API').toUpperCase();
+}
+
 export async function GET() {
+  const propertyFeedSource = getPropertyFeedSource();
+
+  if (propertyFeedSource === 'REAXML') {
+    try {
+      const response = await fetch(`${getBackendBaseUrl()}/api/reaxml/health/`, { cache: 'no-store' });
+      const payload = await response.json();
+      return NextResponse.json(
+        {
+          success: response.ok && payload?.success !== false,
+          source: 'REAXML',
+          details: payload,
+        },
+        { status: response.status }
+      );
+    } catch (error) {
+      return NextResponse.json(
+        {
+          success: false,
+          source: 'REAXML',
+          error: error instanceof Error ? error.message : 'Failed to reach REAXML health endpoint',
+        },
+        { status: 500 }
+      );
+    }
+  }
+
   const clientId = process.env.EAGLE_CLIENT_ID;
   const clientSecret = process.env.EAGLE_CLIENT_SECRET;
 

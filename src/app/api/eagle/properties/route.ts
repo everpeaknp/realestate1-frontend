@@ -15,8 +15,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchProperties, searchProperties } from '@/lib/eagle-api';
 
+function getBackendBaseUrl() {
+  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+}
+
+function getPropertyFeedSource() {
+  return (process.env.PROPERTY_FEED_SOURCE || 'EAGLE_API').toUpperCase();
+}
+
 export async function GET(request: NextRequest) {
   try {
+    const propertyFeedSource = getPropertyFeedSource();
+
+    if (propertyFeedSource === 'REAXML') {
+      const query = request.nextUrl.searchParams.toString();
+      const backendUrl = `${getBackendBaseUrl()}/api/reaxml/properties/${query ? `?${query}` : ''}`;
+      const response = await fetch(backendUrl, { cache: 'no-store' });
+      const payload = await response.json();
+      return NextResponse.json(payload, { status: response.status });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const status = searchParams.get('status') || undefined;
@@ -94,6 +112,7 @@ export async function GET(request: NextRequest) {
       success: true,
       count: properties.length,
       properties,
+      source: propertyFeedSource,
       debug: {
         filterEnabled: !showAllAgents,
         filteringBy: showAllAgents ? 'NONE (showing all agents)' : `Agent: ${agentName}`,
