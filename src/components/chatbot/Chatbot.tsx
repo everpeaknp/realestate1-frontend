@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import {
   MessageSquare, X, Send, User, Mail, Phone,
   Home, DollarSign, Bed, Droplets, Maximize, MapPin, ExternalLink,
@@ -87,13 +88,14 @@ function parseMessage(text: string): React.ReactNode[] {
           nodes.push(<span key={`txt-${idx}-${cursor}`}>{part.slice(cursor, start)}</span>);
         }
         nodes.push(
-          <a
+          <Link
             key={`lnk-${idx}-${cleanPath}`}
             href={cleanPath}
+            prefetch
             className="text-[#c1a478] underline hover:text-[#b09368] transition-colors ml-1"
           >
             View property
-          </a>
+          </Link>
         );
         cursor = start + rawPath.length;
       });

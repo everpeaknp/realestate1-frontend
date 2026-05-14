@@ -17,12 +17,12 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const x = useMotionValue(0);
 
   // Skip the first image (used as hero) and show all remaining images
-  const images = (property.images ?? []).slice(1);
+  const images = (property.images ?? []).slice(1, 13);
   const hasImages = images.length > 0;
 
-  // Create a much larger array for truly infinite scrolling (5 copies)
+  // Keep duplication modest to avoid heavy decode/network churn.
   const infiniteImages = hasImages
-    ? [...images, ...images, ...images, ...images, ...images]
+    ? [...images, ...images, ...images]
     : [];
 
   const imageWidth = 480 + 24; // width + gap
@@ -69,9 +69,9 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
 
     // Seamless infinite loop - reset when reaching boundaries
     // We have 5 sets, so we can safely scroll through middle 3 sets
-    if (newX < -singleSetWidth * 3) {
+    if (newX < -singleSetWidth * 2) {
       newX += singleSetWidth;
-    } else if (newX > -singleSetWidth) {
+    } else if (newX > 0) {
       newX -= singleSetWidth;
     }
 
@@ -81,7 +81,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
   // Initialize to middle position
   useEffect(() => {
     if (!hasImages || singleSetWidth === 0) return;
-    x.set(-singleSetWidth * 2); // Start at the middle set (3rd set out of 5)
+    x.set(-singleSetWidth); // Start at the middle set (2nd set out of 3)
   }, [hasImages, singleSetWidth, x]);
 
   // Handle drag with seamless repositioning
@@ -91,7 +91,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     const currentX = x.get();
 
     // Reposition seamlessly during drag if we're getting too far
-    if (currentX < -singleSetWidth * 3.5) {
+    if (currentX < -singleSetWidth * 2.5) {
       x.set(currentX + singleSetWidth);
     } else if (currentX > -singleSetWidth * 0.5) {
       x.set(currentX - singleSetWidth);
@@ -154,7 +154,10 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                     alt={`${property.formattedAddress} — photo ${(idx % images.length) + 2}`}
                     fill
                     sizes="(max-width: 768px) 92vw, 480px"
-                    quality={68}
+                    quality={56}
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='36'%3E%3Crect width='100%25' height='100%25' fill='%23ececec'/%3E%3C/svg%3E"
                     className="object-cover transition-all duration-300 group-hover:brightness-105 pointer-events-none"
                     referrerPolicy="no-referrer"
                     draggable={false}
@@ -224,7 +227,10 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 alt={`${property.formattedAddress} — photo ${selectedImage + 2}`}
                 fill
                 sizes="90vw"
-                quality={82}
+                quality={70}
+                priority
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='36'%3E%3Crect width='100%25' height='100%25' fill='%231b1b1b'/%3E%3C/svg%3E"
                 className="object-contain rounded-lg"
                 referrerPolicy="no-referrer"
               />

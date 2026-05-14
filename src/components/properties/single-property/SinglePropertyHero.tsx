@@ -28,7 +28,9 @@ export default function SinglePropertyHero({ property }: SinglePropertyHeroProps
         fill
         priority
         sizes="100vw"
-        quality={78}
+        quality={62}
+        placeholder="blur"
+        blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='24'%3E%3Crect width='100%25' height='100%25' fill='%23e7e7e7'/%3E%3C/svg%3E"
         className="object-cover"
       />
     </motion.div>
