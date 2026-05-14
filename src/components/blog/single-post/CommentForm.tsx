@@ -158,7 +158,7 @@ export default function CommentForm({ postId }: CommentFormProps) {
             error={errors.name}
             required
             disabled={isSubmitting}
-            placeholder="John Doe"
+            placeholder="Your full name"
           />
 
           {/* Email Input */}
@@ -169,7 +169,7 @@ export default function CommentForm({ postId }: CommentFormProps) {
             error={errors.email}
             required
             disabled={isSubmitting}
-            placeholder="john@example.com"
+            placeholder="you@example.com"
           />
 
           {/* Website Input (Optional) */}

@@ -259,7 +259,7 @@ export default function HomeWorthForm() {
               icon={<User size={18} />}
               required
               disabled={isSubmitting}
-              placeholder="John Doe"
+              placeholder="Your full name"
             />
 
             {/* Email */}
@@ -271,7 +271,7 @@ export default function HomeWorthForm() {
               icon={<Mail size={18} />}
               required
               disabled={isSubmitting}
-              placeholder="john@example.com"
+              placeholder="you@example.com"
             />
 
             {/* Phone */}

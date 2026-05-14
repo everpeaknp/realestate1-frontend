@@ -85,7 +85,7 @@ export default function LeadForm({ type, title, subtitle }: LeadFormProps) {
             required 
             value={formData.name}
             onChange={(e) => setFormData({...formData, name: e.target.value})}
-            placeholder="John Doe"
+            placeholder="Your full name"
           />
         </div>
 
@@ -97,7 +97,7 @@ export default function LeadForm({ type, title, subtitle }: LeadFormProps) {
               required 
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              placeholder="john@example.com"
+              placeholder="you@example.com"
             />
           </div>
           <div className={styles.formGroup}>

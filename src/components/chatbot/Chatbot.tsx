@@ -182,8 +182,8 @@ function IntroForm({ onStart }: { onStart: (info: UserInfo) => void }) {
 
         {/* Fields */}
         <div className="flex flex-col gap-3">
-          {field('Your Name',     <User size={12} />,  'name',  'text',  'John Doe')}
-          {field('Email Address', <Mail size={12} />,  'email', 'email', 'john@example.com')}
+          {field('Your Name',     <User size={12} />,  'name',  'text',  'Your full name')}
+          {field('Email Address', <Mail size={12} />,  'email', 'email', 'you@example.com')}
           {field('Phone Number',  <Phone size={12} />, 'phone', 'tel',   '+1 (555) 123-4567')}
         </div>
 

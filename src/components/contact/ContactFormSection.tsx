@@ -255,7 +255,7 @@ export default function ContactFormSection({
                     error={errors.first_name}
                     required
                     disabled={submitting}
-                    placeholder="John"
+                    placeholder="First name"
                   />
 
                   <FormInput
@@ -264,7 +264,7 @@ export default function ContactFormSection({
                     {...register('last_name')}
                     error={errors.last_name}
                     disabled={submitting}
-                    placeholder="Doe"
+                    placeholder="Last name"
                   />
                 </div>
 
@@ -276,7 +276,7 @@ export default function ContactFormSection({
                     error={errors.email}
                     required
                     disabled={submitting}
-                    placeholder="john@example.com"
+                    placeholder="you@example.com"
                   />
 
                   <FormInput

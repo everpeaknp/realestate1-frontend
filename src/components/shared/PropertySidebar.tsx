@@ -252,7 +252,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
               error={errors.name}
               required
               disabled={submitting}
-              placeholder="John Doe"
+              placeholder="Your full name"
             />
 
             <FormInput
@@ -262,7 +262,7 @@ export default function PropertySidebar({ agent, propertySlug }: PropertySidebar
               error={errors.email}
               required
               disabled={submitting}
-              placeholder="john@example.com"
+              placeholder="you@example.com"
             />
 
             <FormInput
