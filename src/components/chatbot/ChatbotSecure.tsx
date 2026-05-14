@@ -30,6 +30,18 @@ import { useChatbotStore, type ChatMessage, type UserInfo } from '@/store/chatbo
 const MAX_MESSAGE_LENGTH = 500;
 const DEBOUNCE_MS        = 1000;
 
+type ChatbotConfig = {
+  is_enabled: boolean;
+  tawk_enabled?: boolean;
+  tawk_property_id?: string;
+  tawk_widget_id?: string;
+};
+
+const DEFAULT_CONFIG: ChatbotConfig = {
+  is_enabled: true,
+  tawk_enabled: false,
+};
+
 // ------------------------------------------------------------------ //
 // Icon map + message parser
 // ------------------------------------------------------------------ //
@@ -205,7 +217,7 @@ export default function ChatbotSecure() {
 
   const [input, setInput]               = useState('');
   const [lastMsgTime, setLastMsgTime]   = useState(0);
-  const [config, setConfig]             = useState<any>(null);
+  const [config, setConfig]             = useState<ChatbotConfig>(DEFAULT_CONFIG);
   const chatAreaRef                     = useRef<HTMLDivElement>(null);
 
   // Fetch chatbot configuration
@@ -213,10 +225,10 @@ export default function ChatbotSecure() {
     const fetchConfig = async () => {
       try {
         const data = await chatbotAPI.getConfig();
-        setConfig(data);
+        setConfig({ ...DEFAULT_CONFIG, ...data });
       } catch (err) {
         console.error('[Chatbot] Failed to fetch config:', err);
-        setConfig({ is_enabled: true, tawk_enabled: false }); // Fallback
+        setConfig(DEFAULT_CONFIG);
       }
     };
     fetchConfig();
@@ -361,9 +373,6 @@ export default function ChatbotSecure() {
     } catch { /* ignore */ }
     clearSession();
   };
-
-  // Return nothing while loading config (prevents flash)
-  if (!config) return null;
 
   return (
     <>

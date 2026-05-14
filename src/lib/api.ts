@@ -6,9 +6,12 @@
 // Get API URL from environment variable with fallback
 // For server-side rendering, we need to check both client and server env
 const getApiUrl = () => {
-  // Check client-side env var first (browser)
+  // Browser: prefer explicit public API URL, else same-origin /api routing
   if (typeof window !== 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    if (process.env.NEXT_PUBLIC_API_URL) {
+      return process.env.NEXT_PUBLIC_API_URL;
+    }
+    return window.location.origin;
   }
   
   // Server-side: prefer internal Docker service name for container-to-container communication
@@ -376,6 +379,12 @@ export const homeAPI = {
 
 export const chatbotAPI = {
   async getConfig() {
-    return await apiRequest<{ is_enabled: boolean; updated_at: string }>(API_ENDPOINTS.chatbot.config);
+    return await apiRequest<{
+      is_enabled: boolean;
+      tawk_enabled?: boolean;
+      tawk_property_id?: string;
+      tawk_widget_id?: string;
+      updated_at?: string;
+    }>(API_ENDPOINTS.chatbot.config);
   },
 };
