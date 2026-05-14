@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { EagleProperty } from '@/lib/eagle-api';
+import Image from 'next/image';
 
 interface SinglePropertyHeroProps {
   property: EagleProperty;
@@ -21,10 +22,14 @@ export default function SinglePropertyHero({ property }: SinglePropertyHeroProps
       viewport={{ once: true }}
       className="w-full h-[60vh] md:h-[85vh] overflow-hidden"
     >
-      <img
+      <Image
         src={mainImage}
         alt={property.formattedAddress}
-        className="w-full h-full object-cover"
+        fill
+        priority
+        sizes="100vw"
+        quality={78}
+        className="object-cover"
       />
     </motion.div>
   );

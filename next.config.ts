@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60 * 60 * 24 * 7,
     remotePatterns: [
       {
         protocol: 'http',
@@ -17,6 +19,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
         hostname: '**',
       },
     ],

@@ -2,9 +2,10 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Bed, Bath, Car, ArrowRight, Heart } from 'lucide-react';
+import { Bed, Bath, Car, ArrowRight } from 'lucide-react';
 import { Property } from './types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface PropertyCardProps {
   property: Property;
@@ -28,10 +29,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
           </div>
         )}
         
-        <img 
-          src={property.image} 
+        <Image
+          src={property.image || '/images/placeholder-property.jpg'}
           alt={property.title}
-          className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          quality={70}
+          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
         />
       </div>
 

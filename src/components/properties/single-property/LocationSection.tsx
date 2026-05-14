@@ -85,9 +85,11 @@ export default function LocationSection({ property }: LocationSectionProps) {
     addressParts && addressParts.length > 1
       ? addressParts.slice(1).join(',').trim()
       : property.formattedAddress;
-
-  const lng = property.longitude ?? 151.2093;
-  const lat = property.latitude ?? -33.8688;
+  const locationLabel = suburbLine || property.formattedAddress || 'Location';
+  const hasCoordinates =
+    typeof property.longitude === 'number' && typeof property.latitude === 'number';
+  const lng = hasCoordinates ? property.longitude : undefined;
+  const lat = hasCoordinates ? property.latitude : undefined;
 
   // Parse dynamic data from description
   const description = property.description ?? '';
@@ -96,9 +98,9 @@ export default function LocationSection({ property }: LocationSectionProps) {
 
   // Fallback nearby items if description has no parseable POIs
   const fallbackNearby = [
-    { name: `${suburbLine} Schools`, dist: 'Nearby' },
-    { name: `${suburbLine} Parks`, dist: 'Nearby' },
-    { name: `${suburbLine} Shops`, dist: 'Nearby' },
+    { name: `${locationLabel} Schools`, dist: 'Nearby' },
+    { name: `${locationLabel} Parks`, dist: 'Nearby' },
+    { name: `${locationLabel} Shops`, dist: 'Nearby' },
   ];
 
   const displayNearby = nearbyItems.length > 0 ? nearbyItems : fallbackNearby;
@@ -116,7 +118,7 @@ export default function LocationSection({ property }: LocationSectionProps) {
           >
             <h3 className="text-3xl md:text-4xl font-serif mb-4">Location & Lifestyle</h3>
             <p className="text-neutral-500 text-lg">
-              {suburbLine} — everything at your doorstep.
+              {locationLabel} — everything at your doorstep.
             </p>
           </motion.div>
 
@@ -143,28 +145,40 @@ export default function LocationSection({ property }: LocationSectionProps) {
           viewport={{ once: true }}
           className="relative h-[500px] md:h-[600px] w-full rounded-2xl overflow-hidden shadow-xl"
         >
-          <Map
-            center={[lng, lat]}
-            zoom={14}
-            styles={{
-              light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-              dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            }}
-          >
-            <MapMarker longitude={lng} latitude={lat}>
-              <MarkerContent>
-                <div className="flex flex-col items-center">
-                  <div className="bg-secondary text-white rounded-full p-2 shadow-lg">
-                    <MapPin className="w-5 h-5" />
+          {hasCoordinates && lng !== undefined && lat !== undefined ? (
+            <Map
+              center={[lng, lat]}
+              zoom={14}
+              styles={{
+                light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+                dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+              }}
+            >
+              <MapMarker longitude={lng} latitude={lat}>
+                <MarkerContent>
+                  <div className="flex flex-col items-center">
+                    <div className="bg-secondary text-white rounded-full p-2 shadow-lg">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <div className="w-0.5 h-3 bg-secondary" />
+                    <div className="w-2 h-2 rounded-full bg-secondary/40" />
                   </div>
-                  <div className="w-0.5 h-3 bg-secondary" />
-                  <div className="w-2 h-2 rounded-full bg-secondary/40" />
-                </div>
-              </MarkerContent>
-            </MapMarker>
+                </MarkerContent>
+              </MapMarker>
 
-            <MapControls position="bottom-right" showZoom showFullscreen />
-          </Map>
+              <MapControls position="bottom-right" showZoom showFullscreen />
+            </Map>
+          ) : (
+            <div className="h-full w-full bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center px-8 text-center">
+              <div className="max-w-md">
+                <MapPin className="w-10 h-10 text-secondary mx-auto mb-4" />
+                <h4 className="text-2xl font-serif text-neutral-900 mb-3">{locationLabel}</h4>
+                <p className="text-sm md:text-base text-neutral-600">
+                  Exact map coordinates are not available in the current REAXML feed for this listing.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Nearby card overlay */}
           <motion.div
@@ -176,7 +190,7 @@ export default function LocationSection({ property }: LocationSectionProps) {
           >
             <h5 className="text-2xl font-serif mb-8 text-neutral-900 border-b border-neutral-100 pb-4 flex items-center gap-3">
               <MapPin className="w-5 h-5 text-secondary" />
-              {suburbLine}
+              {locationLabel}
             </h5>
 
             <ul className="space-y-8">

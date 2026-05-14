@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { API_ENDPOINTS } from '@/lib/api';
+import Image from 'next/image';
 
 interface Agent {
   id: number;
@@ -52,11 +53,14 @@ export default function PropertySidebar() {
     >
       {/* Agent info */}
       <div className="flex items-center gap-6 mb-10">
-        <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 transition-all hover:scale-105 bg-neutral-100">
-          <img
+        <div className="relative w-20 h-20 rounded-full overflow-hidden flex-shrink-0 transition-all hover:scale-105 bg-neutral-100">
+          <Image
             src={agentAvatar}
             alt={agentName}
-            className="w-full h-full object-contain"
+            fill
+            sizes="80px"
+            quality={70}
+            className="object-contain"
           />
         </div>
         <div>

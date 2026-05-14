@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useAnimationFrame, AnimatePresence } from 'framer-motion';
 import { EagleProperty } from '@/lib/eagle-api';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 interface PropertyGalleryProps {
   property: EagleProperty;
@@ -148,10 +149,13 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 transition={{ duration: 0.3 }}
               >
                 <div className="relative w-full h-full cursor-grab active:cursor-grabbing">
-                  <img
+                  <Image
                     src={img.url}
                     alt={`${property.formattedAddress} — photo ${(idx % images.length) + 2}`}
-                    className="absolute inset-0 w-full h-full object-cover transition-all duration-300 group-hover:brightness-105 pointer-events-none"
+                    fill
+                    sizes="(max-width: 768px) 92vw, 480px"
+                    quality={68}
+                    className="object-cover transition-all duration-300 group-hover:brightness-105 pointer-events-none"
                     referrerPolicy="no-referrer"
                     draggable={false}
                   />
@@ -212,13 +216,16 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="max-w-[90vw] max-h-[90vh] flex items-center justify-center"
+              className="relative w-[90vw] h-[90vh] max-w-[1600px] max-h-[1000px] flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
+              <Image
                 src={images[selectedImage].url}
                 alt={`${property.formattedAddress} — photo ${selectedImage + 2}`}
-                className="max-w-full max-h-[90vh] object-contain rounded-lg"
+                fill
+                sizes="90vw"
+                quality={82}
+                className="object-contain rounded-lg"
                 referrerPolicy="no-referrer"
               />
             </motion.div>
