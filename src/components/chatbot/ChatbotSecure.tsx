@@ -82,15 +82,36 @@ function parseMessage(text: string): React.ReactNode[] {
           ? <span key={partIdx} className="inline-flex items-center mr-1 align-middle">{icon}</span>
           : null;
       }
-      if (part.includes('/properties/')) {
-        return (
-          <a key={partIdx} href={part.trim()}
-            className="text-[#c1a478] underline hover:text-[#b09368] transition-colors ml-1">
+
+      const propertyPathRegex = /\/properties\/[^\s)]+/g;
+      const matches = [...part.matchAll(propertyPathRegex)];
+      if (!matches.length) return <span key={partIdx}>{part}</span>;
+
+      const nodes: React.ReactNode[] = [];
+      let cursor = 0;
+      matches.forEach((match, idx) => {
+        const start = match.index ?? 0;
+        const rawPath = match[0];
+        const cleanPath = rawPath.replace(/[.,!?;:]+$/, '');
+
+        if (start > cursor) {
+          nodes.push(<span key={`txt-${idx}-${cursor}`}>{part.slice(cursor, start)}</span>);
+        }
+        nodes.push(
+          <a
+            key={`lnk-${idx}-${cleanPath}`}
+            href={cleanPath}
+            className="text-[#c1a478] underline hover:text-[#b09368] transition-colors ml-1"
+          >
             View property
           </a>
         );
+        cursor = start + rawPath.length;
+      });
+      if (cursor < part.length) {
+        nodes.push(<span key={`tail-${cursor}`}>{part.slice(cursor)}</span>);
       }
-      return <span key={partIdx}>{part}</span>;
+      return <span key={partIdx}>{nodes}</span>;
     });
     return (
       <span key={lineIdx} className="flex items-start gap-0.5 flex-wrap">
