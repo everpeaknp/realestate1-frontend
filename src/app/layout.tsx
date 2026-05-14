@@ -17,8 +17,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Lily White Realestate",
-  description: "Find your dream home with Lily White Realestate",
+  title: "Bijen Khadka",
+  description: "Find your dream home with Bijen Khadka, your trusted real estate agent. Explore a wide range of properties, get expert advice, and make informed decisions with our comprehensive real estate services.",
 };
 
 import MainWrapper from "@/components/layout/MainWrapper";
