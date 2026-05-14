@@ -1,5 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail } from 'lucide-react';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -24,7 +25,14 @@ export default function Header() {
       <nav className={styles.nav}>
         <div className="container flex justify-between items-center">
           <Link href="/" className={styles.logo}>
-            REALTOR<span>PAL</span>
+            <Image
+              src="/icon.png"
+              alt="Bijen Khadka"
+              width={40}
+              height={40}
+              className={styles.logoIcon}
+            />
+            Bijen Khadka
           </Link>
           
           <ul className={styles.navLinks}>

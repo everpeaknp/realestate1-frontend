@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Footer.module.css';
 
@@ -6,7 +7,16 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className="container grid gap-2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
         <div>
-          <h3 className={styles.title}>REALTOR<span>PAL</span></h3>
+          <h3 className={styles.title}>
+            <Image
+              src="/icon.png"
+              alt="Bijen Khadka"
+              width={48}
+              height={48}
+              className={styles.logoIcon}
+            />
+            <span className={styles.brandText}>Bijen Khadka</span>
+          </h3>
           <p className={styles.description}>
             Your trusted partner in finding the perfect luxury real estate property. 
             We provide expert guidance and a seamless buying experience.
@@ -35,7 +45,7 @@ export default function Footer() {
       
       <div className={styles.bottom}>
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} Realtor Pal. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Bijen Khadka. All rights reserved.</p>
         </div>
       </div>
     </footer>

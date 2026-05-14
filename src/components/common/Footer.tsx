@@ -2,7 +2,6 @@
 
 import { Phone, Mail, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
 import LazyImage from '@/components/shared/LazyImage';
@@ -36,20 +35,12 @@ export default function Footer() {
   const { footerSettings } = useCMS();
   const pathname = usePathname();
 
-  // Fallback data while loading or if no data
-  const logoImage = footerSettings?.logo_image;
-  const logoText = footerSettings?.logo_text || 'Lily White Realestate';
+  // Static brand identity
+  const logoText = 'Bijen Khadka';
+  const logoSrc = '/icon.png';
   const phoneNumber = footerSettings?.phone_number || '+1 (321) 456 7890';
   const email = footerSettings?.email || 'hello@example.com';
-  const copyrightText = footerSettings?.copyright_text || '2026 Lily White Realestate. All rights reserved.';
-  
-  // Helper function to ensure absolute URL for images
-  const getImageUrl = (url: string | null): string | null => {
-    if (!url) return null;
-    if (url.startsWith('http')) return url;
-    if (url.startsWith('/')) return `${process.env.NEXT_PUBLIC_API_URL}${url}`;
-    return `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
-  };
+  const copyrightText = footerSettings?.copyright_text || `${new Date().getFullYear()} Bijen Khadka. All rights reserved.`;
 
   const footerLinks = footerSettings?.footer_links?.filter(link => link.is_active).sort((a, b) => a.order - b.order) || [
     { id: 1, name: "What's My Home Worth?", href: '/home-worth', order: 1, is_active: true },
@@ -108,42 +99,14 @@ export default function Footer() {
         >
           {/* Logo */}
           <div className="flex items-center gap-2 sm:gap-3 group cursor-default flex-shrink-0">
-            {logoImage && getImageUrl(logoImage) ? (
-              <div className="relative h-14 sm:h-16 w-auto transition-transform duration-200 group-hover:scale-105 flex-shrink-0">
-                <img
-                  src={getImageUrl(logoImage)!}
-                  alt={logoText}
-                  className="h-14 sm:h-16 w-auto object-contain"
-                  style={{ mixBlendMode: 'screen' }}
-                />
-              </div>
-            ) : (
-              <div className="relative h-8 w-10 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
-                <div className="absolute inset-0 flex">
-                  <div
-                    className="w-1/2 h-full"
-                    style={{
-                      background: 'linear-gradient(to bottom right, #ffffff, #cccccc)',
-                      clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)',
-                    }}
-                  />
-                  <div
-                    className="w-1/2 h-full"
-                    style={{
-                      background: 'linear-gradient(to bottom right, #dddddd, #aaaaaa)',
-                      clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)',
-                    }}
-                  />
-                </div>
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 h-4 bg-black border border-white/20 flex flex-col items-center justify-center rounded-t-sm">
-                  <div style={{ backgroundColor: '#ffffff' }} className="w-0.5 h-0.5 mb-0.5" />
-                  <div className="flex gap-0.5">
-                    <div style={{ backgroundColor: 'rgba(255,255,255,0.4)' }} className="w-0.5 h-0.5" />
-                    <div style={{ backgroundColor: 'rgba(255,255,255,0.4)' }} className="w-0.5 h-0.5" />
-                  </div>
-                </div>
-              </div>
-            )}
+            <div className="relative h-14 sm:h-16 w-auto transition-transform duration-200 group-hover:scale-105 flex-shrink-0">
+              <LazyImage
+                src={logoSrc}
+                alt={logoText}
+                className="h-14 sm:h-16 w-auto object-contain mix-blend-screen"
+                fallbackSrc={logoSrc}
+              />
+            </div>
             <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-white whitespace-nowrap">
               {logoText}
             </span>

@@ -43,9 +43,9 @@ export default function Header() {
     };
   }, [mobileMenuOpen]);
 
-  // Fallback data while loading or if no data
-  const logoImage = headerSettings?.logo_image;
-  const logoText = headerSettings?.logo_text || 'Lily White Realestate';
+  // Static brand identity
+  const logoText = 'Bijen Khadka';
+  const logoSrc = '/icon.png';
   const phoneNumber = headerSettings?.phone_number || '+1 (321) 456 7890';
   const navLinks = headerSettings?.navigation_links?.filter(link => link.is_active).sort((a, b) => a.order - b.order) || [
     { id: 1, name: 'HOME', href: '/', order: 1, is_active: true },
@@ -64,14 +64,6 @@ export default function Header() {
     return pathname.startsWith(href);
   };
 
-  // Helper function to ensure absolute URL for images
-  const getImageUrl = (url: string | null): string | null => {
-    if (!url) return null;
-    if (url.startsWith('http')) return url;
-    if (url.startsWith('/')) return `${process.env.NEXT_PUBLIC_API_URL}${url}`;
-    return `${process.env.NEXT_PUBLIC_API_URL}/${url}`;
-  };
-
   // Dynamic Styles
   const isTransparent = isHome && !scrolled && !mobileMenuOpen;
   const headerBaseClass = "w-full fixed top-0 z-[100] transition-all duration-500 ease-in-out";
@@ -85,40 +77,14 @@ export default function Header() {
         <div className="mx-auto flex h-20 md:h-24 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Logo Section */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group">
-            {logoImage ? (
-              // Custom uploaded logo
-              <div className="relative h-12 sm:h-16 md:h-20 w-auto transition-transform duration-200 group-hover:scale-105">
-                <LazyImage 
-                  src={getImageUrl(logoImage) || ''} 
-                  alt={logoText}
-                  className="h-12 sm:h-16 md:h-20 w-auto object-contain"
-                  fallbackSrc=""
-                />
-              </div>
-            ) : (
-              // Default logo shape
-              <div className="relative h-8 sm:h-10 w-10 sm:w-12 flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105">
-                {/* Logo Shape */}
-                <div className="absolute inset-0 flex">
-                  <div 
-                    style={{ background: isTransparent ? 'linear-gradient(to bottom right, #ffffff, #f0f0f0)' : 'linear-gradient(to bottom right, #000000, #1a1a1a)', clipPath: 'polygon(0 0, 100% 40%, 100% 100%, 0% 100%)' }}
-                    className="w-1/2 h-full transition-all duration-500" 
-                  />
-                  <div 
-                    style={{ background: isTransparent ? 'linear-gradient(to bottom right, #e0e0e0, #d0d0d0)' : 'linear-gradient(to bottom right, #262626, #404040)', clipPath: 'polygon(0 40%, 100% 0, 100% 100%, 0% 100%)' }}
-                    className="w-1/2 h-full transition-all duration-500" 
-                  />
-                </div>
-                {/* The house silhouette */}
-                <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-3 sm:w-4 h-4 sm:h-5 flex flex-col items-center justify-center rounded-t-sm shadow-md transition-all duration-500 ${isTransparent ? 'bg-black' : 'bg-white'}`}>
-                   <div className={`w-0.5 sm:w-1 h-0.5 sm:h-1 mb-0.5 transition-colors duration-500 ${isTransparent ? 'bg-white' : 'bg-black'}`}></div>
-                   <div className="flex gap-0.5">
-                     <div className={`w-0.5 sm:w-1 h-0.5 sm:h-1 transition-colors duration-500 ${isTransparent ? 'bg-white/30' : 'bg-black/30'}`}></div>
-                     <div className={`w-0.5 sm:w-1 h-0.5 sm:h-1 transition-colors duration-500 ${isTransparent ? 'bg-white/30' : 'bg-black/30'}`}></div>
-                   </div>
-                </div>
-              </div>
-            )}
+            <div className="relative h-12 sm:h-16 md:h-20 w-auto transition-transform duration-200 group-hover:scale-105">
+              <LazyImage
+                src={logoSrc}
+                alt={logoText}
+                className="h-12 sm:h-16 md:h-20 w-auto object-contain"
+                fallbackSrc={logoSrc}
+              />
+            </div>
             <span className={`text-lg sm:text-xl md:text-2xl font-bold tracking-tight transition-colors duration-500 ${isTransparent ? 'text-white' : 'text-black'}`}>
               {logoText}
             </span>

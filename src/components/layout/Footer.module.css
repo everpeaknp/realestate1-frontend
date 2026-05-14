@@ -5,13 +5,22 @@
 }
 
 .title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-heading);
-  font-size: 32px;
+  font-size: 30px;
   margin-bottom: 24px;
 }
 
-.title span {
-  color: var(--accent);
+.logoIcon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.brandText {
+  color: var(--white);
 }
 
 .description {

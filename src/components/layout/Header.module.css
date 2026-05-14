@@ -30,16 +30,21 @@
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-primary);
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 0.5px;
   color: var(--color-surface-base);
   text-decoration: none;
 }
 
-.logo span {
-  color: var(--color-surface-muted);
+.logoIcon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .navLinks {
