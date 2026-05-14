@@ -12,6 +12,7 @@ interface PropertyGalleryProps {
 
 export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -59,12 +60,19 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
 
   // Auto-scroll animation with seamless loop
   useAnimationFrame(() => {
-    if (!hasImages || isDragging || !containerRef.current || selectedImage !== null || singleSetWidth === 0) {
+    if (
+      !hasImages ||
+      isDragging ||
+      isHovering ||
+      !containerRef.current ||
+      selectedImage !== null ||
+      singleSetWidth === 0
+    ) {
       return;
     }
 
     const currentX = x.get();
-    const speed = 1.5; // Increased speed for smoother, faster scrolling
+    const speed = 0.7; // Slower, more readable auto-scroll
     let newX = currentX - speed;
 
     // Seamless infinite loop - reset when reaching boundaries
@@ -124,6 +132,8 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
         <div 
           ref={containerRef}
           className="relative cursor-grab active:cursor-grabbing select-none"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
         >
           <motion.div
             className="flex gap-6 px-6"
