@@ -169,13 +169,26 @@ export default function LocationSection({ property }: LocationSectionProps) {
               <MapControls position="bottom-right" showZoom showFullscreen />
             </Map>
           ) : (
-            <div className="h-full w-full bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center px-8 text-center">
-              <div className="max-w-md">
-                <MapPin className="w-10 h-10 text-secondary mx-auto mb-4" />
-                <h4 className="text-2xl font-serif text-neutral-900 mb-3">{locationLabel}</h4>
-                <p className="text-sm md:text-base text-neutral-600">
-                  Exact map coordinates are not available in the current REAXML feed for this listing.
-                </p>
+            <div className="relative h-full w-full overflow-hidden">
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'linear-gradient(120deg, #e7e3dc 0%, #d9d7d2 45%, #d2d8c8 100%)',
+                }}
+              />
+              <div
+                className="absolute inset-0 opacity-40"
+                style={{
+                  backgroundImage:
+                    'repeating-linear-gradient(18deg, rgba(255,255,255,0.5) 0 2px, transparent 2px 26px), repeating-linear-gradient(108deg, rgba(255,255,255,0.45) 0 2px, transparent 2px 30px)',
+                }}
+              />
+              <div className="absolute inset-0 backdrop-blur-[3px] bg-white/20" />
+              <div className="absolute inset-0 flex items-center justify-center px-6">
+                <span className="rounded-full bg-[#3f3b46] text-white px-8 md:px-12 py-4 text-2xl md:text-5xl font-medium shadow-2xl">
+                  Contact agent for address
+                </span>
               </div>
             </div>
           )}
