@@ -2,11 +2,11 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCMS } from '@/contexts/CMSContext';
 import { useState, useEffect } from 'react';
-import LazyImage from '@/components/shared/LazyImage';
 
 
 export default function Header() {
@@ -77,12 +77,14 @@ export default function Header() {
         <div className="mx-auto flex h-20 md:h-24 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Logo Section */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0 group">
-            <div className="relative h-12 sm:h-16 md:h-20 w-auto transition-transform duration-200 group-hover:scale-105">
-              <LazyImage
+            <div className="h-12 sm:h-16 md:h-20 w-12 sm:w-16 md:w-20 transition-transform duration-200 group-hover:scale-105">
+              <Image
                 src={logoSrc}
                 alt={logoText}
-                className="h-12 sm:h-16 md:h-20 w-auto object-contain"
-                fallbackSrc={logoSrc}
+                width={80}
+                height={80}
+                priority
+                className="h-full w-full object-contain"
               />
             </div>
             <span className={`text-lg sm:text-xl md:text-2xl font-bold tracking-tight transition-colors duration-500 ${isTransparent ? 'text-white' : 'text-black'}`}>

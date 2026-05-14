@@ -186,7 +186,7 @@ export default function LocationSection({ property }: LocationSectionProps) {
               />
               <div className="absolute inset-0 backdrop-blur-[3px] bg-white/20" />
               <div className="absolute inset-0 flex items-center justify-center px-6">
-                <span className="rounded-full bg-[#3f3b46] text-white px-8 md:px-12 py-4 text-2xl md:text-5xl font-medium shadow-2xl">
+                <span className="rounded-full bg-[#3f3b46] text-white px-5 md:px-7 py-2.5 md:py-3 text-base md:text-xl font-medium shadow-2xl">
                   Contact agent for address
                 </span>
               </div>
